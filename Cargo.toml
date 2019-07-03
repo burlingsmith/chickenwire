@@ -1,7 +1,8 @@
 [package]
 name = "chickenwire"
 version = "0.1.0"
-authors = ["cmarcbs7 <cmarcbs7@gmail.com>"]
+authors = ["smith7 <smith7@uchicago.edu>"]
 edition = "2018"
 
 [dependencies]
+petgraph = "0.4.13"

@@ -1,40 +1,23 @@
+//! A hexagonal grid representation based upon Red Blob Games' guide.
 
-// geometry
+#![crate_name = "chickenwire"]
+#![crate_type = "lib"]
 
-// coordinate systems
+mod hexgrid;
+mod coordinate;
 
-// coordinate conversion
+//////////////////////////////////////////////////////////////////////////////
+// a
+//////////////////////////////////////////////////////////////////////////////
 
-// neighbors
-
-// distances
-
-// line drawing
-
-// movement range
-
-// rotation
-
-// rings
-
-// field of view
-
-// hex to pixel
-
-// pixel to hex
-
-// rounding to nearest hex
-
-// map storage in axial coordinates
-
-// wraparound maps
-
-// pathfinding
+//////////////////////////////////////////////////////////////////////////////
+// Unit Tests
+//////////////////////////////////////////////////////////////////////////////
 
 #[cfg(test)]
 mod tests {
-  #[test]
-  fn it_works() {
-    assert_eq!(2 + 2, 4);
-  }
+    #[test]
+    fn it_works() {
+        assert_eq!(2 + 2, 4);
+    }
 }
