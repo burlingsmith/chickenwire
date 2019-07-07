@@ -82,6 +82,14 @@ impl Compass {
 // Cube Coordinate System
 //////////////////////////////////////////////////////////////////////////////
 
+/// Cube coordinates operate on three planes, treating hexes as cross-sections
+/// of a cube sliced along the diagonal.
+///
+/// Cube coordinates possess the constraint that, for cube coorinate
+/// (x, y, z), x + y + z == 0. This is automatically enforced in methods for
+/// `Cube` and associated functions. As part of this enforcement, `Cube` is
+/// opaque, requiring method or function calls for instantiation and
+/// modification.
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Cube {
     x: i32,
@@ -269,7 +277,8 @@ impl Cube {
     pub const ORIGIN: Cube = Cube { x: 0, y: 0, z: 0 };
 
     /// Offset values for cube coordinate neighbors, beginning with the
-    /// Northeastern side and proceeding clockwise.
+    /// Northeastern side and proceeding clockwise. Can be tthought of as unit
+    /// vectors for the directions of the six sides.
     const NEIGHBOR_OFFSETS: [(i32, i32, i32); 6] = [
         (1, 0, -1),     // NE
         (1, -1, 0),
@@ -306,6 +315,9 @@ impl Cube {
     // Setters
     //////////////////////////////////
 
+    /// Change a coordinate's contents. Works like `from_coords` but without
+    /// creating a new instance. Coordinate validity is enforced
+    /// automatically.
     pub fn set_coords(&mut self, x: i32, y: i32, _z: i32) {
         self.x = x;
         self.y = y;
@@ -316,6 +328,8 @@ impl Cube {
     // Neighbors
     //////////////////////////////////
 
+    /// Produces a `Vec<Cube>` from a `Vec<(i32, i32, i32)>`, which is then
+    /// offset with respect to the calling instance as the origin.
     fn offset_map(self, offsets: Vec<(i32, i32, i32)>) -> Vec<Self> {
         offsets
         .into_iter()
@@ -323,6 +337,36 @@ impl Cube {
         .collect()
     }
 
+    /// Produces a `Vec<Cube>` ordered beginning with the Northeastern
+    /// neighbor of the calling instance and proceeding clockwise.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use chickenwire::coordinate::Cube;
+    ///
+    /// let origin_neighbors = vec![
+    ///     Cube::from_coords(1, 0, -1),
+    ///     Cube::from_coords(1, -1, 0),
+    ///     Cube::from_coords(0, -1, 1),
+    ///     Cube::from_coords(-1, 0, 1),
+    ///     Cube::from_coords(-1, 1, 0),
+    ///     Cube::from_coords(0, 1, -1),
+    /// ];
+    ///
+    /// assert_eq!(origin_neighbors, Cube::ORIGIN.neighbors());
+    ///
+    /// let offset_neighbors = vec![
+    ///     Cube::from_coords(2, 2, -4),
+    ///     Cube::from_coords(2, 1, -3),
+    ///     Cube::from_coords(1, 1, -2),
+    ///     Cube::from_coords(0, 2, -2),
+    ///     Cube::from_coords(0, 3, -3),
+    ///     Cube::from_coords(1, 3, -4),
+    /// ];
+    ///
+    /// assert_eq!(offset_neighbors, Cube::from_coords(1, 2, -3).neighbors());
+    /// ```
     pub fn neighbors(self) -> Vec<Self> {
         self.offset_map(Self::NEIGHBOR_OFFSETS.to_vec())
     }
