@@ -751,12 +751,59 @@ mod tests {
 
     #[test]
     fn test_cube_from_axial() {
-        unimplemented!();
+        assert_eq!(
+            Cube::ORIGIN,
+            Cube::from(Axial::ORIGIN),
+            "Cube::ORIGIN != Axial::ORIGIN"
+        );
+        assert_eq!(
+            Cube::from_coords(1, 2, -3),
+            Cube::from(Axial::from_coords(1, -3)),
+            "Cube(1, 2, -3) != Axial(1, -3)"
+        );
+        assert_eq!(
+            Cube::from_coords(7, -11, 4),
+            Cube::from(Axial::from_coords(7, 4)),
+            "Cube(7, -11, 4) != Axial(7, 4)"
+        );
+        assert_eq!(
+            Cube::from_coords(-11, 23, -12),
+            Cube::from(Axial::from_coords(-11, -12)),
+            "Cube(-11, 23, -12) != Axial(-11, -12)"
+        );
+        assert_eq!(
+            Cube::from_coords(-10, 4, 6),
+            Cube::from(Axial::from_coords(-10, 6)),
+            "Cube(-10, 4, 6) != Axial(-10, 6)"
+        );
     }
 
     #[test]
     fn test_cube_arithmetic() {
-        unimplemented!();
+        let unit_cube_x = Cube { x: 1, y: 0, z: 0 };
+        let unit_cube_y = Cube { x: 0, y: 1, z: 0 };
+        let unit_cube_z = Cube { x: 0, y: 0, z: 1 };
+
+        assert_eq!(3 * unit_cube_x, Cube { x: 3, y: 0, z: 0 });
+        assert_eq!(5 * unit_cube_y, Cube { x: 0, y: 5, z: 0 });
+        assert_eq!(7 * unit_cube_z, Cube { x: 0, y: 0, z: 7 });
+
+        assert_eq!(
+            unit_cube_x + unit_cube_y + unit_cube_z,
+            Cube { x: 1, y: 1, z: 1 }
+        );
+        assert_eq!(
+            7 * unit_cube_x + 5 * unit_cube_y + 3 * unit_cube_z,
+            Cube { x: 7, y: 5, z: 3 }
+        );
+        assert_eq!(
+            3 * (unit_cube_x + unit_cube_y) - 5 * unit_cube_z - unit_cube_y,
+            Cube { x: 3, y: 2, z: -5 }
+        );
+        assert_eq!(
+            (4 * unit_cube_x - 2 * unit_cube_y + unit_cube_z) / 2,
+            Cube { x: 2, y: -1, z: 0 }
+        );
     }
 
     #[test]
