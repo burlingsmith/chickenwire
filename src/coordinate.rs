@@ -340,6 +340,11 @@ impl Cube {
     /// Produces a `Vec<Cube>` ordered beginning with the Northeastern
     /// neighbor of the calling instance and proceeding clockwise.
     ///
+    /// The Northeastern coordinate was chosen as the anchor because it is the
+    /// first diagonal (when proceeding clockwise) which visually remains in
+    /// the same compass direction from the calling instance. This logic is
+    /// consistent throughout the module.
+    ///
     /// # Examples
     ///
     /// ```
@@ -371,13 +376,48 @@ impl Cube {
         self.offset_map(Self::NEIGHBOR_OFFSETS.to_vec())
     }
 
+    /// Produces a `Vec<Cube>` ordered beginning with the Southeastern
+    /// diagonal of the calling instance and proceeding clockwise.
+    ///
+    /// The Southeastern coordinate was chosen as the anchor because it is the
+    /// first diagonal (when proceeding clockwise) which visually remains in
+    /// the same compass direction from the calling instance. This logic is
+    /// consistent throughout the module.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use chickenwire::coordinate::Cube;
+    ///
+    /// let origin_diagonals = vec![
+    ///     Cube::from_coords(1, -2, 1),
+    ///     Cube::from_coords(-1, -1, 2),
+    ///     Cube::from_coords(-2, 1, 1),
+    ///     Cube::from_coords(-1, 2, -1),
+    ///     Cube::from_coords(1, 1, -2),
+    ///     Cube::from_coords(2, -1, -1),
+    /// ];
+    ///
+    /// assert_eq!(origin_diagonals, Cube::ORIGIN.diagonals());
+    ///
+    /// let offset_diagonals = vec![
+    ///     Cube::from_coords(2, 0, -2),
+    ///     Cube::from_coords(0, 1, -1),
+    ///     Cube::from_coords(-1, 3, -2),
+    ///     Cube::from_coords(0, 4, -4),
+    ///     Cube::from_coords(2, 3, -5),
+    ///     Cube::from_coords(3, 1, -4),
+    /// ];
+    ///
+    /// assert_eq!(offset_diagonals, Cube::from_coords(1, 2, -3).diagonals());
+    /// ```
     pub fn diagonals(self) -> Vec<Self> {
         let diagonal_offsets = vec![
-            (1, 1, -2),     // SE
-            (-1, 2, -1),
+            (1, -2, 1),     // SE
+            (-1, -1, 2),
             (-2, 1, 1),
-            (-1, -1, 2),    // NW
-            (1, -2, 1),
+            (-1, 2, -1),    // NW
+            (1, 1, -2),
             (2, -1, -1),
         ];
 
