@@ -609,11 +609,18 @@ impl Axial {
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Offset {
-    col: i32,
-    row: i32,
+    pub col: i32,
+    pub row: i32,
 }
 
 impl Offset {
+    //////////////////////////////////
+    // Constants
+    //////////////////////////////////
+
+    /// Offset coordinate origin of (0, 0).
+    pub const ORIGIN: Offset = Offset { col: 0, row: 0 };
+
     //////////////////////////////////
     // Conversion
     //////////////////////////////////
@@ -730,6 +737,13 @@ pub struct Double {
 }
 
 impl Double {
+    //////////////////////////////////
+    // Constants
+    //////////////////////////////////
+
+    /// Interlaced coordinate origin of (0, 0).
+    pub const ORIGIN: Offset = Offset { col: 0, row: 0 };
+
     //////////////////////////////////
     // Conversion
     //////////////////////////////////
@@ -893,7 +907,7 @@ mod tests {
         let unit_cube_z = Cube { x: 0, y: 0, z: 1 };
 
         assert_eq!(3 * unit_cube_x, Cube { x: 3, y: 0, z: 0 });
-        assert_eq!(5 * unit_cube_y, Cube { x: 0, y: 5, z: 0 });
+        assert_eq!(unit_cube_y * 5, Cube { x: 0, y: 5, z: 0 });
         assert_eq!(7 * unit_cube_z, Cube { x: 0, y: 0, z: 7 });
 
         assert_eq!(

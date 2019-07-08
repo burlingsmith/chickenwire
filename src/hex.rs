@@ -1,6 +1,7 @@
 //!
 
-use coordinate;
+//use coordinate;
+// pub(super) in coordinate.rs
 
 // (?) make iterator for things like rings
 // (?) add limited range versions of map and search functions
@@ -9,24 +10,6 @@ use coordinate;
 //////////////////////////////////////////////////////////////////////////////
 // Hex Orientation
 //////////////////////////////////////////////////////////////////////////////
-
-#[derive(Debug)]
-enum Compass {
-    North,
-    Northeast,
-    East,
-    Southeast,
-    South,
-    Southwest,
-    West,
-    Northwest,
-}
-
-#[derive(Debug)]
-enum Tilt {
-    Flat,
-    Sharp,
-}
 
 //////////////////////////////////////////////////////////////////////////////
 // Hexes
@@ -37,10 +20,6 @@ struct Hex<T> {
     pos: coordinate::Cube,
     tilt: Tilt,
     data: T,
-}
-
-impl<T> Hex<T> {
-    // Code here
 }
 
 //////////////////////////////////////////////////////////////////////////////
