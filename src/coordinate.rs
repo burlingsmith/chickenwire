@@ -16,69 +16,6 @@ use std::cmp;
 use std::ops::{Add, Div, Mul, Sub};
 
 //////////////////////////////////////////////////////////////////////////////
-// Compass Position Notation
-//////////////////////////////////////////////////////////////////////////////
-
-// add a higher-level compass that abstracts this away
-#[derive(Debug)]
-pub enum Compass {
-    North,        // 0 degrees clockwise
-    NortheastA,   // 30 degrees clockwise
-    NortheastB,   // 60 degrees clockwise
-    East,         // 90 degrees clockwise
-    SoutheastA,   // 120 degrees clockwise
-    SoutheastB,   // 150 degrees clockwise
-    South,        // 180 degrees clockwise
-    SouthwestA,   // 210 degrees clockwise
-    SouthwestB,   // 240 degrees clockwise
-    West,         // 270 degrees clockwise
-    NorthwestA,   // 300 degrees clockwise
-    NorthwestB,   // 330 degrees clockwise
-}
-
-impl Compass {
-    pub fn flat_index(self) -> usize {
-        match self {
-            // Edges/Neighbors
-            Compass::NortheastB => 0,
-            Compass::SoutheastA => 1,
-            Compass::South => 2,
-            Compass::SouthwestB => 3,
-            Compass::NorthwestA => 4,
-            Compass::North => 5,
-
-            // Vertices/Diagonals
-            Compass::SoutheastB => 0,
-            Compass::SouthwestA => 1,
-            Compass::West => 2,
-            Compass::NorthwestB => 3,
-            Compass::NortheastA => 4,
-            Compass::East => 5,
-        }
-    }
-
-    pub fn sharp_index(self) -> usize {
-        match self {
-            // Edges/Neighbors
-            Compass::NortheastA => 0,
-            Compass::East => 1,
-            Compass::SouthwestA => 2,
-            Compass::SoutheastB => 3,
-            Compass::West => 4,
-            Compass::NorthwestB => 5,
-
-            // Vertices/Diagonals
-            Compass::SoutheastA => 0,
-            Compass::South => 1,
-            Compass::SouthwestB => 2,
-            Compass::NorthwestA => 3,
-            Compass::North => 4,
-            Compass::NortheastB => 5,
-        }
-    }
-}
-
-//////////////////////////////////////////////////////////////////////////////
 // Cube Coordinate System
 //////////////////////////////////////////////////////////////////////////////
 
@@ -288,6 +225,17 @@ impl Cube {
         (0, 1, -1),
     ];
 
+    /// Offset values for cube coordinate diagonals, beginning with the
+    /// Southeastern side and proceeding clockwise.
+    const DIAGONAL_OFFSETS: [(i32, i32, i32); 6] = [
+        (1, -2, 1),     // SE
+        (-1, -1, 2),
+        (-2, 1, 1),
+        (-1, 2, -1),    // NW
+        (1, 1, -2),
+        (2, -1, -1),
+    ];
+
     //////////////////////////////////
     // Initialization
     //////////////////////////////////
@@ -328,13 +276,23 @@ impl Cube {
     // Neighbors
     //////////////////////////////////
 
-    /// Produces a `Vec<Cube>` from a `Vec<(i32, i32, i32)>`, which is then
-    /// offset with respect to the calling instance as the origin.
-    fn offset_map(self, offsets: Vec<(i32, i32, i32)>) -> Vec<Self> {
-        offsets
-        .into_iter()
-        .map(|coord_tuple| self + Self::from(coord_tuple))
-        .collect()
+    /// Calculates the requested neighbor. An index of 0 returns the
+    /// Northeastern neighbor, and increases clockwise. Indices wrap around.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use chickenwire::coordinate::Cube;
+    ///
+    /// assert_eq!(Cube::from_coords(1, 0, -1), Cube::ORIGIN.neighbor(0));
+    /// assert_eq!(Cube::from_coords(1, -1, 0), Cube::ORIGIN.neighbor(1));
+    /// assert_eq!(Cube::from_coords(0, 1, -1), Cube::ORIGIN.neighbor(5));
+    ///
+    /// assert_eq!(Cube::ORIGIN.neighbor(0), Cube::ORIGIN.neighbor(6));
+    /// assert_eq!(Cube::ORIGIN.neighbor(1), Cube::ORIGIN.neighbor(7));
+    /// ```
+    pub fn neighbor(self, index: usize) -> Self {
+        self + Self::from(Self::NEIGHBOR_OFFSETS[index % 6])
     }
 
     /// Produces a `Vec<Cube>` ordered beginning with the Northeastern
@@ -373,7 +331,32 @@ impl Cube {
     /// assert_eq!(offset_neighbors, Cube::from_coords(1, 2, -3).neighbors());
     /// ```
     pub fn neighbors(self) -> Vec<Self> {
-        self.offset_map(Self::NEIGHBOR_OFFSETS.to_vec())
+        let mut coords = Vec::new();
+
+        for index in  0..6 {
+            coords.push(self.neighbor(index));
+        }
+
+        coords
+    }
+
+    /// Calculates the requested diagonal. An index of 0 returns the
+    /// Southeastern diagonal, and increases clockwise. Indices wrap around.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use chickenwire::coordinate::Cube;
+    ///
+    /// assert_eq!(Cube::from_coords(1, -2, 1), Cube::ORIGIN.diagonal(0));
+    /// assert_eq!(Cube::from_coords(-1, -1, 2), Cube::ORIGIN.diagonal(1));
+    /// assert_eq!(Cube::from_coords(2, -1, -1), Cube::ORIGIN.diagonal(5));
+    ///
+    /// assert_eq!(Cube::ORIGIN.diagonal(0), Cube::ORIGIN.diagonal(6));
+    /// assert_eq!(Cube::ORIGIN.diagonal(1), Cube::ORIGIN.diagonal(7));
+    /// ```
+    pub fn diagonal(self, index: usize) -> Self {
+        self + Self::from(Self::DIAGONAL_OFFSETS[index % 6])
     }
 
     /// Produces a `Vec<Cube>` ordered beginning with the Southeastern
@@ -412,16 +395,13 @@ impl Cube {
     /// assert_eq!(offset_diagonals, Cube::from_coords(1, 2, -3).diagonals());
     /// ```
     pub fn diagonals(self) -> Vec<Self> {
-        let diagonal_offsets = vec![
-            (1, -2, 1),     // SE
-            (-1, -1, 2),
-            (-2, 1, 1),
-            (-1, 2, -1),    // NW
-            (1, 1, -2),
-            (2, -1, -1),
-        ];
+        let mut coords = Vec::new();
 
-        self.offset_map(diagonal_offsets)
+        for index in  0..6 {
+            coords.push(self.diagonal(index));
+        }
+
+        coords
     }
 
     //////////////////////////////////
@@ -931,6 +911,194 @@ mod tests {
         assert_eq!(
             (4 * unit_cube_x - 2 * unit_cube_y + unit_cube_z) / 2,
             Cube { x: 2, y: -1, z: 0 }
+        );
+    }
+
+    #[test]
+    fn test_cube_neighbors() {
+        let exp_origin_neighbors = vec![
+            Cube { x: 1, y: 0, z: -1 },
+            Cube { x: 1, y: -1, z: 0 },
+            Cube { x: 0, y: -1, z: 1 },
+            Cube { x: -1, y: 0, z: 1 },
+            Cube { x: -1, y: 1, z: 0 },
+            Cube { x: 0, y: 1, z: -1},
+        ];
+
+        assert_eq!(
+            exp_origin_neighbors[0],
+            Cube::ORIGIN.neighbor(0),
+            "origin neighbor (index of 0)"
+        );
+        assert_eq!(
+            exp_origin_neighbors[1],
+            Cube::ORIGIN.neighbor(1),
+            "origin neighbor (index of 1)"
+        );
+        assert_eq!(
+            exp_origin_neighbors[2],
+            Cube::ORIGIN.neighbor(2),
+            "origin neighbor (index of 2)"
+        );
+        assert_eq!(
+            exp_origin_neighbors[3],
+            Cube::ORIGIN.neighbor(3),
+            "origin neighbor (index of 3)"
+        );
+        assert_eq!(
+            exp_origin_neighbors[4],
+            Cube::ORIGIN.neighbor(4),
+            "origin neighbor (index of 4)"
+        );
+        assert_eq!(
+            exp_origin_neighbors[5],
+            Cube::ORIGIN.neighbor(5),
+            "origin neighbor (index of 5)"
+        );
+        assert_eq!(
+            exp_origin_neighbors,
+            Cube::ORIGIN.neighbors(),
+            "origin neighbors"
+        );
+
+        let offset_coord = Cube { x: -4, y: 13, z: -9 };
+        let exp_offset_neighbors = vec![
+            Cube { x: -3, y: 13, z: -10 },
+            Cube { x: -3, y: 12, z: -9 },
+            Cube { x: -4, y: 12, z: -8 },
+            Cube { x: -5, y: 13, z: -8 },
+            Cube { x: -5, y: 14, z: -9 },
+            Cube { x: -4, y: 14, z: -10 },
+        ];
+
+        assert_eq!(
+            exp_offset_neighbors[0],
+            offset_coord.neighbor(0),
+            "offset neighbor (index of 0)"
+        );
+        assert_eq!(
+            exp_offset_neighbors[1],
+            offset_coord.neighbor(1),
+            "offset neighbor (index of 1)"
+        );
+        assert_eq!(
+            exp_offset_neighbors[2],
+            offset_coord.neighbor(2),
+            "offset neighbor (index of 2)"
+        );
+        assert_eq!(
+            exp_offset_neighbors[3],
+            offset_coord.neighbor(3),
+            "offset neighbor (index of 3)"
+        );
+        assert_eq!(
+            exp_offset_neighbors[4],
+            offset_coord.neighbor(4),
+            "offset neighbor (index of 4)"
+        );
+        assert_eq!(
+            exp_offset_neighbors[5],
+            offset_coord.neighbor(5),
+            "offset neighbor (index of 5)"
+        );
+        assert_eq!(
+            exp_offset_neighbors,
+            offset_coord.neighbors(),
+            "offset neighbors"
+        );
+    }
+
+    #[test]
+    fn test_cube_diagonals() {
+        let exp_origin_diagonals = vec![
+            Cube { x: 1, y: -2, z: 1 },
+            Cube { x: -1, y: -1, z: 2 },
+            Cube { x: -2, y: 1, z: 1 },
+            Cube { x: -1, y: 2, z: -1 },
+            Cube { x: 1, y: 1, z: -2 },
+            Cube { x: 2, y: -1, z: -1},
+        ];
+
+        assert_eq!(
+            exp_origin_diagonals[0],
+            Cube::ORIGIN.diagonal(0),
+            "origin diagonal (index of 0)"
+        );
+        assert_eq!(
+            exp_origin_diagonals[1],
+            Cube::ORIGIN.diagonal(1),
+            "origin diagonal (index of 1)"
+        );
+        assert_eq!(
+            exp_origin_diagonals[2],
+            Cube::ORIGIN.diagonal(2),
+            "origin diagonal (index of 2)"
+        );
+        assert_eq!(
+            exp_origin_diagonals[3],
+            Cube::ORIGIN.diagonal(3),
+            "origin diagonal (index of 3)"
+        );
+        assert_eq!(
+            exp_origin_diagonals[4],
+            Cube::ORIGIN.diagonal(4),
+            "origin diagonal (index of 4)"
+        );
+        assert_eq!(
+            exp_origin_diagonals[5],
+            Cube::ORIGIN.diagonal(5),
+            "origin diagonal (index of 5)"
+        );
+        assert_eq!(
+            exp_origin_diagonals,
+            Cube::ORIGIN.diagonals(),
+            "origin diagonals"
+        );
+
+        let offset_coord = Cube { x: 7, y: 3, z: -10 };
+        let exp_offset_diagonals = vec![
+            Cube { x: 8, y: 1, z: -9 },
+            Cube { x: 6, y: 2, z: -8 },
+            Cube { x: 5, y: 4, z: -9 },
+            Cube { x: 6, y: 5, z: -11 },
+            Cube { x: 8, y: 4, z: -12 },
+            Cube { x: 9, y: 2, z: -11},
+        ];
+
+        assert_eq!(
+            exp_offset_diagonals[0],
+            offset_coord.diagonal(0),
+            "offset diagonal (index of 0)"
+        );
+        assert_eq!(
+            exp_offset_diagonals[1],
+            offset_coord.diagonal(1),
+            "offset diagonal (index of 1)"
+        );
+        assert_eq!(
+            exp_offset_diagonals[2],
+            offset_coord.diagonal(2),
+            "offset diagonal (index of 2)"
+        );
+        assert_eq!(
+            exp_offset_diagonals[3],
+            offset_coord.diagonal(3),
+            "offset diagonal (index of 3)"
+        );
+        assert_eq!(
+            exp_offset_diagonals[4],
+            offset_coord.diagonal(4),
+            "offset diagonal (index of 4)"
+        );
+        assert_eq!(
+            exp_offset_diagonals[5],
+            offset_coord.diagonal(5),
+            "offset diagonal (index of 5)"
+        );
+        assert_eq!(
+            exp_offset_diagonals,
+            offset_coord.diagonals(),
+            "offset diagonals"
         );
     }
 
