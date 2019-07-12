@@ -1,7 +1,6 @@
 //!
 
-//use coordinate;
-// pub(super) in coordinate.rs
+use crate::coordinate;
 
 // (?) make iterator for things like rings
 // (?) add limited range versions of map and search functions
@@ -17,7 +16,7 @@
 
 #[derive(Debug)]
 struct Hex<T> {
-    pos: coordinate::Cube,
+    pos: coordinate::MultiCoordinate,
     tilt: Tilt,
     data: T,
 }

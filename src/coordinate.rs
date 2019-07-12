@@ -16,6 +16,42 @@ use std::cmp;
 use std::ops::{Add, Div, Mul, Sub};
 
 //////////////////////////////////////////////////////////////////////////////
+// MultiCoordinates
+//////////////////////////////////////////////////////////////////////////////
+
+#[derive(Debug)]
+pub enum MultiCoordinate {
+    Cube(i32, i32, i32),
+    Axial(i32, i32),
+    Offset(i32, i32),
+    Double(i32, i32),
+}
+
+impl From<Cube> for MultiCoordinate {
+    fn from(coord: Cube { x: x, y: y, z: z }) -> Self {
+        MultiCoordinate::Cube(x, y, z)
+    }
+}
+
+impl From<Axial> for MultiCoordinate {
+    fn from(coord: Axial { q: q, r: r }) -> Self {
+        MultiCoordinate::Axial(q, r)
+    }
+}
+
+impl From<Offset> for MultiCoordinate {
+    fn from(coord: Offset { row: r, col: c }) -> Self {
+        MultiCoordinate::Offset(r, c)
+    }
+}
+
+impl From<Double> for MultiCoordinate {
+    fn from(coord: Double { row: r, col: c }) -> Self {
+        MultiCoordinate::Double(r, c)
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 // Cube Coordinate System
 //////////////////////////////////////////////////////////////////////////////
 
