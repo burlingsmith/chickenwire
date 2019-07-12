@@ -19,7 +19,7 @@ use std::ops::{Add, Div, Mul, Sub};
 // MultiCoordinates
 //////////////////////////////////////////////////////////////////////////////
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum MultiCoordinate {
     Cube(i32, i32, i32),
     Axial(i32, i32),
@@ -33,21 +33,57 @@ impl From<Cube> for MultiCoordinate {
     }
 }
 
+impl From<MultiCoordinate> for Cube {
+    fn from(coord: MultiCoordinate) -> Self {
+        match coord {
+            Cube(x, y, z) => Cube { x: x, y: y, z: z },
+            _ => panic!("{:?} is not a Cube coordinate", coord);,
+        }
+    }
+}
+
 impl From<Axial> for MultiCoordinate {
     fn from(coord: Axial { q: q, r: r }) -> Self {
         MultiCoordinate::Axial(q, r)
     }
 }
 
+impl From<MultiCoordinate> for Axial {
+    fn from(coord: MultiCoordinate) -> Self {
+        match coord {
+            Axial(q, r) => Axial { q: q, r: r },
+            _ => panic!("{:?} is not an Axial coordinate", coord);,
+        }
+    }
+}
+
 impl From<Offset> for MultiCoordinate {
-    fn from(coord: Offset { row: r, col: c }) -> Self {
-        MultiCoordinate::Offset(r, c)
+    fn from(coord: Offset { col: c, row: r }) -> Self {
+        MultiCoordinate::Offset(c, r)
+    }
+}
+
+impl From<MultiCoordinate> for Offset {
+    fn from(coord: MultiCoordinate) -> Self {
+        match coord {
+            Offset(c, r) => Offset { col: c, row: r },
+            _ => panic!("{:?} is not an Offset coordinate", coord);,
+        }
     }
 }
 
 impl From<Double> for MultiCoordinate {
-    fn from(coord: Double { row: r, col: c }) -> Self {
-        MultiCoordinate::Double(r, c)
+    fn from(coord: Double { col: c, row: r }) -> Self {
+        MultiCoordinate::Double(c, r)
+    }
+}
+
+impl From<MultiCoordinate> for Double {
+    fn from(coord: MultiCoordinate) -> Self {
+        match coord {
+            Double(c, r) => Double { col: c, row: r },
+            _ => panic!("{:?} is not a Double coordinate", coord);,
+        }
     }
 }
 
