@@ -6,7 +6,7 @@ use petgraph::graph::{Graph, UnGraph, NodeIndex};
 use std::rc::Rc;
 use std::collections::HashMap;
 
-use crate::coordinate::MultiCoordinate;
+use crate::coordinate;
 
 // pathfind
 // petgraph::graph::Graph::node_weight
@@ -57,15 +57,6 @@ impl<T> HexGrid<T> {
             graph: Graph::new_undirected(),
             map: HashMap::new(),
         }
-    }
-
-    ///
-    fn insert(self, coord: MultiCoordinate, data: T) {
-        unimplemented!();
-    }
-
-    pub fn set_hex(self, coord: MultiCoordinate, data: T) {
-        unimplemented!();
     }
 
     fn new_radial(radius: u32, tilt: Tilt) -> Self {
