@@ -16,72 +16,72 @@ use std::cmp;
 use std::ops::{Add, Div, Mul, Sub};
 
 //////////////////////////////////////////////////////////////////////////////
-// MultiCoordinates
+// Multi-Coordinates
 //////////////////////////////////////////////////////////////////////////////
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum MultiCoordinate {
+pub enum MultiCoord {
     Cube(i32, i32, i32),
     Axial(i32, i32),
     Offset(i32, i32),
     Double(i32, i32),
 }
 
-impl From<Cube> for MultiCoordinate {
+impl From<Cube> for MultiCoord {
     fn from(coord: Cube) -> Self {
-        MultiCoordinate::Cube(coord.x, coord.y, coord.z)
+        MultiCoord::Cube(coord.x, coord.y, coord.z)
     }
 }
 
-impl From<MultiCoordinate> for Cube {
-    fn from(coord: MultiCoordinate) -> Self {
+impl From<MultiCoord> for Cube {
+    fn from(coord: MultiCoord) -> Self {
         match coord {
-            MultiCoordinate::Cube(x, y, z) => Cube { x: x, y: y, z: z },
+            MultiCoord::Cube(x, y, z) => Cube { x: x, y: y, z: z },
             _ => panic!("{:?} is not a Cube coordinate", coord),
         }
     }
 }
 
-impl From<Axial> for MultiCoordinate {
+impl From<Axial> for MultiCoord {
     fn from(coord: Axial) -> Self {
-        MultiCoordinate::Axial(coord.q, coord.r)
+        MultiCoord::Axial(coord.q, coord.r)
     }
 }
 
-impl From<MultiCoordinate> for Axial {
-    fn from(coord: MultiCoordinate) -> Self {
+impl From<MultiCoord> for Axial {
+    fn from(coord: MultiCoord) -> Self {
         match coord {
-            MultiCoordinate::Axial(q, r) => Axial { q: q, r: r },
+            MultiCoord::Axial(q, r) => Axial { q: q, r: r },
             _ => panic!("{:?} is not an Axial coordinate", coord),
         }
     }
 }
 
-impl From<Offset> for MultiCoordinate {
+impl From<Offset> for MultiCoord {
     fn from(coord: Offset) -> Self {
-        MultiCoordinate::Offset(coord.col, coord.row)
+        MultiCoord::Offset(coord.col, coord.row)
     }
 }
 
-impl From<MultiCoordinate> for Offset {
-    fn from(coord: MultiCoordinate) -> Self {
+impl From<MultiCoord> for Offset {
+    fn from(coord: MultiCoord) -> Self {
         match coord {
-            MultiCoordinate::Offset(c, r) => Offset { col: c, row: r },
+            MultiCoord::Offset(c, r) => Offset { col: c, row: r },
             _ => panic!("{:?} is not an Offset coordinate", coord),
         }
     }
 }
 
-impl From<Double> for MultiCoordinate {
+impl From<Double> for MultiCoord {
     fn from(coord: Double) -> Self {
-        MultiCoordinate::Double(coord.col, coord.row)
+        MultiCoord::Double(coord.col, coord.row)
     }
 }
 
-impl From<MultiCoordinate> for Double {
-    fn from(coord: MultiCoordinate) -> Self {
+impl From<MultiCoord> for Double {
+    fn from(coord: MultiCoord) -> Self {
         match coord {
-            MultiCoordinate::Double(c, r) => Double { col: c, row: r },
+            MultiCoord::Double(c, r) => Double { col: c, row: r },
             _ => panic!("{:?} is not a Double coordinate", coord),
         }
     }
