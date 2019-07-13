@@ -14,11 +14,23 @@
 //! The Chickenwire idiom, as regards coordinates, is to exclusively use
 //! `MultiCoord`s for the passing and storing of coordinate information, and
 //! to exclusively use the `Cube`, `Axial`, `Offset`, and `Double` `struct`s
-//! for the outward-facing API.
+//! for the outward-facing API. Generally speaking, you will have to convert
+//! a `MultiCoord` into one of the four core representations before any
+//! operations or arithmetic are possible.
 //!
 //! # Creating Coordinates
-//! Each of the four coordinate `struct`s can be created from either a tuple
-//! or series of `i32` values:
+//! Axial, Offset, and Double coordinates can be instantiated normally:
+//!
+//! ```
+//! use chickenwire::coordinate::{Axial, Offset, Double};
+//!
+//! let axial = Axial { q: 0, r: 1 };
+//! let offset = Offset { col: 2, row: 3 };
+//! let double = Double { col: 4, row: 5 };
+//! ```
+//!
+//! Additionally, each coordinate `struct` has methods for instantiation from
+//! tuple or `i32` values:
 //!
 //! ```
 //! use chickenwire::coordinate::{Cube, Offset};
@@ -41,9 +53,52 @@
 //! details and examples below, in the `From` and `from_coords`
 //! implementations of each coordinate's associated `struct`.
 //!
+//! # Modifying Coordinates
+//! Use the `set_coords` method to update a `Cube`. Otherwise, coordinate
+//! `struct`s should be manipulated normally via their public fields.
+//!
+//! # Converting Coordinates
+//! The `From` and `Into` traits are implemented between `Axial` and `Cube`.
+//! For `Offset` and `Double` coordinates, conversion to a different system
+//! requires additional knowledge about the grid's state. Namely, whether the
+//! hexes have a "flat" or "sharp" orientation and if the offset patterning is
+//! "even" or "odd." Conversion methods for each combination are documented
+//! below. See either the `chickenwire::hex` docs or
+//! [The Guide](https://www.redblobgames.com/grids/hexagons) for explantations
+//! of flat/sharp orientation and even/odd offsetting.
+//!
 //! # Arithmetic
-//! Cube coordinates are treated like vectors in terms of addition/subtraction
-//! and scalar multiplication/division.
+//! The `Add<Self>`, `Sub<Self>`, `Mul<i32>`, and `Div<i32>` traits are
+//! implemented for `Cube` and `Axial`. These operations treat the coordinates
+//! as vectors:
+//!
+//! ```
+//! use chickenwire::coordinate::{Cube, Axial};
+//!
+//! // Vector addition
+//! assert_eq!(
+//!     Cube::from_coords(2, -4, 2) + Cube::from_coords(5, 6, -11),
+//!     Cube::from_coords(7, 2, -9)
+//! );
+//!
+//! // Vector subtraction
+//! assert_eq!(
+//!     Axial { q: 4, r: -2 } - Axial { q: 1, r: -3 },
+//!     Axial { q: 3, r: 1 }
+//! );
+//!
+//! // Scalar multiplication
+//! assert_eq!(
+//!     Axial { q: 1, r: -3 } * 2i32,
+//!     Axial { q: 2, r: -6 }
+//! );
+//!
+//! // Scalar division
+//! assert_eq!(
+//!     Cube::from_coords(1, 2, -3) / -1i32,
+//!     Cube::from_coords(-1, -2, 3)
+//! );
+//! ```
 //!
 //! # On Neighbors
 //! The exact rule for the ordering of neighbors is that the first position
@@ -712,6 +767,58 @@ impl From<Cube> for Axial {
     }
 }
 
+impl Add for Axial {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
+        Self {
+            q: self.q + other.q,
+            r: self.r + other.r,
+        }
+    }
+}
+
+impl Sub for Axial {
+    type Output = Self;
+
+    fn sub(self, other: Self) -> Self {
+        Self {
+            q: self.q - other.q,
+            r: self.r - other.r,
+        }
+    }
+}
+
+impl Mul<i32> for Axial {
+    type Output = Self;
+
+    fn mul(self, n: i32) -> Self {
+        Self {
+            q: self.q * n,
+            r: self.r * n,
+        }
+    }
+}
+
+impl Mul<Axial> for i32 {
+    type Output = Axial;
+
+    fn mul(self, coord: Axial) -> Axial {
+        coord * self
+    }
+}
+
+impl Div<i32> for Axial {
+    type Output = Self;
+
+    fn div(self, n: i32) -> Self {
+        Self {
+            q: self.q / n,
+            r: self.r / n,
+        }
+    }
+}
+
 impl Axial {
     //////////////////////////////////
     // Constants
@@ -909,8 +1016,8 @@ impl Offset {
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Double {
-    col: i32,
-    row: i32,
+    pub col: i32,
+    pub row: i32,
 }
 
 impl From<(i32, i32)> for Double {
