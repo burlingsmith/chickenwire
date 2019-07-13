@@ -107,6 +107,11 @@
 //! practice, this means that the Northeastern neighbor receives the zero
 //! index, save for the diagonal case, where the Southeastern neighbor is the
 //! recipient.
+//!
+//! # Credits
+//! Everything in Chickenwire owes a huge thanks to Red Blob Games, for making
+//! "[The Guide](https://www.redblobgames.com/grids/hexagons)", a thoroughly
+//! excellent article on the development of hexagonal grids.
 
 use std::cmp;
 use std::ops::{Add, Div, Mul, Sub};
