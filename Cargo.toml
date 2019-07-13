@@ -6,3 +6,10 @@ edition = "2018"
 
 [dependencies]
 petgraph = "0.4.13"
+
+[dev-dependencies]
+criterion = "0.2"
+
+[[bench]]
+name = "cribench_coordinate"
+harness = false

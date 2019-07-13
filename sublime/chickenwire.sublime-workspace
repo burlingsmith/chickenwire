@@ -1,0 +1,820 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"un",
+				"unwrap"
+			],
+			[
+				"Mul",
+				"MultiCoord"
+			],
+			[
+				"new_he",
+				"new_hexes"
+			],
+			[
+				"D",
+				"Double"
+			],
+			[
+				"ro",
+				"row"
+			],
+			[
+				"O",
+				"Offset"
+			],
+			[
+				"Mu",
+				"MultiCoordinate"
+			],
+			[
+				"M",
+				"MultiCoordinate"
+			],
+			[
+				"cor",
+				"coordinate"
+			],
+			[
+				"co",
+				"coord_sys"
+			],
+			[
+				"Un",
+				"UnGraph"
+			],
+			[
+				"offset",
+				"offset_coord"
+			],
+			[
+				"offs",
+				"offset_coord"
+			],
+			[
+				"nei",
+				"neighbors"
+			],
+			[
+				"ne",
+				"neighbor"
+			],
+			[
+				"in",
+				"index"
+			],
+			[
+				"uni",
+				"unimplemented"
+			],
+			[
+				"uin",
+				"unit_cube_y"
+			],
+			[
+				"u",
+				"unit_cube_z"
+			],
+			[
+				"fom",
+				"from_coords"
+			],
+			[
+				"or",
+				"origin_spiral_0"
+			],
+			[
+				"cube",
+				"Cube"
+			],
+			[
+				"side",
+				"side_dir"
+			],
+			[
+				"nex",
+				"next_neighbor"
+			],
+			[
+				"si",
+				"side_selector"
+			],
+			[
+				"rotate",
+				"rotate_cw"
+			],
+			[
+				"next",
+				"next_neighbor"
+			],
+			[
+				"of",
+				"offset_ring_1"
+			],
+			[
+				"ve",
+				"vec"
+			],
+			[
+				"orig",
+				"origin_ring_0"
+			],
+			[
+				"origin",
+				"ORIGIN"
+			],
+			[
+				"test",
+				"test\ttest"
+			],
+			[
+				"as",
+				"assert_eq\tassert_eq!(…, …)"
+			],
+			[
+				"ass",
+				"assert_eq\tassert_eq!(…, …)"
+			],
+			[
+				"from",
+				"from_coords"
+			],
+			[
+				"NE",
+				"NEIGHBOR_OFFSETS"
+			],
+			[
+				"No",
+				"Northeast"
+			],
+			[
+				"vec",
+				"vector"
+			],
+			[
+				"off",
+				"offset_map"
+			],
+			[
+				"num",
+				"NUM_SIDES"
+			],
+			[
+				"st",
+				"static\tstatic …: … = …;"
+			],
+			[
+				"Hex",
+				"HexGrid"
+			],
+			[
+				"Sam",
+				"SampleStruct"
+			],
+			[
+				"hex",
+				"HexGrid"
+			],
+			[
+				"He",
+				"HexGrid"
+			],
+			[
+				"efl",
+				"eflat_to_cube"
+			],
+			[
+				"z",
+				"z_dist"
+			],
+			[
+				"abs",
+				"abs_dist"
+			],
+			[
+				"par",
+				"parity"
+			],
+			[
+				"Cor",
+				"Coord"
+			],
+			[
+				"Wo",
+				"WorkerId"
+			],
+			[
+				"Re",
+				"RequestHandler"
+			],
+			[
+				"Pis",
+				"PistonWindow"
+			],
+			[
+				"A",
+				"Axial"
+			],
+			[
+				"sha",
+				"ShapeInfo"
+			],
+			[
+				"new",
+				"new_shape"
+			],
+			[
+				"oth",
+				"other_shape"
+			],
+			[
+				"Sha",
+				"ShapeInfo"
+			],
+			[
+				"shap",
+				"shape_2"
+			],
+			[
+				"coor",
+				"coord_2"
+			],
+			[
+				"for",
+				"format"
+			],
+			[
+				"nth",
+				"nth_neighbor"
+			],
+			[
+				"is_d",
+				"is_double"
+			],
+			[
+				"axi",
+				"axial_2"
+			],
+			[
+				"ax",
+				"axial_1"
+			],
+			[
+				"cub",
+				"cube_2"
+			],
+			[
+				"is",
+				"is_double"
+			],
+			[
+				"dou",
+				"double_2"
+			],
+			[
+				"doub",
+				"double_1"
+			],
+			[
+				"is_of",
+				"is_offset"
+			],
+			[
+				"neigh",
+				"neighbor"
+			],
+			[
+				"SE",
+				"Self"
+			],
+			[
+				"ind",
+				"indexed_neighbors"
+			],
+			[
+				"str",
+				"struct\tstruct … { … }"
+			],
+			[
+				"conta",
+				"contains_node"
+			],
+			[
+				"node",
+				"node_2"
+			],
+			[
+				"noe",
+				"node_1"
+			],
+			[
+				"con",
+				"contains_node"
+			],
+			[
+				"cont",
+				"contains_node"
+			],
+			[
+				"Node",
+				"NodeRef"
+			],
+			[
+				"Edge",
+				"EdgeRef"
+			],
+			[
+				"nod",
+				"node_id_1"
+			],
+			[
+				"Graph",
+				"GraphId"
+			],
+			[
+				"Gra",
+				"GraphId"
+			],
+			[
+				"SELF",
+				"self"
+			],
+			[
+				"gr",
+				"GraphId"
+			],
+			[
+				"prin",
+				"println\tprintln!(…)"
+			],
+			[
+				"rand",
+				"rand_plate"
+			],
+			[
+				"pl",
+				"plate"
+			],
+			[
+				"ran",
+				"rand_plate"
+			],
+			[
+				"pla",
+				"plates"
+			],
+			[
+				"plate",
+				"plate_count"
+			],
+			[
+				"Ha",
+				"HashMap"
+			],
+			[
+				"dur",
+				"duration"
+			],
+			[
+				"Tim",
+				"TimerID"
+			],
+			[
+				"timer",
+				"timers"
+			],
+			[
+				"Or",
+				"Ordering"
+			],
+			[
+				"Sing",
+				"SingleTimer"
+			],
+			[
+				"int",
+				"interlaced"
+			],
+			[
+				"S",
+				"Sharp"
+			],
+			[
+				"F",
+				"Flat"
+			],
+			[
+				"C",
+				"Cube"
+			],
+			[
+				"Int",
+				"Interlaced"
+			],
+			[
+				"sy",
+				"style"
+			],
+			[
+				"fold",
+				"foldFxn"
+			],
+			[
+				"fol",
+				"foldFxn"
+			],
+			[
+				"top",
+				"topScan"
+			],
+			[
+				"at",
+				"attemptHold"
+			],
+			[
+				"Ma",
+				"Maybe"
+			],
+			[
+				"dra",
+				"dragonAtTop"
+			],
+			[
+				"forg",
+				"forceGet"
+			],
+			[
+				"wil",
+				"wildZone"
+			],
+			[
+				"fetch",
+				"fetchZone"
+			],
+			[
+				"rep",
+				"replacement"
+			],
+			[
+				"repl",
+				"replace"
+			],
+			[
+				"valid",
+				"validDest"
+			],
+			[
+				"but",
+				"buttons"
+			],
+			[
+				"fIn",
+				"fInsertButton"
+			],
+			[
+				"hand",
+				"handleButtonPress"
+			],
+			[
+				"col",
+				"collageButton"
+			],
+			[
+				"hel",
+				"helper"
+			],
+			[
+				"fet",
+				"fetchZone"
+			],
+			[
+				"init",
+				"initModel"
+			],
+			[
+				"ha",
+				"handleDebugLoadBoard"
+			],
+			[
+				"qGe",
+				"qGenS"
+			],
+			[
+				"qGen",
+				"qGenS"
+			],
+			[
+				"qG",
+				"qGenC"
+			],
+			[
+				"q",
+				"qGenC"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Install Package Control"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire"
+	],
+	"file_history":
+	[
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/geometry.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/coordinate.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hex.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hexgrid.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/lib.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/Cargo.toml",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/benches/cribench_coordinate.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/LICENSE-APACHE",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/LICENSE-MIT",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/MIT-LICENSE",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/APACHE-LICENSE",
+		"/C/Users/smith7/Documents/Personal/last_attempt.rs",
+		"/C/Users/smith7/Documents/Personal/direction.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/examples/last_attempt.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/factory-floor/src/main.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/examples/direction.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/examples/obstancles.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/bin/coordinate.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/bin/hexgrid.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/bin/hex.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/temm/src/lib.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/quartz/src/lib.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/junkyard/src/lib.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/citadel-game/src/lib.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/bin/last_attempt.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/graphite/src/lib.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/citadel-game/.gitignore",
+		"/C/Users/smith7/Documents/Personal/Repository/rust-grid/src/main.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/rust-grid/src/lib.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/factory-floor/src/lib.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/factory-floor/src/bin/worker.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/citadel-game/Cargo.toml",
+		"/C/Users/smith7/Documents/Personal/Repository/citadel-game/src/main.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/citadel-game/src/bin/faction.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/citadel-game/src/bin/factions.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/main.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/citadel-game/src/bin/ai.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/gridwatch/src/lib.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/gridwatch/src/main.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/gridwatch/src/bin/citizen.rs",
+		"/C/Users/smith7/Documents/Academic/Elm/buttons.elm",
+		"/C/Users/smith7/Documents/Personal/Repository/graphite/src/main.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/rust-grid/Cargo.lock",
+		"/C/Users/smith7/Documents/Personal/Repository/gridwatch/Cargo.toml",
+		"/C/Users/smith7/Documents/Personal/Repository/graphite/README.md",
+		"/C/Users/smith7/Documents/Personal/Repository/gridwatch/.gitignore",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/bin/grid.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/quartz/src/main.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/playground/src/main.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/README.md",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/.gitignore",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/src/Shenzhen/Board.elm",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/bin/.gitattributes",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/.gitattributes",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hexgrid/offset/grid.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hexgrid/cube/grid.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hexgrid/axial/grid.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hexgrid/axial.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hexgrid/cube.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hexgrid/interlaced.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hexgrid/offset.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/bleppp/src/main.rs",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/src/Main.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/src/Grid.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/src/Field.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/src/Config.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/src/Clock.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/src/Shenzhen/Deck.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/src/Shenzhen/Card.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/elm.json",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/src/Extended/List.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/README.md",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Config.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Shenzhen/Card.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Shenzhen/Deck.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Main.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Shenzhen/Board.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Extended/List.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Standard/Feedback.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Shenzhen/Button.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Field.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Clock.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Grid.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/hw7/elm.json",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/hw7/ArrayList.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/hw6/ThunkList.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/v2/Main.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Shenzhen/Events.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part2/shenzhen-solitaire/src/Shenzhen/Config.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzhen-solitaire/src/Extended/List.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzhen-solitaire/src/Shenzhen/Deck.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzhen-solitaire/src/Shenzhen/Card.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzhen-solitaire/src/Shenzhen/Board.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzhen-solitaire/src/Clock.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzhen-solitaire/src/Main.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzhen-solitaire/src/Grid.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzhen-solitaire/src/Field.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/v1/Deck.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Shenzhen/Deck.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/v1/Menu.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/v1/Board.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/v1/Utils.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Extended/List.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Shenzhen/Card.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Shenzhen/Board.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/README.md",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/v2/Main.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/v3/Main.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Main.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Grid.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Field.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Clock.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Shenzen/Card.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/v1/Main.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Shenzen/Board.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Shenzen/Deck.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/hw2/Pi.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/v1/Clock.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Shenzen/Solitaire.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/v1/Banner.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Shenzen/README.md",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/v3/Field.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/hw6/Deque.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/hw6/elm.json",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Stack.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Menu.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Board.elm",
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/actual/Main.elm"
+	],
+	"find":
+	{
+		"height": 29.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 29.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "chickenwire.sublime-project",
+	"replace":
+	{
+		"height": 54.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
