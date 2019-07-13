@@ -10,6 +10,11 @@ use crate::coordinate;
 
 // pathfind
 // petgraph::graph::Graph::node_weight
+// !! switch to constant indexing
+
+// replicate examples from
+//  - https://www.danneu.com/elm-hex-grid/
+//  - https://www.redblobgames.com/grids/hexagons/
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -37,9 +42,9 @@ enum CoordSys {
 
 #[derive(Debug)]
 struct HexGrid<T> {
-    tilt: Tilt,
-    parity: Parity,
-    coord_sys: CoordSys,
+    pub tilt: Tilt,
+    pub parity: Parity,
+    pub coord_sys: CoordSys,
     graph: UnGraph<Rc<T>, ()>,
     map: HashMap<coordinate::Cube, NodeIndex>,
 }
@@ -59,17 +64,28 @@ impl<T> HexGrid<T> {
         }
     }
 
-    fn new_radial(radius: u32, tilt: Tilt) -> Self {
+    pub fn new_radial(radius: u32, tilt: Tilt) -> Self {
         if radius == 0 {
             HexGrid::new()
         } else {
             let new_hexes = coordinate::Cube::ORIGIN.spiral(radius);
 
+            for new_hex in &new_hexes {
+                // two-passes (create then link) ?
+                unimplemented!();
+            }
+
             unimplemented!();
         }
     }
 
-    fn new_boxy(rows: u32, cols: u32, tilt: Tilt, parity: Parity) -> Self {
+    pub fn new_boxy(rows: u32, cols: u32, tilt: Tilt, parity: Parity) -> Self {
+        for row in 0..rows {
+            for col in 0..cols {
+                unimplemented!();
+            }
+        }
+
         unimplemented!();
     }
 }

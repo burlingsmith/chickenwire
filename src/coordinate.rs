@@ -1,4 +1,45 @@
-//! Coordinate Systems
+//! Hexagonal coordinate systems.
+//!
+//! # Coordinate Systems
+//! Chickenwire supports the four coorinate representations presented in
+//! [The Guide](https://www.redblobgames.com/grids/hexagons): Cube, Axial,
+//! Offset, and Double. The `CoordSys` enum holds valueless labels for each,
+//! and each has a `struct` with appropriately labeled values.
+//!
+//! # Multi-Coordinates
+//! In addition to the four coordinates' individual `struct`s, Chickenwire
+//! defines a `MultiCoord`. This effectively fulfills the role of a union
+//! type, with the added benefit of tracking and maintaining its own typing.
+//!
+//! The Chickenwire idiom, as regards coordinates, is to exclusively use
+//! `MultiCoord`s for the passing and storing of coordinate information, and
+//! to exclusively use the `Cube`, `Axial`, `Offset`, and `Double` `struct`s
+//! for the outward-facing API.
+//!
+//! # Creating Coordinates
+//! Each of the four coordinate `struct`s can be created from either a tuple
+//! or series of `i32` values:
+//!
+//! ```
+//! use chickenwire::coordinate::{Cube, Offset};
+//!
+//! // Use _::from() for tuples
+//! let cube_from_tup = Cube::from((1, 2, -3));
+//! let offset_from_tup = Offset::from((-1, 0));
+//!
+//! // Use _::from_coords() for i32s
+//! let cube_from_int = Cube::from_coords(1, 2, -3);
+//! let offset_from_int = Offset::from_coords(-1, 0);
+//!
+//! // The result of the two calls is equivalent
+//! assert_eq!(cube_from_tup, cube_from_int);
+//! assert_eq!(offset_from_tup, offset_from_int);
+//! ```
+//!
+//! Note that, to enforce coordinate constraints, a `Cube` mightn't correspond
+//! 1:1 with all three values provided in its instantiation. You can find more
+//! details and examples below, in the `From` and `from_coords`
+//! implementations of each coordinate's associated `struct`.
 //!
 //! # Arithmetic
 //! Cube coordinates are treated like vectors in terms of addition/subtraction
@@ -16,57 +57,99 @@ use std::cmp;
 use std::ops::{Add, Div, Mul, Sub};
 
 //////////////////////////////////////////////////////////////////////////////
-// Multi-Coordinates
+// Coordinate System Labels
 //////////////////////////////////////////////////////////////////////////////
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub enum MultiCoord {
-    Cube(i32, i32, i32),
-    Axial(i32, i32),
-    Offset(i32, i32),
-    Double(i32, i32),
+pub enum CoordSys {
+    Cube,
+    Axial,
+    Offset,
+    Double,
+}
+
+impl Default for CoordSys {
+    fn default() -> Self { CoordSys:: Cube }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Multi-Coordinates
+//////////////////////////////////////////////////////////////////////////////
+
+#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub struct MultiCoord {
+    sys: CoordSys,
+    a: i32,
+    b: i32,
+    c: Option<i32>,
 }
 
 impl From<Cube> for MultiCoord {
     fn from(coord: Cube) -> Self {
-        MultiCoord::Cube(coord.x, coord.y, coord.z)
+        Self {
+            sys: CoordSys::Cube,
+            a: coord.x,
+            b: coord.y,
+            c: Some(coord.z),
+        }
     }
 }
 
-impl From<MultiCoord> for Cube {
+impl From<MultiCoord> for Cube {  // panics on bad c unwrap
     fn from(coord: MultiCoord) -> Self {
-        match coord {
-            MultiCoord::Cube(x, y, z) => Cube { x: x, y: y, z: z },
-            _ => panic!("{:?} is not a Cube coordinate", coord),
+        match coord.sys {
+            Axial => {
+                let x = coord.a;
+                let z = coord.b;
+
+                Cube {
+                    x: x,
+                    y: 0 - x - z,
+                    z: z,
+                }
+            }
+            Cube => Cube { x: coord.a, y: coord.b, z: coord.c.unwrap() },
+            _ => panic!("{:?} is not a Cube or Axial coordinate", coord),
         }
     }
 }
 
 impl From<Axial> for MultiCoord {
     fn from(coord: Axial) -> Self {
-        MultiCoord::Axial(coord.q, coord.r)
+        Self {
+            sys: CoordSys::Axial,
+            a: coord.q,
+            b: coord.r,
+            c: None,
+        }
     }
 }
 
-impl From<MultiCoord> for Axial {
+impl From<MultiCoord> for Axial {  // panics on bad c unwrap
     fn from(coord: MultiCoord) -> Self {
-        match coord {
-            MultiCoord::Axial(q, r) => Axial { q: q, r: r },
-            _ => panic!("{:?} is not an Axial coordinate", coord),
+        match coord.sys {
+            Axial => Axial { q: coord.a, r: coord.b },
+            Cube => Axial { q: coord.a, r: coord.c.unwrap() },
+            _ => panic!("{:?} is not an Axial or Cube coordinate", coord),
         }
     }
 }
 
 impl From<Offset> for MultiCoord {
     fn from(coord: Offset) -> Self {
-        MultiCoord::Offset(coord.col, coord.row)
+        Self {
+            sys: CoordSys::Offset,
+            a: coord.col,
+            b: coord.row,
+            c: None,
+        }
     }
 }
 
 impl From<MultiCoord> for Offset {
     fn from(coord: MultiCoord) -> Self {
-        match coord {
-            MultiCoord::Offset(c, r) => Offset { col: c, row: r },
+        match coord.sys {
+            CoordSys::Offset => Offset { col: coord.a, row: coord.b },
             _ => panic!("{:?} is not an Offset coordinate", coord),
         }
     }
@@ -74,14 +157,19 @@ impl From<MultiCoord> for Offset {
 
 impl From<Double> for MultiCoord {
     fn from(coord: Double) -> Self {
-        MultiCoord::Double(coord.col, coord.row)
+        Self {
+            sys: CoordSys::Double,
+            a: coord.col,
+            b: coord.row,
+            c: None,
+        }
     }
 }
 
 impl From<MultiCoord> for Double {
     fn from(coord: MultiCoord) -> Self {
-        match coord {
-            MultiCoord::Double(c, r) => Double { col: c, row: r },
+        match coord.sys {
+            Double => Double { col: coord.a, row: coord.b },
             _ => panic!("{:?} is not a Double coordinate", coord),
         }
     }
@@ -685,6 +773,15 @@ pub struct Offset {
     pub row: i32,
 }
 
+impl From<(i32, i32)> for Offset {
+    fn from((col, row): (i32, i32)) -> Self {
+        Self {
+            col: col,
+            row: row,
+        }
+    }
+}
+
 impl Offset {
     //////////////////////////////////
     // Constants
@@ -692,6 +789,14 @@ impl Offset {
 
     /// Offset coordinate origin of (0, 0).
     pub const ORIGIN: Offset = Offset { col: 0, row: 0 };
+
+    //////////////////////////////////
+    // Initialization
+    //////////////////////////////////
+
+    pub fn from_coords(col: i32, row: i32) -> Self {
+        Self::from((col, row))
+    }
 
     //////////////////////////////////
     // Conversion
@@ -806,6 +911,15 @@ impl Offset {
 pub struct Double {
     col: i32,
     row: i32,
+}
+
+impl From<(i32, i32)> for Double {
+    fn from((col, row): (i32, i32)) -> Self {
+        Self {
+            col: col,
+            row: row,
+        }
+    }
 }
 
 impl Double {
