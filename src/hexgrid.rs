@@ -7,9 +7,10 @@
 
 use petgraph::graph::NodeIndex;
 use petgraph::stable_graph::StableGraph;
-use petgraph::Undirected;
 
+use std::fmt;
 use std::collections::HashMap;
+use std::rc::Rc;
 
 use crate::coordinate::*;
 
@@ -66,6 +67,18 @@ impl Default for Parity {
     fn default() -> Self { Parity::Even }
 }
 
+struct HexIter<T> {
+    search_algo: Box<Fn(T) -> bool>,
+    last_match: NodeIndex,
+    field: Rc<HexGrid<T>>
+}
+
+impl<T> fmt::Debug for HexIter<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "HexIter at {:?}", self.last_match)
+    }
+}
+
 #[derive(Debug)]
 struct HexGrid<T> {
     pub tilt: Tilt,
@@ -78,9 +91,9 @@ struct HexGrid<T> {
 impl<T> Default for HexGrid<T> {
     fn default() -> Self {
         Self {
-            tilt: Tilt::Flat,
-            parity: Parity::Odd,
-            sys: CoordSys::Cube,
+            tilt: Tilt::default(),
+            parity: Parity::default(),
+            sys: CoordSys::default(),
             graph: StableGraph::new(),
             map: HashMap::new(),
         }
@@ -124,27 +137,6 @@ impl<T> HexGrid<T> {
         self.map.get(&self.cube_from(coord))
     }
 
-    ///
-    fn single_insert(&mut self, coord: MultiCoord, data: T) {
-        match self.graph_index(coord) {
-            Some(index) => {},
-            _ => {},
-        }
-    }
-
-    fn single_link_burst(&mut self, coord: MultiCoord) {
-        match self.graph_index(coord) {
-            Some(index) => {
-                let ncoords = self.cube_from(coord).neighbors();
-
-                for neighbor in &ncoords {
-
-                }
-            }
-            _ => (),
-        }
-    }
-
     //////////////////////////////////
     // Initialization
     //////////////////////////////////
@@ -178,7 +170,7 @@ impl<T> HexGrid<T> {
     /// ```
     pub fn new_radial(radius: u32) -> Self {
         if radius == 0 {
-            Default::default()
+            Self::default()
         } else {
             let new_hexes = Cube::ORIGIN.spiral(radius);
 
@@ -276,9 +268,25 @@ impl<T> HexGrid<T> {
         }
     }
 
+    // search iter that halts search when it finds a function match, then
+    // resumes on next iter call
+
     //////////////////////////////////
     // Extension & Modification
     //////////////////////////////////
+
+    fn nlink(&mut self, coord: MultiCoord) {
+        match self.graph_index(coord) {
+            Some(index) => {
+                let ncoords = self.cube_from(coord).neighbors();
+
+                for neighbor in &ncoords {
+                    unimplemented!();
+                }
+            }
+            _ => (),
+        }
+    }
 
     /// Strictly add a hex value to the grid at a given coordinate. Returns a
     /// `Result::Err(String)` if there is already a value at the given
@@ -297,7 +305,7 @@ impl<T> HexGrid<T> {
     ///
     /// unimplemented!();
     /// ```
-    pub fn add(&mut self, coord: MultiCoord) -> Result<(), String> {
+    pub fn add(&mut self, coord: MultiCoord, data: T) -> Result<(), String> {
         if self.contains_coord(coord) {
             let str = format!("Grid already contains a value at {:?}", coord);
 
@@ -326,7 +334,7 @@ impl<T> HexGrid<T> {
     ///
     /// unimplemented!();
     /// ```
-    pub fn update(&mut self, coord: MultiCoord) -> Result<(), String> {
+    pub fn update(&mut self, coord: MultiCoord, data: T) -> Result<(), String> {
         if self.contains_coord(coord) {
             unimplemented!();
 
@@ -355,8 +363,10 @@ impl<T> HexGrid<T> {
     ///
     /// unimplemented!();
     /// ```
-    pub fn set() {
-        unimplemented!();
+    pub fn set(&mut self, coord: MultiCoord, data: T) {
+        match self.get_mut(coord) {
+            _ => unimplemented!(),
+        }
     }
 
     /// Cleanly removes a hex and its associated data from the grid.
@@ -369,6 +379,13 @@ impl<T> HexGrid<T> {
     pub fn remove(&mut self, coord: MultiCoord) {
         unimplemented!();
     }
+
+    //////////////////////////////////
+    // Traversal
+    //////////////////////////////////
+
+    // map
+    // iters
 }
 
 //////////////////////////////////////////////////////////////////////////////
