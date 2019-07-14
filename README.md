@@ -5,13 +5,13 @@ A library for representing and manipulating hexagonal grids in Rust.
 [Documentation needed]
 
 ## Installation
-- Click [here]() for Chickenwire's crates.io entry.
+Click [here]() for Chickenwire's crates.io entry.
 
 ## Usage
 [Documentation needed]
 
 ## Documentation
-- Click [here]() for Chickenwire's docs.rs entry.
+Click [here]() for Chickenwire's docs.rs entry.
 
 ## Contributing
 [Documentation needed]
