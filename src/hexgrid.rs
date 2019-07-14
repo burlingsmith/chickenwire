@@ -49,10 +49,10 @@ pub enum Compass {
 
 impl Compass {
     pub fn rotate_cw(self, rotations: u32) -> Self {
-        let cur_dir = self;
+        let mut cur_dir = self;
 
         for _ in 0..(rotations % 8) {
-            let cur_dir = {
+            cur_dir = {
                 match cur_dir {
                     Compass::North => Compass::Northeast,
                     Compass::Northeast => Compass::East,
@@ -106,7 +106,7 @@ impl Default for Parity {
 pub struct HexIter<T> {
     search_algo: Box<Fn(T) -> bool>,
     last_match: NodeIndex,
-    field: Rc<HexGrid<T>>
+    hexes: Rc<HexGrid<T>>
 }
 
 impl<T> fmt::Debug for HexIter<T> {
@@ -186,9 +186,9 @@ impl<T> HexGrid<T> {
             None => (),
             Some(&own_index) => {
                 let mut dir = Compass::Northeast;
-                let ncoords = self.cube_from(coord).neighbors();
+                let neighbor_coords = self.cube_from(coord).neighbors();
 
-                for neighbor in &ncoords {
+                for _ in &neighbor_coords {
                     match self.graph_index(coord) {
                         None => (),
                         Some(&other_index) => {
@@ -421,8 +421,6 @@ impl<T> HexGrid<T> {
     ///
     /// # Examples
     ///
-    /// # Examples
-    ///
     /// ```
     /// use chickenwire::hexgrid::HexGrid;
     /// use chickenwire::coordinate::{Cube, MultiCoord};
@@ -436,24 +434,35 @@ impl<T> HexGrid<T> {
     /// ```
     pub fn set(&mut self, coord: MultiCoord, data: T) {
         match self.get_mut(coord) {
-            Some(value) => unimplemented!(),
-            _ => {
-                let index = self.graph.add_node(data);
-                self.map.insert(self.cube_from(coord), index);
+            Some(contents) => {
+                *contents = data;
             }
-            self.nlink(coord);
+            _ => {
+                self.map.insert(
+                    self.cube_from(coord),
+                    self.graph.add_node(data),
+                );
+            }
         }
+        self.nlink(coord);
     }
 
-    /// Cleanly removes a hex and its associated data from the grid.
+    /// Cleanly removes a hex from the grid. Associated data will be returned.
+    /// If the coordinate had no associated data, `None` will be returned.
     ///
     /// # Examples
     ///
     /// ```
     /// unimplemented!();
     /// ```
-    pub fn remove(&mut self, coord: MultiCoord) {
-        unimplemented!();
+    pub fn remove(&mut self, coord: MultiCoord) -> Option<T> {
+        match self.graph_index(coord) {
+            Some(&index) => {
+                self.map.remove(&self.cube_from(coord));
+                self.graph.remove_node(index)
+            }
+            _ => None,
+        }
     }
 
     //////////////////////////////////
