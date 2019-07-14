@@ -564,12 +564,15 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/smith7/Documents/Personal/Repository/chickenwire"
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/sublime"
 	],
 	"file_history":
 	[
-		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/geometry.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/sublime/chickenwire.sublime-project",
 		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/coordinate.rs",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/.gitignore",
+		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/geometry.rs",
 		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hex.rs",
 		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/hexgrid.rs",
 		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/lib.rs",
@@ -618,7 +621,6 @@
 		"/C/Users/smith7/Documents/Personal/Repository/quartz/src/main.rs",
 		"/C/Users/smith7/Documents/Personal/Repository/playground/src/main.rs",
 		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/README.md",
-		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/.gitignore",
 		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/project/part3/shenzhen-solitaire/src/Shenzhen/Board.elm",
 		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/src/bin/.gitattributes",
 		"/C/Users/smith7/Documents/Personal/Repository/chickenwire/.gitattributes",
@@ -694,12 +696,11 @@
 		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/smith7-cs223-spr-19/hw6/elm.json",
 		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Stack.elm",
 		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Menu.elm",
-		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Board.elm",
-		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/actual/Main.elm"
+		"/C/Users/smith7/Documents/Academic/University/CMSC 22300/Repository/shenzen-solitaire/src/Board.elm"
 	],
 	"find":
 	{
-		"height": 29.0
+		"height": 33.0
 	},
 	"find_in_files":
 	{
@@ -737,7 +738,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 29.0
+		"height": 33.0
 	},
 	"input":
 	{
@@ -774,7 +775,7 @@
 	"project": "chickenwire.sublime-project",
 	"replace":
 	{
-		"height": 54.0
+		"height": 62.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -812,7 +813,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 169.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
