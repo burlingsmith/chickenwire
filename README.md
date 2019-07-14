@@ -17,14 +17,13 @@ Click [here]() for Chickenwire's docs.rs entry.
 [Documentation needed]
 
 ## Credits
-Everything in Chickenwire owes a huge thanks to **Red Blob Games**, for making
-"[The Guide](https://www.redblobgames.com/grids/hexagons)," a thoroughly
-excellent article on the development of hexagonal grids.
+**Dependencies**
+- [behiesler's Criterion.rs](https://github.com/bheisler/criterion.rs)
+- [bluss' petgraph](https://github.com/bluss/petgraph)
 
-Chickenwire would not be possible without
-[bluss' petgraph](https://github.com/bluss/petgraph). A huge thanks to
-**bluss**, **mitchmindtree**, and everyone else who contributed to the
-project.
+**Design**
+- [Red Blob Games' article](https://www.redblobgames.com/grids/hexagons) on
+hexagonal grids
 
 ## License
 Dual-licensed to be compatible with the Rust project.

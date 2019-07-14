@@ -1,27 +1,33 @@
 [package]
-
-# Basic Info
 name = "chickenwire"
 version = "0.1.0"
 authors = [
     "smith7 <smith7@uchicago.edu>",
 ]
 edition = "2018"
-documentation = ""
+documentation = "https://docs.rs/chickenwire"
+homepage = "https://cmarcbs7.github.io/chickenwire"
+repository = "https://github.com/cmarcbs7/chickenwire"
 publish = [
     "crates.io",
 ]
-
-# Metadata
 description = "A library for representing and manipulating hexagonal grids."
-license = "Apache-2.0/MIT"
-repository = "https://github.com/cmarcbs7/chickenwire"
-categories = [
-    "",
-]
 keywords = [
-    "",
+    "2D",
+    "grid",
+    "hex",
+    "hexagonal",
+    "hexgrid",
 ]
+categories = [
+    "data-structures",
+    "game-engines",
+    "graphics",
+    "gui",
+    "multimedia",
+]
+license = "Apache-2.0 OR MIT"
+maintenance = { status = "actively-developed" }
 
 [dependencies]
 petgraph = "0.4.13"
