@@ -10,7 +10,7 @@ A library for representing and manipulating hexagonal grids in Rust.
 6. [License](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#license)
 
 ## Installation
-Add the following to your project's `Cargo.toml` file under `dependencies`:
+Add the following to your project's `Cargo.toml` file under `[dependencies]`:
 
 ```toml
 chickenwire = "0.1.0"
