@@ -23,7 +23,8 @@ excellent article on the development of hexagonal grids.
 
 Chickenwire would not be possible without
 [bluss' petgraph](https://github.com/bluss/petgraph). A huge thanks to
-**bluss** and everyone who contributed to the project.
+**bluss**, **mitchmindtree**, and everyone else who contributed to the
+project.
 
 ## License
 Dual-licensed to be compatible with the Rust project.
