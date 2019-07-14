@@ -2,7 +2,12 @@
 A library for representing and manipulating hexagonal grids in Rust.
 
 ## Contents
-[Documentation needed]
+1. [Installation](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#installation)
+2. [Usage](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#usage)
+3. [Documentation](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#documentation)
+4. [Contributing](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#contributing)
+5. [Credits](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#credits)
+6. [License](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#license)
 
 ## Installation
 Click [here]() for Chickenwire's crates.io entry.
