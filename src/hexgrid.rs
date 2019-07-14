@@ -24,6 +24,14 @@ use crate::coordinate::*;
 // add examples about creating maybe
 
 //////////////////////////////////////////////////////////////////////////////
+// Convenience Aliases
+//////////////////////////////////////////////////////////////////////////////
+
+type HexGraph<T> = StableGraph<T, Compass>;
+
+type HexMap = HashMap<Cube, NodeIndex>;
+
+//////////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////////
 
@@ -43,10 +51,6 @@ impl Compass {
     // add code here
 }
 
-type HexGraph<T> = StableGraph<T, Compass>;
-
-type HexMap = HashMap<Cube, NodeIndex>;
-
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Tilt {
     Flat,
@@ -58,7 +62,7 @@ impl Default for Tilt {
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-enum Parity {
+pub enum Parity {
     Even,
     Odd,
 }
@@ -67,7 +71,7 @@ impl Default for Parity {
     fn default() -> Self { Parity::Even }
 }
 
-struct HexIter<T> {
+pub struct HexIter<T> {
     search_algo: Box<Fn(T) -> bool>,
     last_match: NodeIndex,
     field: Rc<HexGrid<T>>
@@ -80,7 +84,7 @@ impl<T> fmt::Debug for HexIter<T> {
 }
 
 #[derive(Debug)]
-struct HexGrid<T> {
+pub struct HexGrid<T> {
     pub tilt: Tilt,
     pub parity: Parity,
     pub sys: CoordSys,
@@ -109,21 +113,29 @@ impl<T> HexGrid<T> {
     /// `HexGrid`.
     fn cube_from(&self, coord: MultiCoord) -> Cube {
         match CoordSys::from(coord) {
-            Offset => {
+            CoordSys::Offset => {
                 let offset = Offset::from(coord);
 
                 match (self.tilt, self.parity) {
-                    (Flat, Odd) => Offset::oflat_to_cube(offset),
-                    (Flat, Even) => Offset::eflat_to_cube(offset),
-                    (Sharp, Odd) => Offset::osharp_to_cube(offset),
-                    (Sharp, Even) => Offset::esharp_to_cube(offset),
+                    (Tilt::Flat, Parity::Odd) => {
+                        Offset::oflat_to_cube(offset)
+                    }
+                    (Tilt::Flat, Parity::Even) => {
+                        Offset::eflat_to_cube(offset)
+                    }
+                    (Tilt::Sharp, Parity::Odd) => {
+                        Offset::osharp_to_cube(offset)
+                    }
+                    (Tilt::Sharp, Parity::Even) => {
+                        Offset::esharp_to_cube(offset)
+                    }
                 }
             }
-            Double => {
+            CoordSys::Double => {
                 let double = Double::from(coord);
 
                 match self.tilt {
-                    Flat => Double::flat_to_cube(double),
+                    Tilt::Flat => Double::flat_to_cube(double),
                     _ => Double::sharp_to_cube(double),
                 }
             }
@@ -135,6 +147,19 @@ impl<T> HexGrid<T> {
     /// exists.
     fn graph_index(&self, coord: MultiCoord) -> Option<&NodeIndex> {
         self.map.get(&self.cube_from(coord))
+    }
+
+    fn nlink(&mut self, coord: MultiCoord) {
+        match self.graph_index(coord) {
+            Some(index) => {
+                let ncoords = self.cube_from(coord).neighbors();
+
+                for neighbor in &ncoords {
+                    unimplemented!();
+                }
+            }
+            _ => (),
+        }
     }
 
     //////////////////////////////////
@@ -168,19 +193,21 @@ impl<T> HexGrid<T> {
     /// ```
     /// unimplemented!();
     /// ```
-    pub fn new_radial(radius: u32) -> Self {
-        if radius == 0 {
-            Self::default()
-        } else {
+    pub fn new_radial(radius: u32, blank_val: T) -> Self
+    where
+        T: Copy,
+    {
+        let mut grid = Self::default();
+
+        if radius != 0 {
             let new_hexes = Cube::ORIGIN.spiral(radius);
 
-            for new_hex in &new_hexes {
-                // two-passes (create then link)
-                unimplemented!();
+            for new_hex in new_hexes {
+                grid.set(MultiCoord::from(new_hex), blank_val);
             }
-
-            unimplemented!();
         }
+
+        grid
     }
 
     /// Creates a new, rectangular `HexGrid` with a given number of rows and
@@ -274,19 +301,6 @@ impl<T> HexGrid<T> {
     //////////////////////////////////
     // Extension & Modification
     //////////////////////////////////
-
-    fn nlink(&mut self, coord: MultiCoord) {
-        match self.graph_index(coord) {
-            Some(index) => {
-                let ncoords = self.cube_from(coord).neighbors();
-
-                for neighbor in &ncoords {
-                    unimplemented!();
-                }
-            }
-            _ => (),
-        }
-    }
 
     /// Strictly add a hex value to the grid at a given coordinate. Returns a
     /// `Result::Err(String)` if there is already a value at the given

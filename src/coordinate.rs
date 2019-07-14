@@ -273,7 +273,7 @@ impl From<Axial> for Cube {
 impl From<MultiCoord> for Cube {  // panics on bad c unwrap
     fn from(coord: MultiCoord) -> Self {
         match coord.sys {
-            Axial => {
+            CoordSys::Axial => {
                 let x = coord.a;
                 let z = coord.b;
 
