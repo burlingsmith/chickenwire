@@ -222,14 +222,23 @@ impl<T> HexGrid<T> {
     /// ```
     /// unimplemented!();
     /// ```
-    pub fn new_boxy(rows: u32, cols: u32) -> Self {
-        for row in 0..rows {
-            for col in 0..cols {
-                unimplemented!();
+    pub fn new_boxy(rows: u32, cols: u32, blank_val: T) -> Self
+    where
+        T: Copy,
+    {
+        let mut grid = Self {
+            sys: CoordSys::Offset,
+            ..Default::default()
+        };
+
+        for col in 0..(cols as i32) {
+            for row in 0..(rows as i32) {
+                let offset = Offset { col: col, row: row };
+                grid.set(MultiCoord::from(offset), blank_val);
             }
         }
 
-        unimplemented!();
+        grid
     }
 
     //////////////////////////////////
