@@ -35,7 +35,7 @@ type HexMap = HashMap<Cube, NodeIndex>;
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Compass {
     North,
     Northeast,
@@ -48,7 +48,39 @@ pub enum Compass {
 }
 
 impl Compass {
-    // add code here
+    pub fn rotate_cw(self, rotations: u32) -> Self {
+        let cur_dir = self;
+
+        for _ in 0..(rotations % 8) {
+            let cur_dir = {
+                match cur_dir {
+                    Compass::North => Compass::Northeast,
+                    Compass::Northeast => Compass::East,
+                    Compass::East => Compass::Southeast,
+                    Compass::Southeast => Compass::South,
+                    Compass::South => Compass::Southwest,
+                    Compass::Southwest => Compass::West,
+                    Compass::West => Compass::Northwest,
+                    Compass::Northwest => Compass::North,
+                }
+            };
+        }
+
+        cur_dir
+    }
+
+    pub fn inverse(self) -> Self {
+        match self {
+            Compass::North => Compass::South,
+            Compass::Northeast => Compass::Southwest,
+            Compass::East => Compass::West,
+            Compass::Southeast => Compass::Northwest,
+            Compass::South => Compass::North,
+            Compass::Southwest => Compass::Northeast,
+            Compass::West => Compass::East,
+            Compass::Northwest => Compass::Southeast,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -151,14 +183,30 @@ impl<T> HexGrid<T> {
 
     fn nlink(&mut self, coord: MultiCoord) {
         match self.graph_index(coord) {
-            Some(index) => {
+            None => (),
+            Some(&own_index) => {
+                let mut dir = Compass::Northeast;
                 let ncoords = self.cube_from(coord).neighbors();
 
                 for neighbor in &ncoords {
-                    unimplemented!();
+                    match self.graph_index(coord) {
+                        None => (),
+                        Some(&other_index) => {
+                            self.graph.add_edge(
+                                own_index,
+                                other_index,
+                                dir
+                            );
+                            self.graph.add_edge(
+                                other_index,
+                                own_index,
+                                dir.inverse(),
+                            );
+                        }
+                    }
+                    dir = dir.rotate_cw(1);
                 }
             }
-            _ => (),
         }
     }
 
@@ -330,12 +378,11 @@ impl<T> HexGrid<T> {
     /// ```
     pub fn add(&mut self, coord: MultiCoord, data: T) -> Result<(), String> {
         if self.contains_coord(coord) {
-            let str = format!("Grid already contains a value at {:?}", coord);
-
-            Result::Err(str)
+            Result::Err(
+                format!("Grid already contains a value at {:?}", coord)
+            )
         } else {
-            unimplemented!();
-
+            self.set(coord, data);
             Result::Ok(())
         }
     }
@@ -357,15 +404,16 @@ impl<T> HexGrid<T> {
     ///
     /// unimplemented!();
     /// ```
-    pub fn update(&mut self, coord: MultiCoord, data: T) -> Result<(), String> {
+    pub fn update(
+        &mut self,
+        coord: MultiCoord,
+        data: T,
+    ) -> Result<(), String> {
         if self.contains_coord(coord) {
-            unimplemented!();
-
+            self.set(coord, data);
             Result::Ok(())
         } else {
-            let str = format!("Grid contains no value at {:?}", coord);
-
-            Result::Err(str)
+            Result::Err(format!("Grid contains no value at {:?}", coord))
         }
     }
 
@@ -388,7 +436,12 @@ impl<T> HexGrid<T> {
     /// ```
     pub fn set(&mut self, coord: MultiCoord, data: T) {
         match self.get_mut(coord) {
-            _ => unimplemented!(),
+            Some(value) => unimplemented!(),
+            _ => {
+                let index = self.graph.add_node(data);
+                self.map.insert(self.cube_from(coord), index);
+            }
+            self.nlink(coord);
         }
     }
 
