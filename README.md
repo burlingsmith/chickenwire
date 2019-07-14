@@ -23,14 +23,16 @@ excellent article on the development of hexagonal grids.
 
 Chickenwire would not be possible without
 [bluss' petgraph](https://github.com/bluss/petgraph). A huge thanks to bluss
-and everyone who contributed to that project.
+and everyone who contributed to the project.
 
 ## License
 Dual-licensed to be compatible with the Rust project.
 
 This software and associated documentation files are licensed under one of the
 following:
+
 - [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 - [MIT License](https://opensource.org/licenses/MIT)
+
 at your option. This file may not be copied, modified, or distributed except
 according to those terms.
