@@ -1,6 +1,7 @@
-# Sublime
+# Workspace
 **/*.sublime-project
 **/*.sublime-workspace
+/scratch/
 
 # Cargo
 /target/
