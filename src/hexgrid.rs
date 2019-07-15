@@ -5,14 +5,21 @@
 //! instance. These parameters aren't central to the actual representation of
 //! the grid, so changing them is cheap and painless.
 
+use std::collections::HashMap;
+use std::fmt;
+use std::rc::Rc;
+
 use petgraph::graph::NodeIndex;
 use petgraph::stable_graph::StableGraph;
 
-use std::fmt;
-use std::collections::HashMap;
-use std::rc::Rc;
-
 use crate::coordinate::*;
+use crate::coordinate::cube::*;
+use crate::coordinate::double::*;
+use crate::coordinate::offset::*;
+
+//////////////////////////////////////////////////////////////////////////////
+// Compass
+//////////////////////////////////////////////////////////////////////////////
 
 // pathfind
 // petgraph::graph::Graph::node_weight
@@ -22,18 +29,6 @@ use crate::coordinate::*;
 //  - https://www.danneu.com/elm-hex-grid/
 //  - https://www.redblobgames.com/grids/hexagons/
 // add examples about creating maybe
-
-//////////////////////////////////////////////////////////////////////////////
-// Convenience Aliases
-//////////////////////////////////////////////////////////////////////////////
-
-type HexGraph<T> = StableGraph<T, Compass>;
-
-type HexMap = HashMap<Cube, NodeIndex>;
-
-//////////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////////
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Compass {
@@ -83,6 +78,10 @@ impl Compass {
     }
 }
 
+//////////////////////////////////////////////////////////////////////////////
+// Layout
+//////////////////////////////////////////////////////////////////////////////
+
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Tilt {
     Flat,
@@ -103,17 +102,15 @@ impl Default for Parity {
     fn default() -> Self { Parity::Even }
 }
 
-pub struct HexIter<T> {
-    search_algo: Box<Fn(T) -> bool>,
-    last_match: NodeIndex,
-    hexes: Rc<HexGrid<T>>
-}
+//////////////////////////////////////////////////////////////////////////////
+// HexGrid
+//////////////////////////////////////////////////////////////////////////////
 
-impl<T> fmt::Debug for HexIter<T> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "HexIter at {:?}", self.last_match)
-    }
-}
+/// `HexGraph` is the graph representation of a `HexGrid`.
+type HexGraph<T> = StableGraph<T, Compass>;
+
+/// `HexMap` is the hash map representation of a `HexGrid`.
+type HexMap = HashMap<Cube, NodeIndex>;
 
 #[derive(Debug)]
 pub struct HexGrid<T> {
@@ -181,6 +178,7 @@ impl<T> HexGrid<T> {
         self.map.get(&self.cube_from(coord))
     }
 
+    /// Initialize all the edges between a hex and its neighbors.
     fn nlink(&mut self, coord: MultiCoord) {
         match self.graph_index(coord) {
             None => (),
@@ -474,13 +472,62 @@ impl<T> HexGrid<T> {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+// Iteration
+//////////////////////////////////////////////////////////////////////////////
+
+pub struct HexIter<T> {
+    search_algo: Box<Fn(T) -> bool>,
+    last_match: NodeIndex,
+    hexes: Rc<HexGrid<T>>
+}
+
+impl<T> fmt::Debug for HexIter<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "HexIter at {:?}", self.last_match)
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////
 // Unit Tests
 //////////////////////////////////////////////////////////////////////////////
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
+    //////////////////////////////////
+    // General
+    //////////////////////////////////
+
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn test_it_works_1() {
+        unimplemented!();
+    }
+
+    //////////////////////////////////
+    // Compass
+    //////////////////////////////////
+
+    #[test]
+    fn test_it_works_2() {
+        unimplemented!();
+    }
+
+    //////////////////////////////////
+    // HexGrid
+    //////////////////////////////////
+
+    #[test]
+    fn test_remove() {
+        unimplemented!();
+    }
+
+    //////////////////////////////////
+    // Iteration
+    //////////////////////////////////
+
+    #[test]
+    fn test_it_works_4() {
+        unimplemented!();
     }
 }
