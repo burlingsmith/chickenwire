@@ -106,10 +106,10 @@ pub mod axial;
 pub mod offset;
 pub mod double;
 
-use cube::*;
 use axial::*;
-use offset::*;
+use cube::*;
 use double::*;
+use offset::*;
 
 //////////////////////////////////////////////////////////////////////////////
 // Coordinate System Labels
@@ -223,45 +223,8 @@ impl From<Double> for MultiCoord {
 mod tests {
     use super::*;
 
-    //////////////////////////////////
-    // General
-    //////////////////////////////////
-
     #[test]
-    fn it_works_1() {
-        assert_eq!(2 + 2, 4);
-    }
-
-    //////////////////////////////////
-    // Cube Coordinates
-    //////////////////////////////////
-
-
-
-    //////////////////////////////////
-    // Axial Coordinates
-    //////////////////////////////////
-
-    #[test]
-    fn it_works_3() {
-        assert_eq!(2 + 2, 4);
-    }
-
-    //////////////////////////////////
-    // Offset Coordinates
-    //////////////////////////////////
-
-    #[test]
-    fn it_works_4() {
-        assert_eq!(2 + 2, 4);
-    }
-
-    //////////////////////////////////
-    // Interlaced Coordinates
-    //////////////////////////////////
-
-    #[test]
-    fn it_works_5() {
+    fn test_it_works() {
         assert_eq!(2 + 2, 4);
     }
 }
