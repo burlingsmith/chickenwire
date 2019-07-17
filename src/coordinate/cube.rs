@@ -25,72 +25,8 @@ pub struct Cube {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-// Traits
+// Traits: Arithmetic
 //////////////////////////////////////////////////////////////////////////////
-
-/// For three-element tuple of unsigned 32-bit integers (a, b, c), the
-/// corresponding cube coordinate (x, y, z) is calculated by solving for z
-/// based upon the constraint x + y + z == 0, where x == a and y == b. This
-/// method ensures the production of valid cube coordinates.
-///
-/// # Examples
-///
-/// ```
-/// use chickenwire::coordinate::Cube;
-///
-/// let valid_cube_tuple = (1, 2, -3);
-/// let invalid_cube_tuple = (1, 2, 10);
-///
-/// assert_eq!(Cube::from(valid_cube_tuple), Cube::from(invalid_cube_tuple));
-/// ```
-impl From<(i32, i32, i32)> for Cube {
-    fn from((x, y, _): (i32, i32, i32)) -> Self {
-        Self { x: x, y: y, z: 0 - x - y }
-    }
-}
-
-/// For axial coordinate (q, r), cube coordinate (x, y, z) is calculated by
-/// solving for y based upon the constraint x + y + z == 0, where x == q and
-/// z == r.
-///
-/// # Examples
-///
-/// ```
-/// use chickenwire::coordinate::{Cube, Axial};
-///
-/// let axial = Axial::from_coords(1, 2);
-///
-/// assert_eq!(Cube::from(Axial::ORIGIN), Cube::ORIGIN);
-/// assert_eq!(Cube::from(axial), Cube::from_coords(1, -3, 2));
-/// ```
-impl From<Axial> for Cube {
-    fn from(coord: Axial) -> Self {
-        let x = coord.q;
-        let z = coord.r;
-        let y = 0 - x - z;
-
-        Self { x: x, y: y, z: z }
-    }
-}
-
-impl From<MultiCoord> for Cube {  // panics on bad c unwrap
-    fn from(coord: MultiCoord) -> Self {
-        match coord.sys {
-            CoordSys::Axial => {
-                let x = coord.a;
-                let z = coord.b;
-
-                Cube {
-                    x: x,
-                    y: 0 - x - z,
-                    z: z,
-                }
-            }
-            CoordSys::Cube => Cube { x: coord.a, y: coord.b, z: coord.c.unwrap() },
-            _ => panic!("{:?} is not a Cube or Axial coordinate", coord),
-        }
-    }
-}
 
 /// Cube coordinates are added together like vectors.
 ///
@@ -153,7 +89,7 @@ impl Sub for Cube {
 ///
 /// assert_eq!(-1 * coord, Cube::from_coords(-1, -2, 3));
 /// assert_eq!(0 * coord, Cube::ORIGIN);
-/// assert_eq!(2 * coord, Cube::from_coords(2, 4, -6));
+/// assert_eq!(coord * 2, Cube::from_coords(2, 4, -6));
 /// ```
 impl Mul<i32> for Cube {
     type Output = Self;
@@ -167,19 +103,6 @@ impl Mul<i32> for Cube {
     }
 }
 
-/// Cube coordinates can be multiplied by `i32` scalars, like vectors.
-///
-/// # Examples
-///
-/// ```
-/// use chickenwire::coordinate::Cube;
-///
-/// let coord = Cube::from_coords(1, 2, -3);
-///
-/// assert_eq!(coord * (-1), Cube::from_coords(-1, -2, 4));
-/// assert_eq!(coord * 0, Cube::ORIGIN);
-/// assert_eq!(coord * 2, Cube::from_coords(2, 4, -6));
-/// ```
 impl Mul<Cube> for i32 {
     type Output = Cube;
 
@@ -214,6 +137,81 @@ impl Div<i32> for Cube {
             x: self.x / n,
             y: self.y / n,
             z: self.z / n,
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Traits: From & Into
+//////////////////////////////////////////////////////////////////////////////
+
+/// For three-element tuple of unsigned 32-bit integers (a, b, c), the
+/// corresponding cube coordinate (x, y, z) is calculated by solving for z
+/// based upon the constraint x + y + z == 0, where x == a and y == b. This
+/// method ensures the production of valid cube coordinates.
+///
+/// # Examples
+///
+/// ```
+/// use chickenwire::coordinate::Cube;
+///
+/// let valid_cube_tuple = (1, 2, -3);
+/// let invalid_cube_tuple = (1, 2, 10);
+///
+/// assert_eq!(Cube::from(valid_cube_tuple), Cube::from(invalid_cube_tuple));
+/// ```
+impl From<(i32, i32, i32)> for Cube {
+    fn from((x, y, _): (i32, i32, i32)) -> Self {
+        Self { x: x, y: y, z: 0 - x - y }
+    }
+}
+
+/// For axial coordinate (q, r), cube coordinate (x, y, z) is calculated by
+/// solving for y based upon the constraint x + y + z == 0, where x == q and
+/// z == r.
+///
+/// # Examples
+///
+/// ```
+/// use chickenwire::coordinate::{Cube, Axial};
+///
+/// let axial = Axial::from_coords(1, 2);
+///
+/// assert_eq!(Cube::from(Axial::ORIGIN), Cube::ORIGIN);
+/// assert_eq!(Cube::from(axial), Cube::from_coords(1, -3, 2));
+/// ```
+impl From<Axial> for Cube {
+    fn from(coord: Axial) -> Self {
+        let x = coord.q;
+        let z = coord.r;
+        let y = 0 - x - z;
+
+        Self { x: x, y: y, z: z }
+    }
+}
+
+/// `MultiCoord`s
+impl From<MultiCoord> for Cube {  // panics on bad c unwrap
+    fn from(coord: MultiCoord) -> Self {
+        match coord.sys {
+            CoordSys::Axial => {
+                let x = coord.a;
+                let z = coord.b;
+
+                Self {
+                    x: x,
+                    y: 0 - x - z,
+                    z: z,
+                }
+            }
+            CoordSys::Cube => {
+                Self {
+                    x: coord.a,
+                    y: coord.b,
+                    z: coord.c.unwrap(),
+                }
+            }
+            _ => panic!("{:?} is not a Cube or Axial coordinate", coord),
         }
     }
 }
