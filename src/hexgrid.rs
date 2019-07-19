@@ -6,8 +6,6 @@
 //! the grid, so changing them is cheap and painless.
 
 use std::collections::HashMap;
-use std::fmt;
-use std::rc::Rc;
 
 use petgraph::graph::NodeIndex;
 use petgraph::stable_graph::StableGraph;
@@ -92,6 +90,28 @@ impl Default for Tilt {
     fn default() -> Self { Tilt::Flat }
 }
 
+impl Tilt {
+    /// Returns the alternate tilt.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use chickenwire::hexgrid::Tilt;
+    ///
+    /// let flat = Tilt::Flat;
+    /// let sharp = Tilt::Odd;
+    ///
+    /// assert_eq!(flat.other(), sharp);
+    /// assert_eq!(sharp.other(), flat);
+    /// ```
+    pub fn other(&self) -> Self {
+        match self {
+            Tilt::Flat => Tilt::Sharp,
+            _ => Tilt::Flat,
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Parity {
     Even,
@@ -100,6 +120,28 @@ pub enum Parity {
 
 impl Default for Parity {
     fn default() -> Self { Parity::Even }
+}
+
+impl Parity {
+    /// Returns the alternate parity.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use chickenwire::hexgrid::Parity;
+    ///
+    /// let even = Parity::Even;
+    /// let odd = Parity::Odd;
+    ///
+    /// assert_eq!(even.other(), odd);
+    /// assert_eq!(odd.other(), even);
+    /// ```
+    pub fn other(&self) -> Self {
+        match self {
+            Parity::Even => Parity::Odd,
+            _ => Parity::Even,
+        }
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -469,22 +511,6 @@ impl<T> HexGrid<T> {
 
     // map
     // iters
-}
-
-//////////////////////////////////////////////////////////////////////////////
-// Iteration
-//////////////////////////////////////////////////////////////////////////////
-
-pub struct HexIter<T> {
-    search_algo: Box<Fn(T) -> bool>,
-    last_match: NodeIndex,
-    hexes: Rc<HexGrid<T>>
-}
-
-impl<T> fmt::Debug for HexIter<T> {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "HexIter at {:?}", self.last_match)
-    }
 }
 
 //////////////////////////////////////////////////////////////////////////////
