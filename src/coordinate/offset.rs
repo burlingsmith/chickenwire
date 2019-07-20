@@ -6,6 +6,8 @@ use super::*;
 // Primary Structure
 //////////////////////////////////////////////////////////////////////////////
 
+/// `Offset` coordinates treat the `HexGrid` as a square grid with offsetting
+/// indentations on the rows/columns.
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Offset {
     pub col: i32,
@@ -16,6 +18,7 @@ pub struct Offset {
 // Traits: From & Into
 //////////////////////////////////////////////////////////////////////////////
 
+/// Create an `Offset` from an `(i32, i32)`.
 impl From<(i32, i32)> for Offset {
     fn from((col, row): (i32, i32)) -> Self {
         Self {
@@ -25,6 +28,11 @@ impl From<(i32, i32)> for Offset {
     }
 }
 
+/// Create an `Offset` from a `MultiCoord`.
+///
+/// # Panics
+///
+/// Panics when given a non-`Offset` `MultiCoord`.
 impl From<MultiCoord> for Offset {
     fn from(coord: MultiCoord) -> Self {
         if coord.sys == CoordSys::Offset {
@@ -192,7 +200,3 @@ impl Offset {
         self.eflat_to_cube().dist(other.eflat_to_cube())
     }
 }
-
-//////////////////////////////////////////////////////////////////////////////
-// Unit Tests
-//////////////////////////////////////////////////////////////////////////////
