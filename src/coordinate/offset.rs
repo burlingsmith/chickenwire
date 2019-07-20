@@ -78,7 +78,7 @@ impl Offset {
         let z = self.row - (self.col - (self.col & 1)) / 2;
         let y = 0 - x - z;
 
-        Cube::from_coords(x, y, z)
+        Cube::force_from_coords(x, y, z)
     }
 
     /// Converts an `Offset` to a `Cube`, assuming the `HexGrid` has
@@ -88,7 +88,7 @@ impl Offset {
         let z = self.row - (self.col + (self.col & 1)) / 2;
         let y = 0 - x - z;
 
-        Cube::from_coords(x, y, z)
+        Cube::force_from_coords(x, y, z)
     }
 
     /// Converts an `Offset` to a `Cube`, assuming the `HexGrid` has
@@ -98,7 +98,7 @@ impl Offset {
         let z = self.row;
         let y = 0 - x - z;
 
-        Cube::from_coords(x, y, z)
+        Cube::force_from_coords(x, y, z)
     }
 
     /// Converts an `Offset` to a `Cube`, assuming the `HexGrid` has
@@ -108,7 +108,7 @@ impl Offset {
         let z = self.row;
         let y = 0 - x - z;
 
-        Cube::from_coords(x, y, z)
+        Cube::force_from_coords(x, y, z)
     }
 
     //////////////////////////////////

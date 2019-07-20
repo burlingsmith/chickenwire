@@ -25,6 +25,12 @@ pub struct Cube {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+// Convenience Aliases
+//////////////////////////////////////////////////////////////////////////////
+
+pub type CubeResult = Result<Cube, &'static str>;
+
+//////////////////////////////////////////////////////////////////////////////
 // Traits: Arithmetic
 //////////////////////////////////////////////////////////////////////////////
 
@@ -257,23 +263,78 @@ impl Cube {
     // Initialization
     //////////////////////////////////
 
-    /// For three unsigned 32-bit integers a, b, and c, the corresponding cube
-    /// coordinate (x, y, z) is calculated by solving for z based upon the
-    /// constraint x + y + z == 0, where x == a and y == b. This method
-    /// ensures the production of valid cube coordinates.
+    /// Attempts to create a `Cube` from three `i32` values. If these values
+    /// obey the `Cube` constraint, x + y + z == 0, then returns that `Cube`
+    /// in an `Ok`. Otherwise, returns an `Err`.
     ///
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::Cube;
+    /// use chickenwire::coordinate::cube::Cube;
     ///
-    /// assert_eq!(Cube::from_coords(1, 2, -3), Cube::from((1, 2, -3)));
+    /// let cube_1 = Cube::from_coords(1, 3, -4);
+    /// let cube_2 = Cube::from_coords(0, 0, 1);
     ///
-    /// assert_eq!(Cube::from_coords(1, 2, -3), Cube::from_coords(1, 2, 99));
-    /// assert_ne!(Cube::from_coords(1, 2, -3), Cube::from_coords(0, 2, -3));
+    /// assert!(cube_1.is_ok());
+    ///
+    /// assert_eq!(Cube_1.unwrap().x(), 1);
+    /// assert_eq!(Cube_1.unwrap().y(), 3);
+    /// assert_eq!(Cube_1.unwrap().z(), -4);
+    ///
+    /// assert!(cube_2.is_err());
     /// ```
-    pub fn from_coords(x: i32, y: i32, z: i32) -> Self {
-        Self::from((x, y, z))
+    pub fn from_coords(x: i32, y: i32, z: i32) -> CubeResult {
+        if z == 0 - x - y {
+            Ok(Self { x: x, y: y, z: z })
+        } else {
+            Err("invalid Cube coordinate")
+        }
+    }
+
+    /// Creates a `Cube` from three `i32` values.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the given `i32` values fail to obey the constraint
+    /// x + y + z == 0.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use chickenwire::coordinate::cube::Cube;
+    ///
+    /// let cube_1 = Cube::force_from_coords(1, 3, -4);
+    ///
+    /// assert_eq!(Cube_1.x(), 1);
+    /// assert_eq!(Cube_1.y(), 3);
+    /// assert_eq!(Cube_1.z(), -4);
+    /// ```
+    pub fn force_from_coords(x: i32, y: i32, z: i32) -> Self {
+        Self::from_coords(x, y, z).unwrap()
+    }
+
+    /// Attempts to create a `Cube` from a tuple of three `i32` values. If
+    /// these values obey the `Cube` constraint, x + y + z == 0, then returns
+    /// that `Cube` in an `Ok`. Otherwise, returns an `Err`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use chickenwire::coordinate::cube::Cube;
+    ///
+    /// let cube_1 = Cube::from_coords((1, 3, -4));
+    /// let cube_2 = Cube::from_coords((0, 0, 1));
+    ///
+    /// assert!(cube_1.is_ok());
+    ///
+    /// assert_eq!(Cube_1.unwrap().x(), 1);
+    /// assert_eq!(Cube_1.unwrap().y(), 3);
+    /// assert_eq!(Cube_1.unwrap().z(), -4);
+    ///
+    /// assert!(cube_2.is_err());
+    /// ```
+    pub fn from_tuple((x, y, z): (i32, i32, i32)) -> CubeResult {
+        Cube::from_coords(x, y, z)
     }
 
     //////////////////////////////////
@@ -290,6 +351,22 @@ impl Cube {
     }
 
     //////////////////////////////////
+    // Retrieval
+    //////////////////////////////////
+
+    pub fn x(self) -> i32 {
+        self.x
+    }
+
+    pub fn y(self) -> i32 {
+        self.y
+    }
+
+    pub fn z(self) -> i32 {
+        self.z
+    }
+
+    //////////////////////////////////
     // Neighbors
     //////////////////////////////////
 
@@ -301,9 +378,18 @@ impl Cube {
     /// ```
     /// use chickenwire::coordinate::Cube;
     ///
-    /// assert_eq!(Cube::from_coords(1, 0, -1), Cube::ORIGIN.neighbor(0));
-    /// assert_eq!(Cube::from_coords(1, -1, 0), Cube::ORIGIN.neighbor(1));
-    /// assert_eq!(Cube::from_coords(0, 1, -1), Cube::ORIGIN.neighbor(5));
+    /// assert_eq!(
+    ///     Cube::force_from_coords(1, 0, -1),
+    ///     Cube::ORIGIN.neighbor(0)
+    /// );
+    /// assert_eq!(
+    ///     Cube::force_from_coords(1, -1, 0),
+    ///     Cube::ORIGIN.neighbor(1)
+    /// );
+    /// assert_eq!(
+    ///     Cube::force_from_coords(0, 1, -1),
+    ///     Cube::ORIGIN.neighbor(5)
+    /// );
     ///
     /// assert_eq!(Cube::ORIGIN.neighbor(0), Cube::ORIGIN.neighbor(6));
     /// assert_eq!(Cube::ORIGIN.neighbor(1), Cube::ORIGIN.neighbor(7));
@@ -326,26 +412,29 @@ impl Cube {
     /// use chickenwire::coordinate::Cube;
     ///
     /// let origin_neighbors = vec![
-    ///     Cube::from_coords(1, 0, -1),
-    ///     Cube::from_coords(1, -1, 0),
-    ///     Cube::from_coords(0, -1, 1),
-    ///     Cube::from_coords(-1, 0, 1),
-    ///     Cube::from_coords(-1, 1, 0),
-    ///     Cube::from_coords(0, 1, -1),
+    ///     Cube::force_from_coords(1, 0, -1),
+    ///     Cube::force_from_coords(1, -1, 0),
+    ///     Cube::force_from_coords(0, -1, 1),
+    ///     Cube::force_from_coords(-1, 0, 1),
+    ///     Cube::force_from_coords(-1, 1, 0),
+    ///     Cube::force_from_coords(0, 1, -1),
     /// ];
     ///
     /// assert_eq!(origin_neighbors, Cube::ORIGIN.neighbors());
     ///
     /// let offset_neighbors = vec![
-    ///     Cube::from_coords(2, 2, -4),
-    ///     Cube::from_coords(2, 1, -3),
-    ///     Cube::from_coords(1, 1, -2),
-    ///     Cube::from_coords(0, 2, -2),
-    ///     Cube::from_coords(0, 3, -3),
-    ///     Cube::from_coords(1, 3, -4),
+    ///     Cube::force_from_coords(2, 2, -4),
+    ///     Cube::force_from_coords(2, 1, -3),
+    ///     Cube::force_from_coords(1, 1, -2),
+    ///     Cube::force_from_coords(0, 2, -2),
+    ///     Cube::force_from_coords(0, 3, -3),
+    ///     Cube::force_from_coords(1, 3, -4),
     /// ];
     ///
-    /// assert_eq!(offset_neighbors, Cube::from_coords(1, 2, -3).neighbors());
+    /// assert_eq!(
+    ///     offset_neighbors,
+    ///     Cube::force_from_coords(1, 2, -3).neighbors()
+    /// );
     /// ```
     pub fn neighbors(self) -> Vec<Self> {
         let mut coords = Vec::new();
@@ -365,9 +454,18 @@ impl Cube {
     /// ```
     /// use chickenwire::coordinate::Cube;
     ///
-    /// assert_eq!(Cube::from_coords(1, -2, 1), Cube::ORIGIN.diagonal(0));
-    /// assert_eq!(Cube::from_coords(-1, -1, 2), Cube::ORIGIN.diagonal(1));
-    /// assert_eq!(Cube::from_coords(2, -1, -1), Cube::ORIGIN.diagonal(5));
+    /// assert_eq!(
+    ///     Cube::force_from_coords(1, -2, 1),
+    ///     Cube::ORIGIN.diagonal(0)
+    /// );
+    /// assert_eq!(
+    ///     Cube::force_from_coords(-1, -1, 2),
+    ///     Cube::ORIGIN.diagonal(1)
+    /// );
+    /// assert_eq!(
+    ///     Cube::force_from_coords(2, -1, -1),
+    ///     Cube::ORIGIN.diagonal(5)
+    /// );
     ///
     /// assert_eq!(Cube::ORIGIN.diagonal(0), Cube::ORIGIN.diagonal(6));
     /// assert_eq!(Cube::ORIGIN.diagonal(1), Cube::ORIGIN.diagonal(7));
@@ -390,26 +488,29 @@ impl Cube {
     /// use chickenwire::coordinate::Cube;
     ///
     /// let origin_diagonals = vec![
-    ///     Cube::from_coords(1, -2, 1),
-    ///     Cube::from_coords(-1, -1, 2),
-    ///     Cube::from_coords(-2, 1, 1),
-    ///     Cube::from_coords(-1, 2, -1),
-    ///     Cube::from_coords(1, 1, -2),
-    ///     Cube::from_coords(2, -1, -1),
+    ///     Cube::force_from_coords(1, -2, 1),
+    ///     Cube::force_from_coords(-1, -1, 2),
+    ///     Cube::force_from_coords(-2, 1, 1),
+    ///     Cube::force_from_coords(-1, 2, -1),
+    ///     Cube::force_from_coords(1, 1, -2),
+    ///     Cube::force_from_coords(2, -1, -1),
     /// ];
     ///
     /// assert_eq!(origin_diagonals, Cube::ORIGIN.diagonals());
     ///
     /// let offset_diagonals = vec![
-    ///     Cube::from_coords(2, 0, -2),
-    ///     Cube::from_coords(0, 1, -1),
-    ///     Cube::from_coords(-1, 3, -2),
-    ///     Cube::from_coords(0, 4, -4),
-    ///     Cube::from_coords(2, 3, -5),
-    ///     Cube::from_coords(3, 1, -4),
+    ///     Cube::force_from_coords(2, 0, -2),
+    ///     Cube::force_from_coords(0, 1, -1),
+    ///     Cube::force_from_coords(-1, 3, -2),
+    ///     Cube::force_from_coords(0, 4, -4),
+    ///     Cube::force_from_coords(2, 3, -5),
+    ///     Cube::force_from_coords(3, 1, -4),
     /// ];
     ///
-    /// assert_eq!(offset_diagonals, Cube::from_coords(1, 2, -3).diagonals());
+    /// assert_eq!(
+    ///     offset_diagonals,
+    ///     Cube::force_from_coords(1, 2, -3).diagonals()
+    /// );
     /// ```
     pub fn diagonals(self) -> Vec<Self> {
         let mut coords = Vec::new();
@@ -433,8 +534,8 @@ impl Cube {
     /// use chickenwire::coordinate::Cube;
     ///
     /// let origin = Cube::ORIGIN;
-    /// let coord_1 = Cube::from_coords(1, 2, -3);
-    /// let coord_2 = Cube::from_coords(-8, 6, 2);
+    /// let coord_1 = Cube::force_from_coords(1, 2, -3);
+    /// let coord_2 = Cube::force_from_coords(-8, 6, 2);
     ///
     /// assert_eq!(origin.dist(coord_1), 3);
     /// assert_eq!(coord_1.dist(origin), 3);
@@ -475,7 +576,7 @@ impl Cube {
             let new_y = 0 - vector.z;
             let new_z = 0 - vector.x;
 
-            vector = Self::from_coords(new_x, new_y, new_z);
+            vector = Self::force_from_coords(new_x, new_y, new_z);
         }
 
         vector + self
@@ -550,27 +651,27 @@ mod tests {
     fn test_cube_from_integers() {
         assert_eq!(
             Cube::ORIGIN,
-            Cube::from_coords(0, 0, 0)
+            Cube::force_from_coords(0, 0, 0)
         );
         assert_eq!(
             Cube { x: -1, y: 4, z: -3 },
-            Cube::from_coords(-1, 4, -3)
+            Cube::force_from_coords(-1, 4, -3)
         );
         assert_eq!(
             Cube { x: 7, y: -12, z: 5 },
-            Cube::from_coords(7, -12, 5)
+            Cube::force_from_coords(7, -12, 5)
         );
         assert_eq!(
             Cube { x: -17, y: 10, z: 7 },
-            Cube::from_coords(-17, 10, 7)
+            Cube::force_from_coords(-17, 10, 7)
         );
         assert_eq!(
             Cube { x: 7, y: -10, z: 3 },
-            Cube::from_coords(7, -10, 3)
+            Cube::force_from_coords(7, -10, 3)
         );
         assert_eq!(
             Cube { x: -4, y: -8, z: 12 },
-            Cube::from_coords(-4, -8, 12)
+            Cube::force_from_coords(-4, -8, 12)
         );
     }
 
@@ -582,22 +683,22 @@ mod tests {
             "Cube::ORIGIN != Axial::ORIGIN"
         );
         assert_eq!(
-            Cube::from_coords(1, 2, -3),
+            Cube::force_from_coords(1, 2, -3),
             Cube::from(Axial::from_coords(1, -3)),
             "Cube(1, 2, -3) != Axial(1, -3)"
         );
         assert_eq!(
-            Cube::from_coords(7, -11, 4),
+            Cube::force_from_coords(7, -11, 4),
             Cube::from(Axial::from_coords(7, 4)),
             "Cube(7, -11, 4) != Axial(7, 4)"
         );
         assert_eq!(
-            Cube::from_coords(-11, 23, -12),
+            Cube::force_from_coords(-11, 23, -12),
             Cube::from(Axial::from_coords(-11, -12)),
             "Cube(-11, 23, -12) != Axial(-11, -12)"
         );
         assert_eq!(
-            Cube::from_coords(-10, 4, 6),
+            Cube::force_from_coords(-10, 4, 6),
             Cube::from(Axial::from_coords(-10, 6)),
             "Cube(-10, 4, 6) != Axial(-10, 6)"
         );
@@ -823,58 +924,58 @@ mod tests {
     fn test_cube_rings() {
         let origin_ring_0 = vec![Cube::ORIGIN];
         let origin_ring_1 = vec![
-            Cube::from_coords(1, 0, -1),
-            Cube::from_coords(1, -1, 0),
-            Cube::from_coords(0, -1, 1),
-            Cube::from_coords(-1, 0, 1),
-            Cube::from_coords(-1, 1, 0),
-            Cube::from_coords(0, 1, -1),
+            Cube::force_from_coords(1, 0, -1),
+            Cube::force_from_coords(1, -1, 0),
+            Cube::force_from_coords(0, -1, 1),
+            Cube::force_from_coords(-1, 0, 1),
+            Cube::force_from_coords(-1, 1, 0),
+            Cube::force_from_coords(0, 1, -1),
         ];
         let origin_ring_2 = vec![
-            Cube::from_coords(2, 0, -2),
-            Cube::from_coords(2, -1, -1),
-            Cube::from_coords(2, -2, 0),
-            Cube::from_coords(1, -2, 1),
-            Cube::from_coords(0, -2, 2),
-            Cube::from_coords(-1, -1, 2),
-            Cube::from_coords(-2, 0, 2),
-            Cube::from_coords(-2, 1, 1),
-            Cube::from_coords(-2, 2, 0),
-            Cube::from_coords(-1, 2, -1),
-            Cube::from_coords(0, 2, -2),
-            Cube::from_coords(1, 1, -2),
+            Cube::force_from_coords(2, 0, -2),
+            Cube::force_from_coords(2, -1, -1),
+            Cube::force_from_coords(2, -2, 0),
+            Cube::force_from_coords(1, -2, 1),
+            Cube::force_from_coords(0, -2, 2),
+            Cube::force_from_coords(-1, -1, 2),
+            Cube::force_from_coords(-2, 0, 2),
+            Cube::force_from_coords(-2, 1, 1),
+            Cube::force_from_coords(-2, 2, 0),
+            Cube::force_from_coords(-1, 2, -1),
+            Cube::force_from_coords(0, 2, -2),
+            Cube::force_from_coords(1, 1, -2),
         ];
         let origin_ring_5 = vec![
-            Cube::from_coords(5, 0, -5),
-            Cube::from_coords(5, -1, -4),
-            Cube::from_coords(5, -2, -3),
-            Cube::from_coords(5, -3, -2),
-            Cube::from_coords(5, -4, -1),
-            Cube::from_coords(5, -5, 0),
-            Cube::from_coords(4, -5, 1),
-            Cube::from_coords(3, -5, 2),
-            Cube::from_coords(2, -5, 3),
-            Cube::from_coords(1, -5, 4),
-            Cube::from_coords(0, -5, 5),
-            Cube::from_coords(-1, -4, 5),
-            Cube::from_coords(-2, -3, 5),
-            Cube::from_coords(-3, -2, 5),
-            Cube::from_coords(-4, -1, 5),
-            Cube::from_coords(-5, 0, 5),
-            Cube::from_coords(-5, 1, 4),
-            Cube::from_coords(-5, 2, 3),
-            Cube::from_coords(-5, 3, 2),
-            Cube::from_coords(-5, 4, 1),
-            Cube::from_coords(-5, 5, 0),
-            Cube::from_coords(-4, 5, -1),
-            Cube::from_coords(-3, 5, -2),
-            Cube::from_coords(-2, 5, -3),
-            Cube::from_coords(-1, 5, -4),
-            Cube::from_coords(0, 5, -5),
-            Cube::from_coords(1, 4, -5),
-            Cube::from_coords(2, 3, -5),
-            Cube::from_coords(3, 2, -5),
-            Cube::from_coords(4, 1, -5),
+            Cube::force_from_coords(5, 0, -5),
+            Cube::force_from_coords(5, -1, -4),
+            Cube::force_from_coords(5, -2, -3),
+            Cube::force_from_coords(5, -3, -2),
+            Cube::force_from_coords(5, -4, -1),
+            Cube::force_from_coords(5, -5, 0),
+            Cube::force_from_coords(4, -5, 1),
+            Cube::force_from_coords(3, -5, 2),
+            Cube::force_from_coords(2, -5, 3),
+            Cube::force_from_coords(1, -5, 4),
+            Cube::force_from_coords(0, -5, 5),
+            Cube::force_from_coords(-1, -4, 5),
+            Cube::force_from_coords(-2, -3, 5),
+            Cube::force_from_coords(-3, -2, 5),
+            Cube::force_from_coords(-4, -1, 5),
+            Cube::force_from_coords(-5, 0, 5),
+            Cube::force_from_coords(-5, 1, 4),
+            Cube::force_from_coords(-5, 2, 3),
+            Cube::force_from_coords(-5, 3, 2),
+            Cube::force_from_coords(-5, 4, 1),
+            Cube::force_from_coords(-5, 5, 0),
+            Cube::force_from_coords(-4, 5, -1),
+            Cube::force_from_coords(-3, 5, -2),
+            Cube::force_from_coords(-2, 5, -3),
+            Cube::force_from_coords(-1, 5, -4),
+            Cube::force_from_coords(0, 5, -5),
+            Cube::force_from_coords(1, 4, -5),
+            Cube::force_from_coords(2, 3, -5),
+            Cube::force_from_coords(3, 2, -5),
+            Cube::force_from_coords(4, 1, -5),
         ];
 
         assert_eq!(origin_ring_0, Cube::ORIGIN.ring(0), "origin ring 0");
@@ -882,29 +983,29 @@ mod tests {
         assert_eq!(origin_ring_2, Cube::ORIGIN.ring(2), "origin ring 2");
         assert_eq!(origin_ring_5, Cube::ORIGIN.ring(5), "origin ring 5");
 
-        let offset_coord = Cube::from_coords(2, 3, -5);
-        let offset_ring_0 = vec![Cube::from_coords(2, 3, -5)];
+        let offset_coord = Cube::force_from_coords(2, 3, -5);
+        let offset_ring_0 = vec![Cube::force_from_coords(2, 3, -5)];
         let offset_ring_1 = vec![
-            Cube::from_coords(3, 3, -6),
-            Cube::from_coords(3, 2, -5),
-            Cube::from_coords(2, 2, -4),
-            Cube::from_coords(1, 3, -4),
-            Cube::from_coords(1, 4, -5),
-            Cube::from_coords(2, 4, -6),
+            Cube::force_from_coords(3, 3, -6),
+            Cube::force_from_coords(3, 2, -5),
+            Cube::force_from_coords(2, 2, -4),
+            Cube::force_from_coords(1, 3, -4),
+            Cube::force_from_coords(1, 4, -5),
+            Cube::force_from_coords(2, 4, -6),
         ];
         let offset_ring_2 = vec![
-            Cube::from_coords(4, 3, -7),
-            Cube::from_coords(4, 2, -6),
-            Cube::from_coords(4, 1, -5),
-            Cube::from_coords(3, 1, -4),
-            Cube::from_coords(2, 1, -3),
-            Cube::from_coords(1, 2, -3),
-            Cube::from_coords(0, 3, -3),
-            Cube::from_coords(0, 4, -4),
-            Cube::from_coords(0, 5, -5),
-            Cube::from_coords(1, 5, -6),
-            Cube::from_coords(2, 5, -7),
-            Cube::from_coords(3, 4, -7),
+            Cube::force_from_coords(4, 3, -7),
+            Cube::force_from_coords(4, 2, -6),
+            Cube::force_from_coords(4, 1, -5),
+            Cube::force_from_coords(3, 1, -4),
+            Cube::force_from_coords(2, 1, -3),
+            Cube::force_from_coords(1, 2, -3),
+            Cube::force_from_coords(0, 3, -3),
+            Cube::force_from_coords(0, 4, -4),
+            Cube::force_from_coords(0, 5, -5),
+            Cube::force_from_coords(1, 5, -6),
+            Cube::force_from_coords(2, 5, -7),
+            Cube::force_from_coords(3, 4, -7),
         ];
 
         assert_eq!(offset_ring_0, offset_coord.ring(0), "offset ring 0");
@@ -917,33 +1018,33 @@ mod tests {
         let origin_spiral_0 = vec![Cube::ORIGIN];
         let origin_spiral_1 = vec![
             Cube::ORIGIN,
-            Cube::from_coords(1, 0, -1),
-            Cube::from_coords(1, -1, 0),
-            Cube::from_coords(0, -1, 1),
-            Cube::from_coords(-1, 0, 1),
-            Cube::from_coords(-1, 1, 0),
-            Cube::from_coords(0, 1, -1),
+            Cube::force_from_coords(1, 0, -1),
+            Cube::force_from_coords(1, -1, 0),
+            Cube::force_from_coords(0, -1, 1),
+            Cube::force_from_coords(-1, 0, 1),
+            Cube::force_from_coords(-1, 1, 0),
+            Cube::force_from_coords(0, 1, -1),
         ];
         let origin_spiral_2 = vec![
             Cube::ORIGIN,
-            Cube::from_coords(1, 0, -1),
-            Cube::from_coords(1, -1, 0),
-            Cube::from_coords(0, -1, 1),
-            Cube::from_coords(-1, 0, 1),
-            Cube::from_coords(-1, 1, 0),
-            Cube::from_coords(0, 1, -1),
-            Cube::from_coords(2, 0, -2),
-            Cube::from_coords(2, -1, -1),
-            Cube::from_coords(2, -2, 0),
-            Cube::from_coords(1, -2, 1),
-            Cube::from_coords(0, -2, 2),
-            Cube::from_coords(-1, -1, 2),
-            Cube::from_coords(-2, 0, 2),
-            Cube::from_coords(-2, 1, 1),
-            Cube::from_coords(-2, 2, 0),
-            Cube::from_coords(-1, 2, -1),
-            Cube::from_coords(0, 2, -2),
-            Cube::from_coords(1, 1, -2),
+            Cube::force_from_coords(1, 0, -1),
+            Cube::force_from_coords(1, -1, 0),
+            Cube::force_from_coords(0, -1, 1),
+            Cube::force_from_coords(-1, 0, 1),
+            Cube::force_from_coords(-1, 1, 0),
+            Cube::force_from_coords(0, 1, -1),
+            Cube::force_from_coords(2, 0, -2),
+            Cube::force_from_coords(2, -1, -1),
+            Cube::force_from_coords(2, -2, 0),
+            Cube::force_from_coords(1, -2, 1),
+            Cube::force_from_coords(0, -2, 2),
+            Cube::force_from_coords(-1, -1, 2),
+            Cube::force_from_coords(-2, 0, 2),
+            Cube::force_from_coords(-2, 1, 1),
+            Cube::force_from_coords(-2, 2, 0),
+            Cube::force_from_coords(-1, 2, -1),
+            Cube::force_from_coords(0, 2, -2),
+            Cube::force_from_coords(1, 1, -2),
         ];
 
         assert_eq!(
@@ -962,51 +1063,51 @@ mod tests {
             "origin spiral 2"
         );
 
-        let offset_spiral_0 = vec![Cube::from_coords(5, -3, -2)];
+        let offset_spiral_0 = vec![Cube::force_from_coords(5, -3, -2)];
         let offset_spiral_1 = vec![
-            Cube::from_coords(5, -3, -2),
-            Cube::from_coords(6, -3, -3),
-            Cube::from_coords(6, -4, -2),
-            Cube::from_coords(5, -4, -1),
-            Cube::from_coords(4, -3, -1),
-            Cube::from_coords(4, -2, -2),
-            Cube::from_coords(5, -2, -3),
+            Cube::force_from_coords(5, -3, -2),
+            Cube::force_from_coords(6, -3, -3),
+            Cube::force_from_coords(6, -4, -2),
+            Cube::force_from_coords(5, -4, -1),
+            Cube::force_from_coords(4, -3, -1),
+            Cube::force_from_coords(4, -2, -2),
+            Cube::force_from_coords(5, -2, -3),
         ];
         let offset_spiral_2 = vec![
-            Cube::from_coords(5, -3, -4),
-            Cube::from_coords(6, -3, -3),
-            Cube::from_coords(6, -4, -2),
-            Cube::from_coords(5, -4, -1),
-            Cube::from_coords(4, -3, -1),
-            Cube::from_coords(4, -2, -2),
-            Cube::from_coords(5, -2, -3),
-            Cube::from_coords(7, -3, -4),
-            Cube::from_coords(7, -4, -3),
-            Cube::from_coords(7, -5, -2),
-            Cube::from_coords(6, -5, -1),
-            Cube::from_coords(5, -5, 0),
-            Cube::from_coords(4, -4, 0),
-            Cube::from_coords(3, -3, 0),
-            Cube::from_coords(3, -2, -1),
-            Cube::from_coords(3, -1, -2),
-            Cube::from_coords(4, -1, -3),
-            Cube::from_coords(5, -1, -4),
-            Cube::from_coords(6, -2, -4),
+            Cube::force_from_coords(5, -3, -4),
+            Cube::force_from_coords(6, -3, -3),
+            Cube::force_from_coords(6, -4, -2),
+            Cube::force_from_coords(5, -4, -1),
+            Cube::force_from_coords(4, -3, -1),
+            Cube::force_from_coords(4, -2, -2),
+            Cube::force_from_coords(5, -2, -3),
+            Cube::force_from_coords(7, -3, -4),
+            Cube::force_from_coords(7, -4, -3),
+            Cube::force_from_coords(7, -5, -2),
+            Cube::force_from_coords(6, -5, -1),
+            Cube::force_from_coords(5, -5, 0),
+            Cube::force_from_coords(4, -4, 0),
+            Cube::force_from_coords(3, -3, 0),
+            Cube::force_from_coords(3, -2, -1),
+            Cube::force_from_coords(3, -1, -2),
+            Cube::force_from_coords(4, -1, -3),
+            Cube::force_from_coords(5, -1, -4),
+            Cube::force_from_coords(6, -2, -4),
         ];
 
         assert_eq!(
             offset_spiral_0,
-            Cube::from_coords(5, -3, -2).spiral(0),
+            Cube::force_from_coords(5, -3, -2).spiral(0),
             "offset spiral 0"
         );
         assert_eq!(
             offset_spiral_1,
-            Cube::from_coords(5, -3, -2).spiral(1),
+            Cube::force_from_coords(5, -3, -2).spiral(1),
             "offset spiral 1"
         );
         assert_eq!(
             offset_spiral_2,
-            Cube::from_coords(5, -3, -2).spiral(2),
+            Cube::force_from_coords(5, -3, -2).spiral(2),
             "offset spiral 2"
         );
     }

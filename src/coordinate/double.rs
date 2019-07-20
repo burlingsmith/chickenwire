@@ -28,6 +28,12 @@ pub struct Double {
 }
 
 //////////////////////////////////////////////////////////////////////////////
+// Convenience Aliases
+//////////////////////////////////////////////////////////////////////////////
+
+pub type DoubleResult = Result<Double, &'static str>;
+
+//////////////////////////////////////////////////////////////////////////////
 // Traits: Arithmetic
 //////////////////////////////////////////////////////////////////////////////
 
@@ -200,11 +206,11 @@ impl Double {
     ///
     /// assert!(double_2.is_err());
     /// ```
-    pub fn from_coords(col: i32, row: i32) -> Result<Double, &'static str> {
+    pub fn from_coords(col: i32, row: i32) -> DoubleResult {
         if (col + row) & 1 == 0 {
-            Ok(Double { col: col, row: row })
+            Ok(Self { col: col, row: row })
         } else {
-            Err("invalid double coordinates")
+            Err("invalid Double coordinate")
         }
     }
 
@@ -229,6 +235,29 @@ impl Double {
         Double::from_coords(col, row).unwrap()
     }
 
+    /// Attempts to create a `Double` from a tuple of two `i32` values. If
+    /// these values obey the `Double` constraint, (row + col) % 2 == 0, then
+    /// returns that `Double` in an `Ok`. Otherwise, returns an `Err`.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use chickenwire::coordinate::double::Double;
+    ///
+    /// let double_1 = Double::from_tuple((1, 3));
+    /// let double_2 = Double::from_tuple((0, 1));
+    ///
+    /// assert!(double_1.is_ok());
+    ///
+    /// assert_eq!(double_1.unwrap().col(), 1);
+    /// assert_eq!(double_1.unwrap().row(), 3);
+    ///
+    /// assert!(double_2.is_err());
+    /// ```
+    pub fn from_tuple((col, row): (i32, i32)) -> DoubleResult {
+        Double::from_coords(col, row)
+    }
+
     //////////////////////////////////
     // Conversion
     //////////////////////////////////
@@ -239,7 +268,7 @@ impl Double {
         let z = (self.row - self.col) / 2;
         let y = 0 - x - z;
 
-        Cube::from_coords(x, y, z)
+        Cube::force_from_coords(x, y, z)
     }
 
     /// Convert a `Double` to a `Cube`, assuming the grid has a `Tilt::Sharp`.
@@ -248,7 +277,7 @@ impl Double {
         let z = self.row / 2;
         let y = 0 - x - z;
 
-        Cube::from_coords(x, y, z)
+        Cube::force_from_coords(x, y, z)
     }
 
     //////////////////////////////////
