@@ -13,7 +13,7 @@ pub struct Offset {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-// Traits
+// Traits: From & Into
 //////////////////////////////////////////////////////////////////////////////
 
 impl From<(i32, i32)> for Offset {
@@ -44,13 +44,25 @@ impl Offset {
     // Constants
     //////////////////////////////////
 
-    /// Offset coordinate origin of (0, 0).
+    /// `Offset` coordinate origin of (0, 0).
     pub const ORIGIN: Offset = Offset { col: 0, row: 0 };
 
     //////////////////////////////////
     // Initialization
     //////////////////////////////////
 
+    /// Create an `Offset` from two `i32` values.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use chickenwire::coordinate::offset::Offset;
+    ///
+    /// assert_eq!(
+    ///     Offset::from_coords(1, 2),
+    ///     Offset { col: 1, row: 2 }
+    /// );
+    /// ```
     pub fn from_coords(col: i32, row: i32) -> Self {
         Self::from((col, row))
     }
@@ -59,6 +71,8 @@ impl Offset {
     // Conversion
     //////////////////////////////////
 
+    /// Converts an `Offset` to a `Cube`, assuming the `HexGrid` has
+    /// `Parity::Odd` and `Tilt::Flat` parameters.
     pub fn oflat_to_cube(self) -> Cube {
         let x = self.col;
         let z = self.row - (self.col - (self.col & 1)) / 2;
@@ -67,6 +81,8 @@ impl Offset {
         Cube::from_coords(x, y, z)
     }
 
+    /// Converts an `Offset` to a `Cube`, assuming the `HexGrid` has
+    /// `Parity::Even` and `Tilt::Flat` parameters.
     pub fn eflat_to_cube(self) -> Cube {
         let x = self.col;
         let z = self.row - (self.col + (self.col & 1)) / 2;
@@ -75,6 +91,8 @@ impl Offset {
         Cube::from_coords(x, y, z)
     }
 
+    /// Converts an `Offset` to a `Cube`, assuming the `HexGrid` has
+    /// `Parity::Odd` and `Tilt::Sharp` parameters.
     pub fn osharp_to_cube(self) -> Cube {
         let x = self.col - (self.row - (self.row & 1)) / 2;
         let z = self.row;
@@ -83,6 +101,8 @@ impl Offset {
         Cube::from_coords(x, y, z)
     }
 
+    /// Converts an `Offset` to a `Cube`, assuming the `HexGrid` has
+    /// `Parity::Even` and `Tilt::Sharp` parameters.
     pub fn esharp_to_cube(self) -> Cube {
         let x = self.col - (self.row + (self.row & 1)) / 2;
         let z = self.row;
@@ -115,6 +135,9 @@ impl Offset {
         neighbors
     }
 
+    /// Calculates the `Offset` coordinates of the hexes surrounding the
+    /// calling instance, in the context of a `HexGrid` with `Parity::Odd` and
+    /// `Tilt::Flat` parameters.
     pub fn oflat_neighbors(self) -> Vec<Self> {
         let offsets = [
             [[1, -1], [1, 0], [0, 1], [-1, 0], [-1, -1], [0, -1]],
@@ -124,6 +147,9 @@ impl Offset {
         self.offset_map(offsets, self.col)
     }
 
+    /// Calculates the `Offset` coordinates of the hexes surrounding the
+    /// calling instance, in the context of a `HexGrid` with `Parity::Even`
+    /// and `Tilt::Flat` parameters.
     pub fn eflat_neighbors(self) -> Vec<Self> {
         let offsets = [
             [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [0, -1]],
@@ -133,6 +159,9 @@ impl Offset {
         self.offset_map(offsets, self.col)
     }
 
+    /// Calculates the `Offset` coordinates of the hexes surrounding the
+    /// calling instance, in the context of a `HexGrid` with `Parity::Odd` and
+    /// `Tilt::Sharp` parameters.
     pub fn osharp_neighbors(self) -> Vec<Self> {
         let offsets = [
             [[0, -1], [1, 0], [0, 1], [-1, 1], [-1, 0], [-1, -1]],
@@ -142,6 +171,9 @@ impl Offset {
         self.offset_map(offsets, self.row)
     }
 
+    /// Calculates the `Offset` coordinates of the hexes surrounding the
+    /// calling instance, in the context of a `HexGrid` with `Parity::Even`
+    /// and `Tilt::Sharp` parameters.
     pub fn esharp_neighbors(self) -> Vec<Self> {
         let offsets = [
             [[1, -1], [1, 0], [1, 1], [0, 1], [-1, 0], [0, -1]],
@@ -155,6 +187,7 @@ impl Offset {
     // Distances
     //////////////////////////////////
 
+    /// Calculates the distance between two `Offset` coordinates.
     pub fn dist(self, other: Self) -> i32 {
         self.eflat_to_cube().dist(other.eflat_to_cube())
     }

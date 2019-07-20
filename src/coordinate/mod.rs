@@ -101,10 +101,10 @@
 //! index, save for the diagonal case, where the Southeastern neighbor is the
 //! recipient.
 
-pub mod cube;
 pub mod axial;
-pub mod offset;
+pub mod cube;
 pub mod double;
+pub mod offset;
 
 use axial::*;
 use cube::*;
@@ -115,45 +115,55 @@ use offset::*;
 // Coordinate System Labels
 //////////////////////////////////////////////////////////////////////////////
 
+/// A `CoordSys` is a valueless label for any of the four coordinate systems
+/// supported in Chickenwire (`Axial`, `Cube`, `Double`, and `Offset`).
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum CoordSys {
-    Cube,
     Axial,
-    Offset,
+    Cube,
     Double,
+    Offset,
 }
 
+/// The default `CoordSys` is `CoordSys::Cube`.
 impl Default for CoordSys {
-    fn default() -> Self { CoordSys::Cube }
+    fn default() -> Self {
+        CoordSys::Cube
+    }
 }
 
+/// Creates a `CoordSys` from a `MultiCoord`.
 impl From<MultiCoord> for CoordSys {
     fn from(coord: MultiCoord) -> Self {
         coord.sys
     }
 }
 
-impl From<Cube> for CoordSys {
-    fn from(_: Cube) -> Self {
-        CoordSys::Cube
-    }
-}
-
+/// Creates a `CoordSys::Axial` from an `Axial`.
 impl From<Axial> for CoordSys {
     fn from(_: Axial) -> Self {
         CoordSys::Axial
     }
 }
 
-impl From<Offset> for CoordSys {
-    fn from(_: Offset) -> Self {
-        CoordSys::Offset
+/// Creates a `CoordSys::Cube` from a `Cube`.
+impl From<Cube> for CoordSys {
+    fn from(_: Cube) -> Self {
+        CoordSys::Cube
     }
 }
 
+/// Creates a `CoordSys::Double` from a `Double`.
 impl From<Double> for CoordSys {
     fn from(_: Double) -> Self {
         CoordSys::Double
+    }
+}
+
+/// Creates a `CoordSys::Offset` from an `Offset`.
+impl From<Offset> for CoordSys {
+    fn from(_: Offset) -> Self {
+        CoordSys::Offset
     }
 }
 
@@ -161,6 +171,9 @@ impl From<Double> for CoordSys {
 // Multi-Coordinates
 //////////////////////////////////////////////////////////////////////////////
 
+/// A `MultiCoord` is capable of representing an `Axial`, `Cube`, `Double`, or
+/// `Offset` coordinate, similar to a union type. `MultiCoord` values must be
+/// created from one of these coordinates.
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct MultiCoord {
     sys: CoordSys,
@@ -169,6 +182,19 @@ pub struct MultiCoord {
     c: Option<i32>,
 }
 
+/// Creates a `MultiCoord` from an `Axial`.
+impl From<Axial> for MultiCoord {
+    fn from(coord: Axial) -> Self {
+        Self {
+            sys: CoordSys::Axial,
+            a: coord.q,
+            b: coord.r,
+            c: None,
+        }
+    }
+}
+
+/// Creates a `MultiCoord` from a `Cube`.
 impl From<Cube> for MultiCoord {
     fn from(coord: Cube) -> Self {
         let (x, y, z) = coord.to_tuple();
@@ -182,32 +208,23 @@ impl From<Cube> for MultiCoord {
     }
 }
 
-impl From<Axial> for MultiCoord {
-    fn from(coord: Axial) -> Self {
-        Self {
-            sys: CoordSys::Axial,
-            a: coord.q,
-            b: coord.r,
-            c: None,
-        }
-    }
-}
-
-impl From<Offset> for MultiCoord {
-    fn from(coord: Offset) -> Self {
-        Self {
-            sys: CoordSys::Offset,
-            a: coord.col,
-            b: coord.row,
-            c: None,
-        }
-    }
-}
-
+/// Creates a `MultiCoord` from a `Double`.
 impl From<Double> for MultiCoord {
     fn from(coord: Double) -> Self {
         Self {
             sys: CoordSys::Double,
+            a: coord.col(),
+            b: coord.row(),
+            c: None,
+        }
+    }
+}
+
+/// Creates a `MultiCoord` from an `Offset`.
+impl From<Offset> for MultiCoord {
+    fn from(coord: Offset) -> Self {
+        Self {
+            sys: CoordSys::Offset,
             a: coord.col,
             b: coord.row,
             c: None,

@@ -19,56 +19,22 @@ pub struct Axial {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-// Traits
+// Traits: Arithmetic
 //////////////////////////////////////////////////////////////////////////////
 
-/// For two-element tuple of unsigned 32-bit integers (a, b), the
-/// corresponding axial coordinate is (q, r), where q == a and r == b.
+/// Axial coordinates are added together like vectors.
 ///
 /// # Examples
 ///
 /// ```
 /// use chickenwire::coordinate::Axial;
 ///
-/// assert_eq!(Axial::from((1, 2)), Axial { q: 1, r: 2 });
+/// let coord_1 = Axial::from_coords(1, -3);
+/// let coord_2 = Axial::from_coords(-5, 12);
+///
+/// assert_eq!(coord_1 + coord_2, Axial::from_coords(-4, 9));
+/// assert_eq!(coord_2 + coord_1, Axial::from_coords(-4, 9));
 /// ```
-impl From<(i32, i32)> for Axial {
-    fn from((q, r): (i32, i32)) -> Self {
-        Self { q: q, r: r }
-    }
-}
-
-/// For cube coordinate (x, y, z), the corresponding axial coordinate is
-/// (q, r), where q == x and r == z.
-///
-/// # Examples
-///
-/// ```
-/// use chickenwire::coordinate::{Cube, Axial};
-///
-/// let cube = Cube::from_coords(1, 2, -3);
-///
-/// assert_eq!(Axial::from(Cube::ORIGIN), Axial::ORIGIN);
-/// assert_eq!(Axial::from(cube), Axial::from_coords(1, -3));
-/// ```
-impl From<Cube> for Axial {
-    fn from(coord: Cube) -> Self {
-        let (x, _, z) = coord.to_tuple();
-
-        Self { q: x, r: z }
-    }
-}
-
-impl From<MultiCoord> for Axial {  // panics on bad c unwrap
-    fn from(coord: MultiCoord) -> Self {
-        match coord.sys {
-            CoordSys::Axial => Axial { q: coord.a, r: coord.b },
-            CoordSys::Cube => Axial { q: coord.a, r: coord.c.unwrap() },
-            _ => panic!("{:?} is not an Axial or Cube coordinate", coord),
-        }
-    }
-}
-
 impl Add for Axial {
     type Output = Self;
 
@@ -80,6 +46,19 @@ impl Add for Axial {
     }
 }
 
+/// Axial coordinates are subtracted from each other like vectors.
+///
+/// # Examples
+///
+/// ```
+/// use chickenwire::coordinate::Axial;
+///
+/// let coord_1 = Axial::from_coords(1, -3);
+/// let coord_2 = Axial::from_coords(5, -12);
+///
+/// assert_eq!(coord_1 - coord_2, Axial::from_coords(-4, 9));
+/// assert_eq!(coord_2 - coord_1, Axial::from_coords(4, -9));
+/// ```
 impl Sub for Axial {
     type Output = Self;
 
@@ -91,6 +70,19 @@ impl Sub for Axial {
     }
 }
 
+/// Axial coordinates can be multiplied by `i32` scalars, like vectors.
+///
+/// # Examples
+///
+/// ```
+/// use chickenwire::coordinate::Axial;
+///
+/// let coord = Axial::from_coords(1, -3);
+///
+/// assert_eq!(-1 * coord, Axial::from_coords(-1, 3));
+/// assert_eq!(0 * coord, Axial::ORIGIN);
+/// assert_eq!(coord * 2, Axial::from_coords(2, -6));
+/// ```
 impl Mul<i32> for Axial {
     type Output = Self;
 
@@ -110,6 +102,24 @@ impl Mul<Axial> for i32 {
     }
 }
 
+/// Axial coordinates can be divided by `i32` scalars, like vectors. Values are
+/// rounded toward zero, truncating the fractional component.
+///
+/// # Panics
+///
+/// Panics when trying to divide by zero.
+///
+/// # Examples
+///
+/// ```
+/// use chickenwire::coordinate::Axial;
+///
+/// let coord = Axial::from_coords(12, -36);
+///
+/// assert_eq!(coord / -1, Axial::from_coords(-12, 36));
+/// assert_eq!(coord / 2, Axial::from_coords(6, -18));
+/// assert_eq!(coord / 3, Axial::from_coords(4, -12));
+/// ```
 impl Div<i32> for Axial {
     type Output = Self;
 
@@ -117,6 +127,74 @@ impl Div<i32> for Axial {
         Self {
             q: self.q / n,
             r: self.r / n,
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Traits: From & Into
+//////////////////////////////////////////////////////////////////////////////
+
+/// Creates an `Axial` from an `(i32, i32)`.
+///
+/// # Examples
+///
+/// ```
+/// use chickenwire::coordinate::Axial;
+///
+/// assert_eq!(
+///     Axial::from((1, 2)),
+///     Axial { q: 1, r: 2 }
+/// );
+/// ```
+impl From<(i32, i32)> for Axial {
+    fn from((q, r): (i32, i32)) -> Self {
+        Self {
+            q: q,
+            r: r,
+        }
+    }
+}
+
+/// Creates an `Axial` from a `Cube`.
+///
+/// # Examples
+///
+/// ```
+/// use chickenwire::coordinate::{Cube, Axial};
+///
+/// let cube = Cube::from_coords(1, 2, -3);
+///
+/// assert_eq!(
+///     Axial::from(cube),
+///     Axial { q: 1, r: -3 }
+/// );
+/// assert_eq!(
+///     Axial::from(Cube::ORIGIN),
+///     Axial::ORIGIN
+/// );
+/// ```
+impl From<Cube> for Axial {
+    fn from(coord: Cube) -> Self {
+        let (x, _, z) = coord.to_tuple();
+
+        Self { q: x, r: z }
+    }
+}
+
+/// Creates an `Axial` from a `MultiCoord`.
+///
+/// Conversion from both axial and cube `MultiCoord`s is supported.
+///
+/// # Panics
+///
+/// Panics when parsing a double or offset `MultiCoord`.
+impl From<MultiCoord> for Axial {  // panics on bad c unwrap
+    fn from(coord: MultiCoord) -> Self {
+        match coord.sys {
+            CoordSys::Axial => Axial { q: coord.a, r: coord.b },
+            CoordSys::Cube => Axial { q: coord.a, r: coord.c.unwrap() },
+            _ => panic!("{:?} is not an Axial or Cube coordinate", coord),
         }
     }
 }
@@ -130,7 +208,7 @@ impl Axial {
     // Constants
     //////////////////////////////////
 
-    /// Axial coordinate origin of (0, 0).
+    /// `Axial` coordinate origin of (0, 0).
     pub const ORIGIN: Axial = Axial { q: 0, r: 0 };
 
     //////////////////////////////////
@@ -179,3 +257,13 @@ impl Axial {
 //////////////////////////////////////////////////////////////////////////////
 // Unit Tests
 //////////////////////////////////////////////////////////////////////////////
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_it_works() {
+        assert_eq!(1 + 1, 2);
+    }
+}

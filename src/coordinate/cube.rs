@@ -145,24 +145,26 @@ impl Div<i32> for Cube {
 // Traits: From & Into
 //////////////////////////////////////////////////////////////////////////////
 
-/// For three-element tuple of unsigned 32-bit integers (a, b, c), the
-/// corresponding cube coordinate (x, y, z) is calculated by solving for z
-/// based upon the constraint x + y + z == 0, where x == a and y == b. This
-/// method ensures the production of valid cube coordinates.
+/// Creates a `Cube` from an `(i32, i32, i32)`.
 ///
-/// # Examples
+/// The produced `Cube`, (x, y, z), must be constrained such that
+/// x + y + z == 0.
 ///
-/// ```
-/// use chickenwire::coordinate::Cube;
+/// # Panics
 ///
-/// let valid_cube_tuple = (1, 2, -3);
-/// let invalid_cube_tuple = (1, 2, 10);
-///
-/// assert_eq!(Cube::from(valid_cube_tuple), Cube::from(invalid_cube_tuple));
-/// ```
+/// Panics upon receiving `i32` values which violate the constraint
+/// x + y + z == 0 for `Cube` (x, y, z).
 impl From<(i32, i32, i32)> for Cube {
-    fn from((x, y, _): (i32, i32, i32)) -> Self {
-        Self { x: x, y: y, z: 0 - x - y }
+    fn from((x, y, z): (i32, i32, i32)) -> Self {
+        if z == 0 - x - y {
+            Self {
+                x: x,
+                y: y,
+                z: z,
+            }
+        } else {
+            panic!("({}, {}, {}) is an invalid cube coordiante", x, y, z);
+        }
     }
 }
 
@@ -225,7 +227,7 @@ impl Cube {
     // Constants
     //////////////////////////////////
 
-    /// Cube coordinate origin of (0, 0, 0).
+    /// `Cube` coordinate origin of (0, 0, 0).
     pub const ORIGIN: Cube = Cube { x: 0, y: 0, z: 0 };
 
     /// Offset values for cube coordinate neighbors, beginning with the
