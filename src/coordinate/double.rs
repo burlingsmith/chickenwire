@@ -31,6 +31,10 @@ pub struct Double {
 // Convenience Aliases
 //////////////////////////////////////////////////////////////////////////////
 
+/// Methods which create `Double` coordinates perform validation to ensure all
+/// `Double` coordinates obey the constraint (row + col) % 2 == 0. When this
+/// condition is met, these methods return the generated coordinate, wrapped
+/// in an `Ok`. When this condition is not met, an `Err` is returned.
 pub type DoubleResult = Result<Double, &'static str>;
 
 //////////////////////////////////////////////////////////////////////////////

@@ -28,6 +28,10 @@ pub struct Cube {
 // Convenience Aliases
 //////////////////////////////////////////////////////////////////////////////
 
+/// Methods which create `Cube` coordinates perform validation to ensure all
+/// `Cube` coordinates obey the constraint x + y + z == 0. When this condition
+/// is met, these methods return the generated coordinate, wrapped in an `Ok`.
+/// When this condition is not met, an `Err` is returned.
 pub type CubeResult = Result<Cube, &'static str>;
 
 //////////////////////////////////////////////////////////////////////////////
