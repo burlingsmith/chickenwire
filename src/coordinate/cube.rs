@@ -338,19 +338,6 @@ impl Cube {
     }
 
     //////////////////////////////////
-    // Setters
-    //////////////////////////////////
-
-    /// Change a coordinate's contents. Works like `from_coords` but without
-    /// creating a new instance. Coordinate validity is enforced
-    /// automatically.
-    pub fn set_coords(&mut self, x: i32, y: i32, _z: i32) {
-        self.x = x;
-        self.y = y;
-        self.z = 0 - x - y;
-    }
-
-    //////////////////////////////////
     // Retrieval
     //////////////////////////////////
 
@@ -562,7 +549,7 @@ impl Cube {
             let new_y = 0 - vector.x;
             let new_z = 0 - vector.y;
 
-            vector.set_coords(new_x, new_y, new_z);
+            vector = Cube::force_from_coords(new_x, new_y, new_z);
         }
 
         vector + self
