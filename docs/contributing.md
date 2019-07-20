@@ -7,10 +7,14 @@ if you have any experienced advice, I'm really eager to learn and improve.
 
 Now, on to brass tacks:
 
-## General Workflow
+## Background Reading
 If you haven't already, please read up on the
 [GitHub Workflow](https://guides.github.com/introduction/flow/) before
 continuing with this guide, as that's the baseline for working on the project.
+
+You might also find it helpful to refer to Red Blob Games' guide on hexagonal
+grids (a.k.a. [The Guide](https://www.redblobgames.com/grids/hexagons)), as
+that's the foundation everything has been built off of.
 
 ## Code Contributions
 If you're an expert on Rust, then welcome. Go ham.
