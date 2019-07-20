@@ -185,7 +185,7 @@ impl Double {
     //////////////////////////////////
 
     /// `Double` coordinate origin of (0, 0).
-    pub const ORIGIN: Offset = Offset { col: 0, row: 0 };
+    pub const ORIGIN: Double = Double { col: 0, row: 0 };
 
     //////////////////////////////////
     // Initialization
@@ -263,6 +263,20 @@ impl Double {
     }
 
     //////////////////////////////////
+    // Retrieval
+    //////////////////////////////////
+
+    /// Return the column value of a `Double`.
+    pub fn col(&self) -> i32 {
+        self.col
+    }
+
+    /// Return the row value of a `Double`.
+    pub fn row(&self) -> i32 {
+        self.row
+    }
+
+    //////////////////////////////////
     // Conversion
     //////////////////////////////////
 
@@ -282,20 +296,6 @@ impl Double {
         let y = 0 - x - z;
 
         Cube::force_from_coords(x, y, z)
-    }
-
-    //////////////////////////////////
-    // Retrieval
-    //////////////////////////////////
-
-    /// Return the column value of a `Double`.
-    pub fn col(&self) -> i32 {
-        self.col
-    }
-
-    /// Return the row value of a `Double`.
-    pub fn row(&self) -> i32 {
-        self.row
     }
 
     //////////////////////////////////
@@ -445,6 +445,34 @@ mod tests {
     use super::*;
 
     //////////////////////////////////
+    // Traits: Arithmetic
+    //////////////////////////////////
+
+    #[test]
+    fn test_add_trait() {
+        unimplemented!();
+    }
+
+    #[test]
+    fn test_sub_trait() {
+        unimplemented!();
+    }
+
+    #[test]
+    fn test_mul_trait() {
+        unimplemented!();
+    }
+
+    //////////////////////////////////
+    // Traits: From & Into (Unit)
+    //////////////////////////////////
+
+    #[test]
+    fn test_double_from_tuple_trait() {
+        unimplemented!();
+    }
+
+    //////////////////////////////////
     // Initialization
     //////////////////////////////////
 
@@ -511,6 +539,36 @@ mod tests {
         let invalid_double = Double::force_from_coords(5, 6);
     }
 
+    #[test]
+    fn test_from_tuple_ok() {
+        let ok_double_1 = Ok(Double { col: 1, row: 3 });
+        let ok_double_2 = Ok(Double { col: 2, row: 4 });
+        let ok_double_3 = Ok(Double { col: 3, row: 5 });
+        let ok_double_4 = Ok(Double { col: 8, row: -4 });
+        let ok_double_5 = Ok(Double { col: -2, row: 6 });
+
+        assert_eq!(ok_double_1, Double::from_tuple((1, 3)));
+        assert_eq!(ok_double_2, Double::from_tuple((2, 4)));
+        assert_eq!(ok_double_3, Double::from_tuple((3, 5)));
+        assert_eq!(ok_double_4, Double::from_tuple((8, -4)));
+        assert_eq!(ok_double_5, Double::from_tuple((-2, 6)));
+    }
+
+    #[test]
+    fn test_from_tuple_err() {
+        let err_double_1 = Double::from_tuple((0, 1));
+        let err_double_2 = Double::from_tuple((1, 0));
+        let err_double_3 = Double::from_tuple((2, 1));
+        let err_double_4 = Double::from_tuple((-4, 3));
+        let err_double_5 = Double::from_tuple((5, -6));
+
+        assert!(err_double_1.is_err());
+        assert!(err_double_2.is_err());
+        assert!(err_double_3.is_err());
+        assert!(err_double_4.is_err());
+        assert!(err_double_5.is_err());
+    }
+
     //////////////////////////////////
     // Retrieval
     //////////////////////////////////
@@ -559,11 +617,55 @@ mod tests {
 
     #[test]
     fn test_flat_dist() {
-        unimplemented!();
+        let coord_1 = Double { col: 1, row: 3 };
+        let coord_2 = Double { col: 2, row: 8 };
+        let coord_3 = Double { col: 3, row: 5 };
+        let coord_4 = Double { col: 4, row: 4 };
+        let coord_5 = Double { col: 7, row: 11 };
+
+        assert_eq!(Double::ORIGIN.flat_dist(coord_1), 2);
+        assert_eq!(Double::ORIGIN.flat_dist(coord_2), 6);
+        assert_eq!(Double::ORIGIN.flat_dist(coord_3), 4);
+        assert_eq!(Double::ORIGIN.flat_dist(coord_4), 4);
+        assert_eq!(Double::ORIGIN.flat_dist(coord_5), 9);
+
+        assert_eq!(coord_1.flat_dist(coord_1), 0);
+        assert_eq!(coord_1.flat_dist(coord_2), 3);
+        assert_eq!(coord_1.flat_dist(coord_3), 2);
+        assert_eq!(coord_1.flat_dist(coord_4), 3);
+        assert_eq!(coord_1.flat_dist(coord_5), 7);
+
+        assert_eq!(coord_5.flat_dist(coord_5), 0);
+        assert_eq!(coord_5.flat_dist(coord_4), 5);
+        assert_eq!(coord_5.flat_dist(coord_3), 5);
+        assert_eq!(coord_5.flat_dist(coord_2), 5);
+        assert_eq!(coord_5.flat_dist(coord_1), 7);
     }
 
     #[test]
     fn test_sharp_dist() {
-        unimplemented!();
+        let coord_1 = Double { col: 1, row: 3 };
+        let coord_2 = Double { col: 4, row: 2 };
+        let coord_3 = Double { col: 7, row: 3 };
+        let coord_4 = Double { col: 8, row: 0 };
+        let coord_5 = Double { col: 12, row: 6 };
+
+        assert_eq!(Double::ORIGIN.sharp_dist(coord_1), 3);
+        assert_eq!(Double::ORIGIN.sharp_dist(coord_2), 3);
+        assert_eq!(Double::ORIGIN.sharp_dist(coord_3), 5);
+        assert_eq!(Double::ORIGIN.sharp_dist(coord_4), 4);
+        assert_eq!(Double::ORIGIN.sharp_dist(coord_5), 9);
+
+        assert_eq!(coord_1.sharp_dist(coord_1), 0);
+        assert_eq!(coord_1.sharp_dist(coord_2), 2);
+        assert_eq!(coord_1.sharp_dist(coord_3), 3);
+        assert_eq!(coord_1.sharp_dist(coord_4), 5);
+        assert_eq!(coord_1.sharp_dist(coord_5), 7);
+
+        assert_eq!(coord_5.sharp_dist(coord_5), 0);
+        assert_eq!(coord_5.sharp_dist(coord_4), 6);
+        assert_eq!(coord_5.sharp_dist(coord_3), 4);
+        assert_eq!(coord_5.sharp_dist(coord_2), 6);
+        assert_eq!(coord_5.sharp_dist(coord_1), 7);
     }
 }
