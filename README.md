@@ -26,9 +26,9 @@ Click [here]() for Chickenwire's docs.rs entry.
 
 ## Contributing
 Please see the project's
-[style](https://github.com/cmarcbs7/chickenwire/blob/master/guides/style.md)
+[style](https://github.com/cmarcbs7/chickenwire/blob/master/docs/style.md)
 and
-[contribution](https://github.com/cmarcbs7/chickenwire/blob/master/guides/contribution.md)
+[contribution](https://github.com/cmarcbs7/chickenwire/blob/master/docs/contributing.md)
 guides.
 
 ## Credits
