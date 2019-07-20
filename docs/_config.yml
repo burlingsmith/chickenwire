@@ -1,1 +1,5 @@
+# Config
+baseurl: "chickenwire"
+
+# Aesthetics
 theme: jekyll-theme-cayman
