@@ -536,6 +536,7 @@ impl Cube {
 mod tests {
     use super::*;
 
+    #[test]
     fn test_cube_from_tuples() {
         assert_eq!(Cube::ORIGIN, Cube::from((0, 0, 0)));
         assert_eq!(Cube { x: 1, y: 2, z: -3 }, Cube::from((1, 2, -3)));

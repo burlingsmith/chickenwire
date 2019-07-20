@@ -22,7 +22,7 @@ pub struct Axial {
 // Traits: Arithmetic
 //////////////////////////////////////////////////////////////////////////////
 
-/// Axial coordinates are added together like vectors.
+/// Adds two `Axial` coordinates in the same manner as vectors.
 ///
 /// # Examples
 ///
@@ -46,7 +46,7 @@ impl Add for Axial {
     }
 }
 
-/// Axial coordinates are subtracted from each other like vectors.
+/// Subtracts two `Axial` coordinates in the same manner as vectors.
 ///
 /// # Examples
 ///
@@ -70,7 +70,7 @@ impl Sub for Axial {
     }
 }
 
-/// Axial coordinates can be multiplied by `i32` scalars, like vectors.
+/// Multiplies an `Axial` coordinate by an `i32` scalar, like a vector.
 ///
 /// # Examples
 ///
@@ -102,8 +102,8 @@ impl Mul<Axial> for i32 {
     }
 }
 
-/// Axial coordinates can be divided by `i32` scalars, like vectors. Values are
-/// rounded toward zero, truncating the fractional component.
+/// Divides an `Axial` coordinate by an `i32` scalar, like a vector. Values
+/// are truncated (i.e. rounded toward zero).
 ///
 /// # Panics
 ///
@@ -189,7 +189,7 @@ impl From<Cube> for Axial {
 /// # Panics
 ///
 /// Panics when parsing a double or offset `MultiCoord`.
-impl From<MultiCoord> for Axial {  // panics on bad c unwrap
+impl From<MultiCoord> for Axial {
     fn from(coord: MultiCoord) -> Self {
         match coord.sys {
             CoordSys::Axial => Axial { q: coord.a, r: coord.b },

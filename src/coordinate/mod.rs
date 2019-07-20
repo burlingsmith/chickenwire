@@ -12,14 +12,13 @@
 //! type, with the added benefit of tracking and maintaining its own typing.
 //!
 //! # Creating Coordinates
-//! Axial, Offset, and Double coordinates can be instantiated normally:
+//! `Axial` and `Offset` coordinates can be instantiated normally:
 //!
 //! ```
-//! use chickenwire::coordinate::{Axial, Offset, Double};
+//! use chickenwire::coordinate::{Axial, Offset};
 //!
 //! let axial = Axial { q: 0, r: 1 };
 //! let offset = Offset { col: 2, row: 3 };
-//! let double = Double { col: 4, row: 5 };
 //! ```
 //!
 //! Additionally, each coordinate `struct` has methods for instantiation from
@@ -41,29 +40,30 @@
 //! assert_eq!(offset_from_tup, offset_from_int);
 //! ```
 //!
-//! Note that, to enforce coordinate constraints, a `Cube` mightn't correspond
-//! 1:1 with all three values provided in its instantiation. You can find more
-//! details and examples below, in the `From` and `from_coords`
-//! implementations of each coordinate's associated `struct`.
+//! `Cube` and `Double` coordinates have enforced constraints. If these
+//! constraints aren't met during instantiation, the program will panic. See
+//! the `Cube` and `Double` documentation for more information.
 //!
 //! # Modifying Coordinates
-//! Use the `set_coords` method to update a `Cube`. Otherwise, coordinate
-//! `struct`s should be manipulated normally via their public fields.
+//! Use the `set_coords` method to update a `Cube` or `Double`. Otherwise,
+//! coordinate `struct`s should be manipulated normally via their public
+//! fields.
 //!
-//! # Converting Coordinates
-//! The `From` and `Into` traits are implemented between `Axial` and `Cube`.
-//! For `Offset` and `Double` coordinates, conversion to a different system
-//! requires additional knowledge about the grid's state. Namely, whether the
-//! hexes have a "flat" or "sharp" orientation and if the offset patterning is
-//! "even" or "odd." Conversion methods for each combination are documented
-//! below. See either the `chickenwire::hex` docs or
+//! # Coordinate Conversion
+//! The `From` and `Into` traits are implemented between `Axial` and `Cube`,
+//! and for between all coordinates and `MultiCoord`s. For `Offset` and
+//! `Double` coordinates, conversion to a different system requires additional
+//! knowledge about the grid's state. Namely, whether the hexes have a "flat"
+//! or "sharp" orientation and if the offset patterning is "even" or "odd."
+//! Conversion methods for each circumstance are documented in the coordinate
+//! system sub-modules. See either the `chickenwire::hexgrid` documentation or
 //! [The Guide](https://www.redblobgames.com/grids/hexagons) for explantations
 //! of flat/sharp orientation and even/odd offsetting.
 //!
 //! # Arithmetic
-//! The `Add<Self>`, `Sub<Self>`, `Mul<i32>`, and `Div<i32>` traits are
-//! implemented for `Cube` and `Axial`. These operations treat the coordinates
-//! as vectors:
+//! The `Add<Self>`, `Sub<Self>`, and `Mul<i32>` traits are implemented for
+//! `Axial`, `Cube`, and `Double`. `Div<i32>` is implemented for `Axial` and
+//! `Cube`. These operations treat the coordinates as vectors:
 //!
 //! ```
 //! use chickenwire::coordinate::{Cube, Axial};
@@ -76,8 +76,8 @@
 //!
 //! // Vector subtraction
 //! assert_eq!(
-//!     Axial { q: 4, r: -2 } - Axial { q: 1, r: -3 },
-//!     Axial { q: 3, r: 1 }
+//!     Double::from_coords(4, -2) - Double::from_coords(-3, 1),
+//!     Double::from_coords(7, -3)
 //! );
 //!
 //! // Scalar multiplication
@@ -232,16 +232,66 @@ impl From<Offset> for MultiCoord {
     }
 }
 
-//////////////////////////////////////////////////////////////////////////////
-// Unit Tests
-//////////////////////////////////////////////////////////////////////////////
+impl MultiCoord {
+    /// Attempts to create an `Axial` from a `MultiCoord`. If successful,
+    /// returns the result wrapped in an `Ok`. Otherwise, returns an `Err`.
+    pub fn to_axial(self) -> Result<Axial, &'static str> {
+        match self.sys {
+            CoordSys::Axial | CoordSys::Cube => Ok(Axial::from(self)),
+            CoordSys::Double => {
+                Err("cannot create Axial from Double MultiCoord")
+            }
+            CoordSys::Offset => {
+                Err("cannot create Axial from Offset MultiCoord")
+            }
+        }
+    }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+    /// Attempts to create a `Cube` from a `MultiCoord`. If successful,
+    /// returns the result wrapped in an `Ok`. Otherwise, returns an `Err`.
+    pub fn to_cube(self) -> Result<Cube, &'static str> {
+        match self.sys {
+            CoordSys::Axial | CoordSys::Cube => Ok(Cube::from(self)),
+            CoordSys::Double => {
+                Err("cannot create Cube from Double MultiCoord")
+            }
+            CoordSys::Offset => {
+                Err("cannot create Cube from Offset MultiCoord")
+            }
+        }
+    }
 
-    #[test]
-    fn test_it_works() {
-        assert_eq!(2 + 2, 4);
+    /// Attempts to create a `Double` from a `MultiCoord`. If successful,
+    /// returns the result wrapped in an `Ok`. Otherwise, returns an `Err`.
+    pub fn to_double(self) -> Result<Double, &'static str> {
+        match self.sys {
+            CoordSys::Double => Ok(Double::from(self)),
+            CoordSys::Axial => {
+                Err("cannot create Double from Axial MultiCoord")
+            }
+            CoordSys::Cube => {
+                Err("cannot create Double from Cube MultiCoord")
+            }
+            CoordSys::Offset => {
+                Err("cannot create Double from Offset MultiCoord")
+            }
+        }
+    }
+
+    /// Attempts to create an `Offset` from a `MultiCoord`. If successful,
+    /// returns the result wrapped in an `Ok`. Otherwise, returns an `Err`.
+    pub fn to_offset(self) -> Result<Offset, &'static str> {
+        match self.sys {
+            CoordSys::Offset => Ok(Offset::from(self)),
+            CoordSys::Axial => {
+                Err("cannot create Offset from Axial MultiCoord")
+            }
+            CoordSys::Cube => {
+                Err("cannot create Offset from Cube MultiCoord")
+            }
+            CoordSys::Double => {
+                Err("cannot create Offset from Double MultiCoord")
+            }
+        }
     }
 }
