@@ -25,7 +25,11 @@ Check out [Chickenwire's Cargo page]() for the latest version info.
 Click [here]() for Chickenwire's docs.rs entry.
 
 ## Contributing
-[Documentation needed]
+Please see the project's
+[style](https://github.com/cmarcbs7/chickenwire/blob/master/guides/style.md)
+and
+[contribution](https://github.com/cmarcbs7/chickenwire/blob/master/guides/contribution.md)
+guides.
 
 ## Credits
 **Dependencies**
