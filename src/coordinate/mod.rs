@@ -112,6 +112,12 @@ use double::*;
 use offset::*;
 
 //////////////////////////////////////////////////////////////////////////////
+// Convenience Aliases
+//////////////////////////////////////////////////////////////////////////////
+
+pub type CoordResult<T> = Result<T, &'static str>;
+
+//////////////////////////////////////////////////////////////////////////////
 // Coordinate System Labels
 //////////////////////////////////////////////////////////////////////////////
 
@@ -125,10 +131,10 @@ pub enum CoordSys {
     Offset,
 }
 
-/// The default `CoordSys` is `CoordSys::Cube`.
+/// The default `CoordSys` is `CoordSys::Axial`.
 impl Default for CoordSys {
     fn default() -> Self {
-        CoordSys::Cube
+        CoordSys::Axial
     }
 }
 
@@ -233,19 +239,54 @@ impl From<Offset> for MultiCoord {
 }
 
 impl MultiCoord {
+    //////////////////////////////////
+    // Initialization
+    //////////////////////////////////
+
     /// Convenience function equivalent to
     /// `MultiCoord::from(Axial { q: q, r: r })`
     pub fn axial(q: i32, r: i32) -> Self {
-        Self::from(Axial { q: q, r: r })
+        Self::from(Axial::from_coords(q, r))
     }
 
-    pub fn cube(x: i32, y: i32, z: i32) -> Self {
-        unimplemented!();
+    /// [ docs missing ]
+    pub fn cube(x: i32, y: i32, z: i32) -> CoordResult<Self> {
+        match Cube::from_coords(x, y, z) {
+            Ok(cube) => Ok(Self::from(cube)),
+            Err(msg) => Err(msg),
+        }
     }
+
+    /// [ docs missing ]
+    pub fn force_cube(x: i32, y: i32, z: i32) -> Self {
+        Self::from(Cube::force_from_coords(x, y, z))
+    }
+
+    /// [ docs missing ]
+    pub fn double(col: i32, row: i32) -> CoordResult<Self> {
+        match Double::from_coords(col, row) {
+            Ok (double) => Ok(Self::from(double)),
+            Err(msg) => Err(msg),
+        }
+    }
+
+    /// [ docs missing ]
+    pub fn force_double(col: i32, row: i32) -> Self {
+        Self::from(Double::force_from_coords(col, row))
+    }
+
+    /// [ docs missing ]
+    pub fn offset(col: i32, row: i32) -> Self {
+        Self::from(Offset::from_coords(col, row))
+    }
+
+    //////////////////////////////////
+    // Conversion
+    //////////////////////////////////
 
     /// Attempts to create an `Axial` from a `MultiCoord`. If successful,
     /// returns the result wrapped in an `Ok`. Otherwise, returns an `Err`.
-    pub fn to_axial(self) -> Result<Axial, &'static str> {
+    pub fn to_axial(self) -> CoordResult<Axial> {
         match self.sys {
             CoordSys::Axial | CoordSys::Cube => Ok(Axial::from(self)),
             CoordSys::Double => {
@@ -259,7 +300,7 @@ impl MultiCoord {
 
     /// Attempts to create a `Cube` from a `MultiCoord`. If successful,
     /// returns the result wrapped in an `Ok`. Otherwise, returns an `Err`.
-    pub fn to_cube(self) -> Result<Cube, &'static str> {
+    pub fn to_cube(self) -> CoordResult<Cube> {
         match self.sys {
             CoordSys::Axial | CoordSys::Cube => Ok(Cube::from(self)),
             CoordSys::Double => {
@@ -273,7 +314,7 @@ impl MultiCoord {
 
     /// Attempts to create a `Double` from a `MultiCoord`. If successful,
     /// returns the result wrapped in an `Ok`. Otherwise, returns an `Err`.
-    pub fn to_double(self) -> Result<Double, &'static str> {
+    pub fn to_double(self) -> CoordResult<Double> {
         match self.sys {
             CoordSys::Double => Ok(Double::from(self)),
             CoordSys::Axial => {
@@ -290,7 +331,7 @@ impl MultiCoord {
 
     /// Attempts to create an `Offset` from a `MultiCoord`. If successful,
     /// returns the result wrapped in an `Ok`. Otherwise, returns an `Err`.
-    pub fn to_offset(self) -> Result<Offset, &'static str> {
+    pub fn to_offset(self) -> CoordResult<Offset> {
         match self.sys {
             CoordSys::Offset => Ok(Offset::from(self)),
             CoordSys::Axial => {

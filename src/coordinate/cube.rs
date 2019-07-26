@@ -25,16 +25,6 @@ pub struct Cube {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-// Convenience Aliases
-//////////////////////////////////////////////////////////////////////////////
-
-/// Methods which create `Cube` coordinates perform validation to ensure all
-/// `Cube` coordinates obey the constraint x + y + z == 0. When this condition
-/// is met, these methods return the generated coordinate, wrapped in an `Ok`.
-/// When this condition is not met, an `Err` is returned.
-pub type CubeResult = Result<Cube, &'static str>;
-
-//////////////////////////////////////////////////////////////////////////////
 // Traits: Arithmetic
 //////////////////////////////////////////////////////////////////////////////
 
@@ -286,7 +276,7 @@ impl Cube {
     ///
     /// assert!(cube_2.is_err());
     /// ```
-    pub fn from_coords(x: i32, y: i32, z: i32) -> CubeResult {
+    pub fn from_coords(x: i32, y: i32, z: i32) -> CoordResult<Cube> {
         if z == 0 - x - y {
             Ok(Self { x: x, y: y, z: z })
         } else {
@@ -336,7 +326,7 @@ impl Cube {
     ///
     /// assert!(cube_2.is_err());
     /// ```
-    pub fn from_tuple((x, y, z): (i32, i32, i32)) -> CubeResult {
+    pub fn from_tuple((x, y, z): (i32, i32, i32)) -> CoordResult<Cube> {
         Cube::from_coords(x, y, z)
     }
 

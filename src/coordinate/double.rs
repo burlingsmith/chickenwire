@@ -28,16 +28,6 @@ pub struct Double {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-// Convenience Aliases
-//////////////////////////////////////////////////////////////////////////////
-
-/// Methods which create `Double` coordinates perform validation to ensure all
-/// `Double` coordinates obey the constraint (row + col) % 2 == 0. When this
-/// condition is met, these methods return the generated coordinate, wrapped
-/// in an `Ok`. When this condition is not met, an `Err` is returned.
-pub type DoubleResult = Result<Double, &'static str>;
-
-//////////////////////////////////////////////////////////////////////////////
 // Traits: Arithmetic
 //////////////////////////////////////////////////////////////////////////////
 
@@ -210,7 +200,7 @@ impl Double {
     ///
     /// assert!(double_2.is_err());
     /// ```
-    pub fn from_coords(col: i32, row: i32) -> DoubleResult {
+    pub fn from_coords(col: i32, row: i32) -> CoordResult<Double> {
         if (col + row) & 1 == 0 {
             Ok(Self { col: col, row: row })
         } else {
@@ -258,7 +248,7 @@ impl Double {
     ///
     /// assert!(double_2.is_err());
     /// ```
-    pub fn from_tuple((col, row): (i32, i32)) -> DoubleResult {
+    pub fn from_tuple((col, row): (i32, i32)) -> CoordResult<Double> {
         Double::from_coords(col, row)
     }
 
