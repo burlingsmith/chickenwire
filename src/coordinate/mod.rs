@@ -233,6 +233,16 @@ impl From<Offset> for MultiCoord {
 }
 
 impl MultiCoord {
+    /// Convenience function equivalent to
+    /// `MultiCoord::from(Axial { q: q, r: r })`
+    pub fn axial(q: i32, r: i32) -> Self {
+        Self::from(Axial { q: q, r: r })
+    }
+
+    pub fn cube(x: i32, y: i32, z: i32) -> Self {
+        unimplemented!();
+    }
+
     /// Attempts to create an `Axial` from a `MultiCoord`. If successful,
     /// returns the result wrapped in an `Ok`. Otherwise, returns an `Err`.
     pub fn to_axial(self) -> Result<Axial, &'static str> {

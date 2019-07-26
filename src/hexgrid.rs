@@ -87,7 +87,9 @@ pub enum Tilt {
 }
 
 impl Default for Tilt {
-    fn default() -> Self { Tilt::Flat }
+    fn default() -> Self {
+        Tilt::Flat
+    }
 }
 
 impl Tilt {
@@ -119,7 +121,9 @@ pub enum Parity {
 }
 
 impl Default for Parity {
-    fn default() -> Self { Parity::Even }
+    fn default() -> Self {
+        Parity::Even
+    }
 }
 
 impl Parity {
@@ -255,12 +259,6 @@ impl<T> HexGrid<T> {
     //////////////////////////////////
 
     /// Creates an empty `HexGrid` with the given parameters.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// unimplemented!();
-    /// ```
     pub fn new(tilt: Tilt, parity: Parity, sys: CoordSys) -> Self {
         Self {
             tilt: tilt,
@@ -275,12 +273,6 @@ impl<T> HexGrid<T> {
     /// would result in an empty `HexGrid`.
     ///
     /// `sys` defaults to `CoordSys::Cube` in the instantiated `HexGrid`.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// unimplemented!();
-    /// ```
     pub fn new_radial(radius: u32, blank_val: T) -> Self
     where
         T: Copy,
@@ -304,13 +296,7 @@ impl<T> HexGrid<T> {
     /// Initial values of `tilt`, `parity`, and `sys`` for `HexGrid`s
     /// instantiated with this method are `Tilt::Flat`, `Parity::Odd`, and
     /// `CoordSys::Offset`, respectively.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// unimplemented!();
-    /// ```
-    pub fn new_boxy(rows: u32, cols: u32, blank_val: T) -> Self
+    pub fn new_boxy(cols: u32, rows: u32, blank_val: T) -> Self
     where
         T: Copy,
     {
@@ -335,12 +321,6 @@ impl<T> HexGrid<T> {
 
     /// Returns `true` if the calling instance has a value associated with the
     /// given coordinate, else `false`.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// unimplemented!();
-    /// ```
     pub fn contains_coord(&self, coord: MultiCoord) -> bool {
         self.graph_index(coord).is_some()
     }
@@ -348,12 +328,6 @@ impl<T> HexGrid<T> {
     /// Returns `true` if the calling instance contains one or more hex values
     /// equal to the given target, else `false`. The target type must have the
     /// `Eq` trait.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// unimplemented!();
-    /// ```
     pub fn contains_value(&self, target: T) -> bool {
         unimplemented!();
     }
@@ -364,12 +338,6 @@ impl<T> HexGrid<T> {
 
     /// Return an immutable reference to the data contained at the given
     /// coordinate within the grid, if it exists.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// unimplemented!();
-    /// ```
     pub fn get(&self, coord: MultiCoord) -> Option<&T> {
         match self.graph_index(coord) {
             Some(&index) => self.graph.node_weight(index),
@@ -379,12 +347,6 @@ impl<T> HexGrid<T> {
 
     /// Return a mutable reference to the data contained at the given
     /// coordinate within the grid, if it exists.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// unimplemented!();
-    /// ```
     pub fn get_mut(&mut self, coord: MultiCoord) -> Option<&mut T> {
         match self.graph_index(coord) {
             Some(&index) => self.graph.node_weight_mut(index),
@@ -402,20 +364,6 @@ impl<T> HexGrid<T> {
     /// Strictly add a hex value to the grid at a given coordinate. Returns a
     /// `Result::Err(String)` if there is already a value at the given
     /// coordinate. Otherwise, returns `Result::Ok(())`.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use chickenwire::hexgrid::HexGrid;
-    /// use chickenwire::coordinate::{Cube, MultiCoord};
-    ///
-    /// let &mut grid = HexGrid::new();
-    ///
-    /// let coord_1 = MultiCoord::from(Cube::from_coords(1, 2, -3));
-    /// let coord_2 = MultiCoord::from(Cube::from_coords(3, -4, 1));
-    ///
-    /// unimplemented!();
-    /// ```
     pub fn add(&mut self, coord: MultiCoord, data: T) -> Result<(), String> {
         if self.contains_coord(coord) {
             Result::Err(
@@ -430,20 +378,6 @@ impl<T> HexGrid<T> {
     /// Strictly update a pre-existing hex value at a given coordinate.
     /// Returns a `Result::Err(String)` if the position is vacant. Otherwise,
     /// returns `Result::Ok(())`.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use chickenwire::hexgrid::HexGrid;
-    /// use chickenwire::coordinate::{Cube, MultiCoord};
-    ///
-    /// let &mut grid = HexGrid::new();
-    ///
-    /// let coord_1 = MultiCoord::from(Cube::from_coords(1, 2, -3));
-    /// let coord_2 = MultiCoord::from(Cube::from_coords(3, -4, 1));
-    ///
-    /// unimplemented!();
-    /// ```
     pub fn update(
         &mut self,
         coord: MultiCoord,
@@ -458,20 +392,6 @@ impl<T> HexGrid<T> {
     }
 
     /// Either creates & adds or updates a hex value at the given coordinate.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// use chickenwire::hexgrid::HexGrid;
-    /// use chickenwire::coordinate::{Cube, MultiCoord};
-    ///
-    /// let &mut grid = HexGrid::new();
-    ///
-    /// let coord_1 = MultiCoord::from(Cube::from_coords(1, 2, -3));
-    /// let coord_2 = MultiCoord::from(Cube::from_coords(3, -4, 1));
-    ///
-    /// unimplemented!();
-    /// ```
     pub fn set(&mut self, coord: MultiCoord, data: T) {
         match self.get_mut(coord) {
             Some(contents) => {
@@ -489,12 +409,6 @@ impl<T> HexGrid<T> {
 
     /// Cleanly removes a hex from the grid. Associated data will be returned.
     /// If the coordinate had no associated data, `None` will be returned.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// unimplemented!();
-    /// ```
     pub fn remove(&mut self, coord: MultiCoord) -> Option<T> {
         match self.graph_index(coord) {
             Some(&index) => {
@@ -511,49 +425,4 @@ impl<T> HexGrid<T> {
 
     // map
     // iters
-}
-
-//////////////////////////////////////////////////////////////////////////////
-// Unit Tests
-//////////////////////////////////////////////////////////////////////////////
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    //////////////////////////////////
-    // General
-    //////////////////////////////////
-
-    #[test]
-    fn test_it_works_1() {
-        unimplemented!();
-    }
-
-    //////////////////////////////////
-    // Compass
-    //////////////////////////////////
-
-    #[test]
-    fn test_it_works_2() {
-        unimplemented!();
-    }
-
-    //////////////////////////////////
-    // HexGrid
-    //////////////////////////////////
-
-    #[test]
-    fn test_remove() {
-        unimplemented!();
-    }
-
-    //////////////////////////////////
-    // Iteration
-    //////////////////////////////////
-
-    #[test]
-    fn test_it_works_4() {
-        unimplemented!();
-    }
 }

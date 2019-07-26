@@ -24,6 +24,6 @@ fn test_double_sharp_to_cube() {
 }
 
 #[test]
-fn test_cc_full_circle() {
+fn test_round_robin() {
     unimplemented!();
 }
