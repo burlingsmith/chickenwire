@@ -20,67 +20,56 @@ fn test_empty() {
 // Radial Grids
 //////////////////////////////////////////////////////////////////////////////
 
-fn radial_coord_validation(grid: &HexGrid<i32>, radius: u32) -> bool {
-    let mut result = true;
+fn radial_sweep_validation(radius: u32) -> HexGrid<i32> {
+    let grid = HexGrid::new_radial(radius, 0);
 
     let included = Cube::ORIGIN.spiral(radius);
     let excluded = Cube::ORIGIN.ring(radius + 1);
 
     for coord in included {
-        if !grid.contains_coord(MultiCoord::from(coord)) {
-            result = false;
-            break;
-        }
+        assert!(
+            grid.contains_coord(MultiCoord::from(coord)),
+            "expected coordinate presence in radial grid validation"
+        );
+        assert_eq!(
+            grid.get(MultiCoord::from(coord)),
+            Some(&0),
+            "expected 'Some(0)' in radial grid validation"
+        );
     }
 
-    if result {
-        for coord in excluded {
-            if grid.contains_coord(MultiCoord::from(coord)) {
-                result = false;
-                break;
-            }
-        }
+    for coord in excluded {
+        assert!(
+            !grid.contains_coord(MultiCoord::from(coord)),
+            "expected coordinate absence in radial grid validation"
+        );
+        assert_eq!(
+            grid.get(MultiCoord::from(coord)),
+            None,
+            "expected 'None' in radial grid validation"
+        );
     }
 
-    result
+    grid
 }
 
 #[test]
 fn test_radial_1() {
-    let grid = HexGrid::new_radial(1, 0);
+    let grid = radial_sweep_validation(1);
 
-    // Validate coordinate range
-    assert!(
-        radial_coord_validation(&grid, 1),
-        "radial-1 coordinate validation"
-    );
+    // Search for data
 
+    // Modiy values
     unimplemented!();
 }
 
 #[test]
 fn test_radial_5() {
-    let grid = HexGrid::new_radial(5, 0);
-
-    // Validate coordinate range
-    assert!(
-        radial_coord_validation(&grid, 1),
-        "radial-5 coordinate validation"
-    );
-
     unimplemented!();
 }
 
 #[test]
 fn test_radial_10() {
-    let grid = HexGrid::new_radial(10, 0);
-
-    // Validate coordinate range
-    assert!(
-        radial_coord_validation(&grid, 1),
-        "radial-10 coordinate validation"
-    );
-
     unimplemented!();
 }
 
@@ -88,7 +77,7 @@ fn test_radial_10() {
 // Rectangular Grids
 //////////////////////////////////////////////////////////////////////////////
 
-fn boxy_coord_validation(grid: HexGrid<i32>, cols: i32, rows: i32) -> bool {
+fn boxy_contains_coord_validation(grid: HexGrid<i32>, cols: i32, rows: i32) -> bool {
     let mut result = true;
 
     // Included coordinates
@@ -146,7 +135,7 @@ fn test_boxy_1x1() {
 
     // Validate coordinate Range
     assert!(
-        boxy_coord_validation(grid, 1, 1),
+        boxy_contains_coord_validation(grid, 1, 1),
         "boxy-1x1 coordinate validation"
     );
 
@@ -161,27 +150,57 @@ fn test_boxy_1x1() {
 
 #[test]
 fn test_boxy_5x5() {
-    //! Create a boxy with 5 columns and 5 rows.
-    //! Test boundaries.
-    //! Manipulate data.
+    let grid = HexGrid::new_boxy(5, 5, 0);
+
+    // Validate coordinate Range
+    assert!(
+        boxy_contains_coord_validation(grid, 5, 5),
+        "boxy-5x5 coordinate validation"
+    );
 
     unimplemented!();
+
+    // Access coordinate data
+
+    // Search for coordinate data
+
+    // Modify values (and search again)
 }
 
 #[test]
 fn test_boxy_10x5() {
-    //! Create a boxy with 10 columns and 5 rows.
-    //! Test boundaries.
-    //! Manipulate data.
+    let grid = HexGrid::new_boxy(10, 5, 0);
+
+    // Validate coordinate Range
+    assert!(
+        boxy_contains_coord_validation(grid, 10, 5),
+        "boxy-10x5 coordinate validation"
+    );
 
     unimplemented!();
+
+    // Access coordinate data
+
+    // Search for coordinate data
+
+    // Modify values (and search again)
 }
 
 #[test]
 fn test_boxy_5x10() {
-    //! Create a boxy with 5 columns and 10 rows.
-    //! Test boundaries.
-    //! Manipulate data.
+    let grid = HexGrid::new_boxy(5, 10, 0);
+
+    // Validate coordinate Range
+    assert!(
+        boxy_contains_coord_validation(grid, 5, 10),
+        "boxy-5x10 coordinate validation"
+    );
 
     unimplemented!();
+
+    // Access coordinate data
+
+    // Search for coordinate data
+
+    // Modify values (and search again)
 }
