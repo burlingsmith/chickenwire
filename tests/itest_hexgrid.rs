@@ -20,7 +20,7 @@ fn test_empty() {
 // Radial Grids
 //////////////////////////////////////////////////////////////////////////////
 
-fn radial_coords_exist(grid: &HexGrid<i32>, radius: u32) -> bool {
+fn radial_coord_validation(grid: &HexGrid<i32>, radius: u32) -> bool {
     let mut result = true;
 
     let included = Cube::ORIGIN.spiral(radius);
@@ -50,7 +50,10 @@ fn test_radial_1() {
     let grid = HexGrid::new_radial(1, 0);
 
     // Validate coordinate range
-    assert!(radial_coords_exist(&grid, 1), "radial-1 coordinate validation");
+    assert!(
+        radial_coord_validation(&grid, 1),
+        "radial-1 coordinate validation"
+    );
 
     unimplemented!();
 }
@@ -60,7 +63,10 @@ fn test_radial_5() {
     let grid = HexGrid::new_radial(5, 0);
 
     // Validate coordinate range
-    assert!(radial_coords_exist(&grid, 1), "radial-5 coordinate validation");
+    assert!(
+        radial_coord_validation(&grid, 1),
+        "radial-5 coordinate validation"
+    );
 
     unimplemented!();
 }
@@ -70,7 +76,10 @@ fn test_radial_10() {
     let grid = HexGrid::new_radial(10, 0);
 
     // Validate coordinate range
-    assert!(radial_coords_exist(&grid, 1), "radial-10 coordinate validation");
+    assert!(
+        radial_coord_validation(&grid, 1),
+        "radial-10 coordinate validation"
+    );
 
     unimplemented!();
 }
@@ -79,7 +88,7 @@ fn test_radial_10() {
 // Rectangular Grids
 //////////////////////////////////////////////////////////////////////////////
 
-fn boxy_coords_exist(grid: HexGrid<i32>, cols: i32, rows: i32) -> bool {
+fn boxy_coord_validation(grid: HexGrid<i32>, cols: i32, rows: i32) -> bool {
     let mut result = true;
 
     // Included coordinates
@@ -92,9 +101,40 @@ fn boxy_coords_exist(grid: HexGrid<i32>, cols: i32, rows: i32) -> bool {
         }
     }
 
-    // Excluded coordinates
+    // Excluded coordinates (top & bottom)
     if result {
-        unimplemented!();
+        for col in 0..cols {
+            let top = grid.contains_coord(MultiCoord::offset(col, -1));
+            let bot = grid.contains_coord(MultiCoord::offset(col, rows));
+
+            if top || bot {
+                result = false;
+                break;
+            }
+        }
+    }
+
+    // Excluded coordinates (sides)
+    if result {
+        for row in 0..rows {
+            let left = grid.contains_coord(MultiCoord::offset(-1, row));
+            let right = grid.contains_coord(MultiCoord::offset(cols, row));
+
+            if left || right {
+                result = false;
+                break;
+            }
+        }
+    }
+
+    // Excluded coordinates (corners)
+    if result {
+        let ne = !grid.contains_coord(MultiCoord::offset(-1, -1));
+        let se = !grid.contains_coord(MultiCoord::offset(-1, rows));
+        let sw = !grid.contains_coord(MultiCoord::offset(cols, -1));
+        let nw = !grid.contains_coord(MultiCoord::offset(cols, rows));
+
+        result = ne && se && sw && nw;
     }
 
     result
@@ -104,45 +144,13 @@ fn boxy_coords_exist(grid: HexGrid<i32>, cols: i32, rows: i32) -> bool {
 fn test_boxy_1x1() {
     let grid = HexGrid::new_boxy(1, 1, 0);
 
-    // Expected coordinates
+    // Validate coordinate Range
     assert!(
-        grid.contains_coord(MultiCoord::from(Offset::ORIGIN)),
-        "doesn't contain expected coordinate"
+        boxy_coord_validation(grid, 1, 1),
+        "boxy-1x1 coordinate validation"
     );
 
-    // Unexpected (surrounding) coordinates
-    assert!(
-        !grid.contains_coord(MultiCoord::from(Offset { col: 0, row: 1 })),
-        "contains unexpected coordinate"
-    );
-    assert!(
-        !grid.contains_coord(MultiCoord::from(Offset { col: 1, row: 1 })),
-        "contains unexpected coordinate"
-    );
-    assert!(
-        !grid.contains_coord(MultiCoord::from(Offset { col: 1, row: 0 })),
-        "contains unexpected coordinate"
-    );
-    assert!(
-        !grid.contains_coord(MultiCoord::from(Offset { col: 1, row: -1 })),
-        "contains unexpected coordinate"
-    );
-    assert!(
-        !grid.contains_coord(MultiCoord::from(Offset { col: 0, row: -1 })),
-        "contains unexpected coordinate"
-    );
-    assert!(
-        !grid.contains_coord(MultiCoord::from(Offset { col: -1, row: -1 })),
-        "contains unexpected coordinate"
-    );
-    assert!(
-        !grid.contains_coord(MultiCoord::from(Offset { col: -1, row: 0 })),
-        "contains unexpected coordinate"
-    );
-    assert!(
-        !grid.contains_coord(MultiCoord::from(Offset { col: -1, row: 1 })),
-        "contains unexpected coordinate"
-    );
+    unimplemented!();
 
     // Access coordinate data
 
