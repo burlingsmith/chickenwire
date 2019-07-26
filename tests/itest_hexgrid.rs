@@ -1,7 +1,11 @@
 //! Integration tests for `chickenwire::hexgrid`.
 
-use crate::coordinate::*;
-use crate::hexgrid::*;
+use chickenwire::coordinate::*;
+use chickenwire::coordinate::axial::*;
+use chickenwire::coordinate::cube::*;
+use chickenwire::coordinate::double::*;
+use chickenwire::coordinate::offset::*;
+use chickenwire::hexgrid::*;
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -38,46 +42,45 @@ fn test_boxy_1x1() {
 
     // Expected coordinates
     assert!(
-        grid::contains_coord(MultiCoord::from(Offset::ORIGIN)),
+        grid.contains_coord(MultiCoord::from(Offset::ORIGIN)),
         "doesn't contain expected coordinate"
     );
 
     // Unexpected (surrounding) coordinates
     assert!(
-        !grid::contains_coord(MultiCoord::from(Offset { col: 0, row: 1 })),
+        !grid.contains_coord(MultiCoord::from(Offset { col: 0, row: 1 })),
         "contains unexpected coordinate"
     );
     assert!(
-        !grid::contains_coord(MultiCoord::from(Offset { col: 1, row: 1 })),
+        !grid.contains_coord(MultiCoord::from(Offset { col: 1, row: 1 })),
         "contains unexpected coordinate"
     );
     assert!(
-        !grid::contains_coord(MultiCoord::from(Offset { col: 1, row: 0 })),
+        !grid.contains_coord(MultiCoord::from(Offset { col: 1, row: 0 })),
         "contains unexpected coordinate"
     );
     assert!(
-        !grid::contains_coord(MultiCoord::from(Offset { col: 1, row: -1 })),
+        !grid.contains_coord(MultiCoord::from(Offset { col: 1, row: -1 })),
         "contains unexpected coordinate"
     );
     assert!(
-        !grid::contains_coord(MultiCoord::from(Offset { col: 0, row: -1 })),
+        !grid.contains_coord(MultiCoord::from(Offset { col: 0, row: -1 })),
         "contains unexpected coordinate"
     );
     assert!(
-        !grid::contains_coord(MultiCoord::from(Offset { col: -1, row: -1 })),
+        !grid.contains_coord(MultiCoord::from(Offset { col: -1, row: -1 })),
         "contains unexpected coordinate"
     );
     assert!(
-        !grid::contains_coord(MultiCoord::from(Offset { col: -1, row: 0 })),
+        !grid.contains_coord(MultiCoord::from(Offset { col: -1, row: 0 })),
         "contains unexpected coordinate"
     );
     assert!(
-        !grid::contains_coord(MultiCoord::from(Offset { col: -1, row: 1 })),
+        !grid.contains_coord(MultiCoord::from(Offset { col: -1, row: 1 })),
         "contains unexpected coordinate"
     );
 
     // Access coordinate data
-    assert_eq!(grid::get, );
 }
 
 #[test]
