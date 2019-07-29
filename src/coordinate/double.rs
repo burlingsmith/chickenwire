@@ -11,8 +11,8 @@ use super::*;
 
 /// `Double` coordinates are similar to offset coordinates. However, instead
 /// of alternating rows and columns, the horizontal or vertical step size of
-/// the adjacent hexes are doubled. This can be useful when calculating
-/// rendering offsets, and a variety of other operations.
+/// the adjacent hexes are doubled. This is useful for a variety of
+/// operations.
 ///
 /// For a `Sharp` grid, the column value increases by a factor of two with
 /// each column. For a `Flat` grid, the row value increases by a factor of two
@@ -379,7 +379,7 @@ impl Double {
         let x_dist = (self.col - other.col).abs();
         let y_dist = (self.row - other.row).abs();
 
-        y_dist + cmp::max(0, (x_dist - y_dist) / 2)
+        x_dist + cmp::max(0, (y_dist - x_dist) / 2)
     }
 
     /// Calculates the distance between two `Double` coordinates in the
@@ -422,7 +422,7 @@ impl Double {
         let x_dist = (self.col - other.col).abs();
         let y_dist = (self.row - other.row).abs();
 
-        x_dist + cmp::max(0, (y_dist - x_dist) / 2)
+        y_dist + cmp::max(0, (x_dist - y_dist) / 2)
     }
 }
 
@@ -440,26 +440,66 @@ mod tests {
 
     #[test]
     fn test_add_trait() {
-        unimplemented!();
+        let d1 = Double::force_from_coords(1, 3);
+        let d2 = Double::force_from_coords(0, 2);
+        let d3 = Double::force_from_coords(-4, 6);
+
+        assert_eq!(Double::force_from_coords(2, 6), d1 + d1);
+        assert_eq!(Double::force_from_coords(1, 5), d1 + d2);
+        assert_eq!(Double::force_from_coords(-3, 9), d1 + d3);
+
+        assert_eq!(Double::force_from_coords(0, 4), d2 + d2);
+        assert_eq!(Double::force_from_coords(-4, 8), d2 + d3);
+
+        assert_eq!(Double::force_from_coords(-8, 12), d3 + d3);
     }
 
     #[test]
     fn test_sub_trait() {
-        unimplemented!();
+        let d1 = Double::force_from_coords(2, 4);
+        let d2 = Double::force_from_coords(0, -2);
+        let d3 = Double::force_from_coords(3, 7);
+
+        assert_eq!(Double::ORIGIN, d1 - d1);
+        assert_eq!(Double::force_from_coords(2, 6), d1 - d2);
+        assert_eq!(Double::force_from_coords(-1, -3), d1 - d3);
+
+        assert_eq!(Double::force_from_coords(-2, -6), d2 - d1);
+        assert_eq!(Double::ORIGIN, d2 - d2);
+        assert_eq!(Double::force_from_coords(-3, -9), d2 - d3);
+
+        assert_eq!(Double::force_from_coords(1, 3), d3 - d1);
+        assert_eq!(Double::force_from_coords(3, 9), d3 - d2);
+        assert_eq!(Double::ORIGIN, d3 - d3);
     }
 
     #[test]
     fn test_mul_trait() {
-        unimplemented!();
+        let d1 = Double::force_from_coords(1, 3);
+        let d2 = Double::force_from_coords(-2, 8);
+        let d3 = Double::force_from_coords(-3, -1);
+
+        assert_eq!(2 * d1, d1 + d1);
+        assert_eq!(0 * d1, Double::ORIGIN);
+        assert_eq!(-1 * d1, Double::ORIGIN - d1);
+
+        assert_eq!(5 * d2, d2 + d2 + d2 + d2 + d2);
+        assert_eq!(0 * d2, Double::ORIGIN);
+        assert_eq!(-3 * d2, Double::ORIGIN - d2 - d2 - d2);
+
+        assert_eq!(1 * d3, d3);
+        assert_eq!(14 * d3, Double::force_from_coords(-42, -14));
     }
 
     //////////////////////////////////
-    // Traits: From & Into (Unit)
+    // Traits: From & Into
     //////////////////////////////////
 
     #[test]
     fn test_double_from_tuple_trait() {
-        unimplemented!();
+        assert_eq!(Double::from((0, 0)), Double::ORIGIN);
+        assert_eq!(Double::from((3, 1)), Double { col: 3, row: 1 });
+        assert_eq!(Double::from((2, 8)), Double { col: 2, row: 8 });
     }
 
     //////////////////////////////////
@@ -593,12 +633,70 @@ mod tests {
 
     #[test]
     fn test_flat_neighbors() {
-        unimplemented!();
+        let exp_origin_neighbors = vec![
+            Double { col: 1, row: -1 },
+            Double { col: 1, row: 1 },
+            Double { col: 0, row: 2 },
+            Double { col: -1, row: 1 },
+            Double { col: -1, row: -1 },
+            Double { col: 0, row: -2 },
+        ];
+
+        assert_eq!(
+            exp_origin_neighbors,
+            Double::ORIGIN.flat_neighbors(),
+            "origin neighbors"
+        );
+
+        let offset_coord = Double { col: 1, row: 3 };
+        let exp_offset_neighbors = vec![
+            Double { col: 2, row: 2 },
+            Double { col: 2, row: 4 },
+            Double { col: 1, row: 5 },
+            Double { col: 0, row: 4 },
+            Double { col: 0, row: 2 },
+            Double { col: 1, row: 1 },
+        ];
+
+        assert_eq!(
+            exp_offset_neighbors,
+            offset_coord.flat_neighbors(),
+            "offset neighbors"
+        );
     }
 
     #[test]
     fn test_sharp_neighbors() {
-        unimplemented!();
+        let exp_origin_neighbors = vec![
+            Double { col: 1, row: -1 },
+            Double { col: 2, row: 0 },
+            Double { col: 1, row: 1 },
+            Double { col: -1, row: 1 },
+            Double { col: -2, row: 0 },
+            Double { col: -1, row: -1 },
+        ];
+
+        assert_eq!(
+            exp_origin_neighbors,
+            Double::ORIGIN.sharp_neighbors(),
+            "origin neighbors"
+        );
+
+        let offset_coord = Double { col: 3, row: 5 };
+        let exp_offset_neighbors = vec![
+            Double { col: 4, row: 4 },
+            Double { col: 5, row: 5 },
+            Double { col: 4, row: 6 },
+            Double { col: 2, row: 6 },
+            Double { col: 1, row: 5 },
+            Double { col: 2, row: 4 },
+        ];
+
+        assert_eq!(
+            exp_offset_neighbors,
+            offset_coord.sharp_neighbors(),
+            "offset neighbors"
+        );
     }
 
     //////////////////////////////////
@@ -614,7 +712,7 @@ mod tests {
         let coord_5 = Double { col: 7, row: 11 };
 
         assert_eq!(Double::ORIGIN.flat_dist(coord_1), 2);
-        assert_eq!(Double::ORIGIN.flat_dist(coord_2), 6);
+        assert_eq!(Double::ORIGIN.flat_dist(coord_2), 5);
         assert_eq!(Double::ORIGIN.flat_dist(coord_3), 4);
         assert_eq!(Double::ORIGIN.flat_dist(coord_4), 4);
         assert_eq!(Double::ORIGIN.flat_dist(coord_5), 9);

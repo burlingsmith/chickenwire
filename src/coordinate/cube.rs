@@ -624,7 +624,24 @@ mod tests {
         assert_eq!(Cube { x: -3, y: -4, z: 7 }, Cube::from((-3, -4, 7)));
         assert_eq!(Cube { x: -5, y: 6, z: -1 }, Cube::from((-5, 6, -1)));
         assert_eq!(Cube { x: 7, y: -8, z: 1 }, Cube::from((7, -8, 1)));
-        assert_eq!(Cube { x: 1, y: 2, z: -3 }, Cube::from((1, 2, 0)));
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_cube_from_invalid_tuple_1() {
+        let cube = Cube::from((1, 2, 0));
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_cube_from_invalid_tuple_2() {
+        let cube = Cube::from((1, -2, 0));
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_cube_from_invalid_tuple_3() {
+        let cube = Cube::from((1, 0, 0));
     }
 
     #[test]
@@ -1026,7 +1043,6 @@ mod tests {
             Cube::force_from_coords(0, 2, -2),
             Cube::force_from_coords(1, 1, -2),
         ];
-
         assert_eq!(
             origin_spiral_0,
             Cube::ORIGIN.spiral(0),
@@ -1054,7 +1070,7 @@ mod tests {
             Cube::force_from_coords(5, -2, -3),
         ];
         let offset_spiral_2 = vec![
-            Cube::force_from_coords(5, -3, -4),
+            Cube::force_from_coords(5, -3, -2),
             Cube::force_from_coords(6, -3, -3),
             Cube::force_from_coords(6, -4, -2),
             Cube::force_from_coords(5, -4, -1),
