@@ -2,12 +2,12 @@
 A library for representing and manipulating hexagonal grids in Rust.
 
 ## Contents
-1. [Installation](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#installation)
-2. [Usage](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#usage)
-3. [Documentation](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#documentation)
-4. [Contributing](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#contributing)
-5. [Credits](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#credits)
-6. [License](https://github.com/cmarcbs7/chickenwire/blob/master/README.md#license)
+1. [Installation](#installation)
+2. [Usage](#usage)
+3. [Documentation](#documentation)
+4. [Contributing](#contributing)
+5. [Credits](#credits)
+6. [License](#license)
 
 ## Installation
 Add the following to your project's `Cargo.toml` file under `[dependencies]`:
@@ -22,14 +22,15 @@ Check out [Chickenwire's Cargo page]() for the latest version info.
 [Documentation needed]
 
 ## Documentation
-Click [here]() for Chickenwire's docs.rs entry.
+Full API docs at [docs.rs]().
 
 ## Contributing
-Please see the project's
-[style](https://github.com/cmarcbs7/chickenwire/blob/master/docs/style.md)
-and
-[contribution](https://github.com/cmarcbs7/chickenwire/blob/master/docs/contributing.md)
-guides.
+Please read the following:
+
+- [Chickenwire style guide](docs/style.md)
+- [Chickenwire contribution guide](docs/contributing.md)
+
+before filing issues and/or making contributions.
 
 ## Credits
 **Dependencies**

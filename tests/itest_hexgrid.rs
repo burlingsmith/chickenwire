@@ -65,11 +65,21 @@ fn test_radial_1() {
 
 #[test]
 fn test_radial_5() {
+    let grid = radial_sweep_validation(5);
+
+    // Search for data
+
+    // Modiy values
     unimplemented!();
 }
 
 #[test]
 fn test_radial_10() {
+    let grid = radial_sweep_validation(10);
+
+    // Search for data
+
+    // Modiy values
     unimplemented!();
 }
 

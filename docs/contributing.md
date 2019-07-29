@@ -9,12 +9,12 @@ Now, on to brass tacks:
 
 ## Background Reading
 If you haven't already, please read up on the
-[GitHub Workflow](https://guides.github.com/introduction/flow/) before
-continuing with this guide, as that's the baseline for working on the project.
+[GitHub Workflow](https://guides.github.com/introduction/flow) before
+continuing with this guide or making contributions.
 
 You might also find it helpful to refer to Red Blob Games' guide on hexagonal
-grids (a.k.a. [The Guide](https://www.redblobgames.com/grids/hexagons)), as
-that's the foundation everything has been built off of.
+grids (a.k.a. [The Guide](https://www.redblobgames.com/grids/hexagons)), which
+Chickenwire is heavily based upon.
 
 ## Code Contributions
 If you're an expert on Rust, then welcome. Go ham.
@@ -28,19 +28,13 @@ Documentation, issue filing, suggestions, and feedback are all super helpful.
 I'm also looking for someone to design a page image, just to give Chickenwire
 a brand identity.
 
-## Meta Contributions
 The contribution and style guides might get a little outdated or in need of
 improvement. Feel free to post an issue if you think that's the case.
 
 ## Versioning
-Chickenwire uses semantic versioning. During development, changes will be
-accumulated in a 0.y.0 branch, leading up to the release of version 0.y.0.
-This is the branch you should fork from when you're writing code for the
-project.
-
-Intermittently, I might release a version of this branch as 0.(y - 1).z.
+Like all Rust projects, Chickenwire uses
+[semantic versioning](https://semver.org/).
 
 ## Management
 If you have experience running a GitHub project, I'm always on the lookout for
-people to deputize. Feel free to contact me if you're interested and
-qualified.
+people to deputize. Please contact me if you're interested and qualified.
