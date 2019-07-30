@@ -22,7 +22,8 @@ Check out [Chickenwire's Cargo page]() for the latest version info.
 [Documentation needed]
 
 ## Documentation
-Full API docs at [docs.rs]().
+- [API docs]()
+- [Changelog](CHANGELOG.md)
 
 ## Contributing
 Please read the following:
@@ -31,6 +32,9 @@ Please read the following:
 - [Chickenwire contribution guide](CONTRIBUTING.md)
 
 before filing issues and/or making contributions.
+
+The Chickenwire project has two-way
+[GitLab](https://gitlab.com/cmarcbs7/chickenwire) mirroring.
 
 ## Credits
 **Dependencies**
