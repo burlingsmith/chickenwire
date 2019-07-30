@@ -27,8 +27,8 @@ Full API docs at [docs.rs]().
 ## Contributing
 Please read the following:
 
-- [Chickenwire style guide](docs/style.md)
-- [Chickenwire contribution guide](docs/contributing.md)
+- [Chickenwire style guide](style-guide.md)
+- [Chickenwire contribution guide](CONTRIBUTING.md)
 
 before filing issues and/or making contributions.
 
