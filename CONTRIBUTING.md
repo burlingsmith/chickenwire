@@ -31,6 +31,9 @@ You do not have to use the TDD model for benchmark tests.
 If you're a web developer interested in the project, Chickenwire has a demo
 site in the works which could really use some help.
 
+The Chickenwire project has two-way
+[GitLab](https://gitlab.com/cmarcbs7/chickenwire) mirroring.
+
 ## Non-Code Contributions
 Documentation, issue filing, suggestions, and feedback are all super helpful.
 

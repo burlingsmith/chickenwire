@@ -33,9 +33,6 @@ Please read the following:
 
 before filing issues and/or making contributions.
 
-The Chickenwire project has two-way
-[GitLab](https://gitlab.com/cmarcbs7/chickenwire) mirroring.
-
 ## Credits
 **Dependencies**
 - [behiesler's Criterion.rs](https://github.com/bheisler/criterion.rs)
