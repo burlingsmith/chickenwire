@@ -230,6 +230,24 @@ impl Axial {
     }
 
     //////////////////////////////////
+    // Neighbors
+    //////////////////////////////////
+
+    /// [ docs missing ]
+    pub fn neighbors(self) -> Vec<Self> {
+        let cube_neighbors = Cube::from(self).neighbors();
+
+        cube_neighbors.into_iter().map(|coord| Self::from(coord)).collect()
+    }
+
+    /// [ docs missing ]
+    pub fn diagonals(self) -> Vec<Self> {
+        let cube_diagonals = Cube::from(self).diagonals();
+
+        cube_diagonals.into_iter().map(|coord| Self::from(coord)).collect()
+    }
+
+    //////////////////////////////////
     // Distances
     //////////////////////////////////
 
@@ -251,19 +269,5 @@ impl Axial {
     /// ```
     pub fn dist(self, other: Self) -> i32 {
         Cube::from(self).dist(Cube::from(other))
-    }
-}
-
-//////////////////////////////////////////////////////////////////////////////
-// Unit Tests
-//////////////////////////////////////////////////////////////////////////////
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_it_works() {
-        assert_eq!(1 + 1, 2);
     }
 }

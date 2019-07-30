@@ -17,7 +17,16 @@ grids (a.k.a. [The Guide](https://www.redblobgames.com/grids/hexagons)), which
 Chickenwire is heavily based upon.
 
 ## Code Contributions
-If you're an expert on Rust, then welcome. Go ham.
+Please adhere to the following
+[TDD](https://www.codecademy.com/articles/tdd-red-green-refactor) model:
+1. Write all tests to check behavior and behavior alone.
+2. Write only enough of a test to fail.
+3. Write only enough production code to make a failing test pass.
+
+Note that documentation example tests are valid substitutes for sub-module
+unit tests.
+
+You do not have to use the TDD model for benchmark tests.
 
 If you're a web developer interested in the project, Chickenwire has a demo
 site in the works which could really use some help.

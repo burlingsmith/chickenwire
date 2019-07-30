@@ -127,7 +127,8 @@ impl Mul<Cube> for i32 {
 ///
 /// assert_eq!(coord / -1, Cube::from_coords(-12, -24, 36));
 /// assert_eq!(coord / 2, Cube::from_coords(6, 12, -18));
-/// assert_eq!(coord / 3, Cube::from_coords(4, 8, -12));
+///
+/// assert_eq!(coord / 5, Cube::from_coords(2, 4, -6));
 /// ```
 impl Div<i32> for Cube {
     type Output = Self;
@@ -328,6 +329,14 @@ impl Cube {
     /// ```
     pub fn from_tuple((x, y, z): (i32, i32, i32)) -> CoordResult<Cube> {
         Cube::from_coords(x, y, z)
+    }
+
+    //////////////////////////////////
+    // Conversion
+    //////////////////////////////////
+
+    pub fn to_tuple(self) -> (i32, i32, i32) {
+        (self.x, self.y, self.z)
     }
 
     //////////////////////////////////
@@ -534,6 +543,7 @@ impl Cube {
     // Rotation
     //////////////////////////////////
 
+    /// [ docs missing ]
     pub fn rotate_cw(self, point: Self, num_turns: u32) -> Self {
         let mut vector = point - self;
 
@@ -548,6 +558,7 @@ impl Cube {
         vector + self
     }
 
+    /// [ docs missing ]
     pub fn rotate_cc(self, point: Self, num_turns: u32) -> Self {
         let mut vector = point - self;
 
@@ -566,6 +577,7 @@ impl Cube {
     // Rings
     //////////////////////////////////
 
+    /// [ docs missing ]
     pub fn ring(self, radius: u32) -> Vec<Self> {
         let mut coords = Vec::new();
 
@@ -590,6 +602,7 @@ impl Cube {
         coords
     }
 
+    /// [ docs missing ]
     pub fn spiral(self, radius: u32) -> Vec<Self> {
         let mut coords = Vec::new();
 
@@ -598,14 +611,6 @@ impl Cube {
         }
 
         coords
-    }
-
-    //////////////////////////////////
-    // Conversion
-    //////////////////////////////////
-
-    pub fn to_tuple(self) -> (i32, i32, i32) {
-        (self.x, self.y, self.z)
     }
 }
 
@@ -617,8 +622,46 @@ impl Cube {
 mod tests {
     use super::*;
 
+    //////////////////////////////////
+    // Traits: Arithmetic
+    //////////////////////////////////
+
+    #[test]
+    fn test_cube_arithmetic() {
+        let unit_cube_x = Cube { x: 1, y: 0, z: 0 };
+        let unit_cube_y = Cube { x: 0, y: 1, z: 0 };
+        let unit_cube_z = Cube { x: 0, y: 0, z: 1 };
+
+        assert_eq!(3 * unit_cube_x, Cube { x: 3, y: 0, z: 0 });
+        assert_eq!(unit_cube_y * 5, Cube { x: 0, y: 5, z: 0 });
+        assert_eq!(7 * unit_cube_z, Cube { x: 0, y: 0, z: 7 });
+
+        assert_eq!(
+            unit_cube_x + unit_cube_y + unit_cube_z,
+            Cube { x: 1, y: 1, z: 1 }
+        );
+        assert_eq!(
+            7 * unit_cube_x + 5 * unit_cube_y + 3 * unit_cube_z,
+            Cube { x: 7, y: 5, z: 3 }
+        );
+        assert_eq!(
+            3 * (unit_cube_x + unit_cube_y) - 5 * unit_cube_z - unit_cube_y,
+            Cube { x: 3, y: 2, z: -5 }
+        );
+        assert_eq!(
+            (4 * unit_cube_x - 2 * unit_cube_y + unit_cube_z) / 2,
+            Cube { x: 2, y: -1, z: 0 }
+        );
+    }
+
+    //////////////////////////////////
+    // Traits: From & Into
+    //////////////////////////////////
+
     #[test]
     fn test_cube_from_tuples() {
+        //! Generate cube coordinates from valid tuples.
+
         assert_eq!(Cube::ORIGIN, Cube::from((0, 0, 0)));
         assert_eq!(Cube { x: 1, y: 2, z: -3 }, Cube::from((1, 2, -3)));
         assert_eq!(Cube { x: -3, y: -4, z: 7 }, Cube::from((-3, -4, 7)));
@@ -629,20 +672,34 @@ mod tests {
     #[test]
     #[should_panic]
     fn test_cube_from_invalid_tuple_1() {
+        //! Panic when given a tuple violating cube coordinate constraints.
+
         let cube = Cube::from((1, 2, 0));
     }
 
     #[test]
     #[should_panic]
     fn test_cube_from_invalid_tuple_2() {
+        //! Panic when given a tuple violating cube coordinate constraints.
+
         let cube = Cube::from((1, -2, 0));
     }
 
     #[test]
     #[should_panic]
     fn test_cube_from_invalid_tuple_3() {
+        //! Panic when given a tuple violating cube coordinate constraints.
+
         let cube = Cube::from((1, 0, 0));
     }
+
+    //////////////////////////////////
+    // Initialization
+    //////////////////////////////////
+
+    //////////////////////////////////
+    // Conversion
+    //////////////////////////////////
 
     #[test]
     fn test_cube_from_integers() {
@@ -701,33 +758,21 @@ mod tests {
         );
     }
 
-    #[test]
-    fn test_cube_arithmetic() {
-        let unit_cube_x = Cube { x: 1, y: 0, z: 0 };
-        let unit_cube_y = Cube { x: 0, y: 1, z: 0 };
-        let unit_cube_z = Cube { x: 0, y: 0, z: 1 };
+    //////////////////////////////////
+    // Retrieval
+    //////////////////////////////////
 
-        assert_eq!(3 * unit_cube_x, Cube { x: 3, y: 0, z: 0 });
-        assert_eq!(unit_cube_y * 5, Cube { x: 0, y: 5, z: 0 });
-        assert_eq!(7 * unit_cube_z, Cube { x: 0, y: 0, z: 7 });
+    //////////////////////////////////
+    // Neighbors
+    //////////////////////////////////
 
-        assert_eq!(
-            unit_cube_x + unit_cube_y + unit_cube_z,
-            Cube { x: 1, y: 1, z: 1 }
-        );
-        assert_eq!(
-            7 * unit_cube_x + 5 * unit_cube_y + 3 * unit_cube_z,
-            Cube { x: 7, y: 5, z: 3 }
-        );
-        assert_eq!(
-            3 * (unit_cube_x + unit_cube_y) - 5 * unit_cube_z - unit_cube_y,
-            Cube { x: 3, y: 2, z: -5 }
-        );
-        assert_eq!(
-            (4 * unit_cube_x - 2 * unit_cube_y + unit_cube_z) / 2,
-            Cube { x: 2, y: -1, z: 0 }
-        );
-    }
+    //////////////////////////////////
+    // Distances
+    //////////////////////////////////
+
+    //////////////////////////////////
+    // Rotation
+    //////////////////////////////////
 
     #[test]
     fn test_cube_neighbors() {
@@ -916,6 +961,10 @@ mod tests {
             "offset diagonals"
         );
     }
+
+    //////////////////////////////////
+    // Rings
+    //////////////////////////////////
 
     #[test]
     fn test_cube_rings() {
