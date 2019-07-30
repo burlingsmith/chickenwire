@@ -5,5 +5,5 @@ below.
 ## Versions
 - [0.1.0](#0.1.0-Release)
 
-## 0.1.0 (Launch)
+### 0.1.0 (Launch)
 - Added core functionality
