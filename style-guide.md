@@ -10,8 +10,8 @@ Everything below is in addition to those.
 - Maximum line length is 79 characters. This includes comments, and there are
 no exceptions.
 
-## Sections
-There are two tiers of section headers. The first spans the full line:
+## Headers
+Section headers span the full line:
 
 ```Rust
 //////////////////////////////////////////////////////////////////////////////
