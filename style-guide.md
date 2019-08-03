@@ -10,6 +10,46 @@ Everything below is in addition to those.
 - Maximum line length is 79 characters. This includes comments, and there are
 no exceptions.
 
+## `mod` and `use` Order
+- All `mod` declarations go before all `use` declarations within the scope.
+- Blocks are then ordered by scope (`pub use` is above `pub(crate) use` is
+above `use`, etc.).
+- The following blocks need to be separated by a single line, in this order:
+    - Standard library crates
+    - Each individual community crate
+    - Each project crate module
+- Items within blocks are sorted alphabetically.
+- Community crate blocks are sorted alphabetically.
+- Prefer not to glob on `pub use`
+- Never `pub use` or `pub mod` standard are community crates.
+- Sample:
+
+```Rust
+//! [ module docs ]
+
+pub mod axial;
+pub mod offset;
+
+mod cube;
+mod double;
+
+pub use axial::Axial;
+
+use std::collections::HashSet;
+use std::iter::FromIterator;
+
+use petgraph::graph::{node_index, NodeIndex};
+use petgraph::stable_graph::StableGraph;
+use petgraph::visit::Dfs;
+
+use rand::prelude::*;
+
+use axial::*;
+use cube::*;
+use double::*;
+use offset::*;
+```
+
 ## Headers
 Section headers span the full line:
 
