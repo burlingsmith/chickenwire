@@ -553,18 +553,21 @@ mod tests {
 
     #[test]
     #[should_panic]
+    #[allow(unused_variables)]
     fn test_force_from_coords_invalid_1() {
         let invalid_double = Double::force_from_coords(0, 1);
     }
 
     #[test]
     #[should_panic]
+    #[allow(unused_variables)]
     fn test_force_from_coords_invalid_2() {
         let invalid_double = Double::force_from_coords(1, 0);
     }
 
     #[test]
     #[should_panic]
+    #[allow(unused_variables)]
     fn test_force_from_coords_invalid_3() {
         let invalid_double = Double::force_from_coords(5, 6);
     }

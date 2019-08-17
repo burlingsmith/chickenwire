@@ -660,8 +660,6 @@ mod tests {
 
     #[test]
     fn test_cube_from_tuples() {
-        //! Generate cube coordinates from valid tuples.
-
         assert_eq!(Cube::ORIGIN, Cube::from((0, 0, 0)));
         assert_eq!(Cube { x: 1, y: 2, z: -3 }, Cube::from((1, 2, -3)));
         assert_eq!(Cube { x: -3, y: -4, z: 7 }, Cube::from((-3, -4, 7)));
@@ -671,25 +669,22 @@ mod tests {
 
     #[test]
     #[should_panic]
+    #[allow(unused_variables)]
     fn test_cube_from_invalid_tuple_1() {
-        //! Panic when given a tuple violating cube coordinate constraints.
-
         let cube = Cube::from((1, 2, 0));
     }
 
     #[test]
     #[should_panic]
+    #[allow(unused_variables)]
     fn test_cube_from_invalid_tuple_2() {
-        //! Panic when given a tuple violating cube coordinate constraints.
-
         let cube = Cube::from((1, -2, 0));
     }
 
     #[test]
     #[should_panic]
+    #[allow(unused_variables)]
     fn test_cube_from_invalid_tuple_3() {
-        //! Panic when given a tuple violating cube coordinate constraints.
-
         let cube = Cube::from((1, 0, 0));
     }
 
