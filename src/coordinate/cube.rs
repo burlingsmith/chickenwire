@@ -543,7 +543,7 @@ impl Cube {
     // Rotation
     //////////////////////////////////
 
-    /// [ docs missing ]
+    /// Rotate a point n times clockwise about the calling instance.
     pub fn rotate_cw(self, point: Self, num_turns: u32) -> Self {
         let mut vector = point - self;
 
@@ -558,7 +558,7 @@ impl Cube {
         vector + self
     }
 
-    /// [ docs missing ]
+    /// Rotate a point n times counter-clockwise about the calling instance.
     pub fn rotate_cc(self, point: Self, num_turns: u32) -> Self {
         let mut vector = point - self;
 
@@ -577,7 +577,8 @@ impl Cube {
     // Rings
     //////////////////////////////////
 
-    /// [ docs missing ]
+    /// Return the coordinates comprising a ring with a given radisu about the
+    /// calling instance.
     pub fn ring(self, radius: u32) -> Vec<Self> {
         let mut coords = Vec::new();
 
@@ -602,7 +603,9 @@ impl Cube {
         coords
     }
 
-    /// [ docs missing ]
+    /// Return all coordinates up to and within a ring with the given radius
+    /// about the calling instance. Spirals outwards, so the first element of
+    /// the returned vector is the calling instance.
     pub fn spiral(self, radius: u32) -> Vec<Self> {
         let mut coords = Vec::new();
 

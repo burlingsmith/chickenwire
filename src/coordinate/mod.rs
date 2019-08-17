@@ -115,7 +115,10 @@ use offset::*;
 // Convenience Aliases
 //////////////////////////////////////////////////////////////////////////////
 
-/// [ docs missing ]
+/// `Cube` and `Double` coordinates have constraints which their values must
+/// obey. For the instantiation of `Cube`, `Double`, or appropriate
+/// `MultiCoord` values, a `CoordResult` accounts for invalid arguments to
+/// instantiation functions.
 pub type CoordResult<T> = Result<T, &'static str>;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -123,7 +126,7 @@ pub type CoordResult<T> = Result<T, &'static str>;
 //////////////////////////////////////////////////////////////////////////////
 
 /// A `CoordSys` is a valueless label for any of the four coordinate systems
-/// supported in Chickenwire (`Axial`, `Cube`, `Double`, and `Offset`).
+/// supported in Chickenwire (`Axial`, `Cube`, `Double`, or `Offset`).
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum CoordSys {
     Axial,
@@ -241,16 +244,15 @@ impl From<Offset> for MultiCoord {
 
 impl MultiCoord {
     //////////////////////////////////
-    // Initialization
+    // Instantiation
     //////////////////////////////////
 
-    /// Convenience function equivalent to
-    /// `MultiCoord::from(Axial { q: q, r: r })`
+    /// Instantiate a `MultiCoord` using `Axial` coordinates.
     pub fn axial(q: i32, r: i32) -> Self {
         Self::from(Axial::from_coords(q, r))
     }
 
-    /// [ docs missing ]
+    /// Attempt to instantiate a `MultiCoord` using `Cube` coordinates.
     pub fn cube(x: i32, y: i32, z: i32) -> CoordResult<Self> {
         match Cube::from_coords(x, y, z) {
             Ok(cube) => Ok(Self::from(cube)),
@@ -258,12 +260,17 @@ impl MultiCoord {
         }
     }
 
-    /// [ docs missing ]
+    /// Instantiate a `MultiCoord` using `Cube` coordinates.
+    ///
+    /// # Panics
+    ///
+    /// Panics when the given coordinates violate the contraint
+    /// x + y + z == 0.
     pub fn force_cube(x: i32, y: i32, z: i32) -> Self {
         Self::from(Cube::force_from_coords(x, y, z))
     }
 
-    /// [ docs missing ]
+    /// Attempt to instantiate a `MultiCoord` using `Double` coordinates.
     pub fn double(col: i32, row: i32) -> CoordResult<Self> {
         match Double::from_coords(col, row) {
             Ok (double) => Ok(Self::from(double)),
@@ -271,12 +278,17 @@ impl MultiCoord {
         }
     }
 
-    /// [ docs missing ]
+    /// Instantiate a `MultiCoord` using `Double` coordinates.
+    ///
+    /// # Panics
+    ///
+    /// Panics when the given coordinates violate the contraint
+    /// (col + row) % 2 == 0.
     pub fn force_double(col: i32, row: i32) -> Self {
         Self::from(Double::force_from_coords(col, row))
     }
 
-    /// [ docs missing ]
+    /// Instantiate a `MultiCoord` using `Offset` coordinates.
     pub fn offset(col: i32, row: i32) -> Self {
         Self::from(Offset::from_coords(col, row))
     }
