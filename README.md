@@ -16,13 +16,14 @@ Add the following to your project's `Cargo.toml` file under `[dependencies]`:
 chickenwire = "0.1.0"
 ```
 
-Check out [Chickenwire's Cargo page]() for the latest version info.
+Check out [Chickenwire's Cargo page](https://crates.io/crates/chickenwire) for
+the latest version info.
 
 ## Usage
 [Documentation needed]
 
 ## Documentation
-- [API docs]()
+- [API docs](https://docs.rs/chickenwire/0.1.0/)
 - [Changelog](CHANGELOG.md)
 
 ## Contributing
