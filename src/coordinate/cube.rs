@@ -1,7 +1,7 @@
 //! Cube Coordinates
 
 use std::cmp;
-use std::ops::{Add, Div, Mul, Sub};
+use std::ops::{Add, Mul, Sub};
 
 use super::*;
 
@@ -33,13 +33,13 @@ pub struct Cube {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::cube::Cube;
+/// use chickenwire::coordinate::Cube;
 ///
-/// let coord_1 = Cube::from_coords(1, 2, -3);
-/// let coord_2 = Cube::from_coords(-5, -7, 12);
+/// let coord_1 = Cube::force_from_coords(1, 2, -3);
+/// let coord_2 = Cube::force_from_coords(-5, -7, 12);
 ///
-/// assert_eq!(coord_1 + coord_2, Cube::from_coords(-4, -5, 9));
-/// assert_eq!(coord_2 + coord_1, Cube::from_coords(-4, -5, 9));
+/// assert_eq!(coord_1 + coord_2, Cube::force_from_coords(-4, -5, 9));
+/// assert_eq!(coord_2 + coord_1, Cube::force_from_coords(-4, -5, 9));
 /// ```
 impl Add for Cube {
     type Output = Self;
@@ -60,11 +60,11 @@ impl Add for Cube {
 /// ```
 /// use chickenwire::coordinate::cube::Cube;
 ///
-/// let coord_1 = Cube::from_coords(1, 2, -3);
-/// let coord_2 = Cube::from_coords(5, 7, -12);
+/// let coord_1 = Cube::force_from_coords(1, 2, -3);
+/// let coord_2 = Cube::force_from_coords(5, 7, -12);
 ///
-/// assert_eq!(coord_1 - coord_2, Cube::from_coords(-4, -5, 9));
-/// assert_eq!(coord_2 - coord_1, Cube::from_coords(4, 5, -9));
+/// assert_eq!(coord_1 - coord_2, Cube::force_from_coords(-4, -5, 9));
+/// assert_eq!(coord_2 - coord_1, Cube::force_from_coords(4, 5, -9));
 /// ```
 impl Sub for Cube {
     type Output = Self;
@@ -85,11 +85,11 @@ impl Sub for Cube {
 /// ```
 /// use chickenwire::coordinate::cube::Cube;
 ///
-/// let coord = Cube::from_coords(1, 2, -3);
+/// let coord = Cube::force_from_coords(1, 2, -3);
 ///
-/// assert_eq!(-1 * coord, Cube::from_coords(-1, -2, 3));
+/// assert_eq!(-1 * coord, Cube::force_from_coords(-1, -2, 3));
 /// assert_eq!(0 * coord, Cube::ORIGIN);
-/// assert_eq!(coord * 2, Cube::from_coords(2, 4, -6));
+/// assert_eq!(coord * 2, Cube::force_from_coords(2, 4, -6));
 /// ```
 impl Mul<i32> for Cube {
     type Output = Self;
@@ -108,37 +108,6 @@ impl Mul<Cube> for i32 {
 
     fn mul(self, coord: Cube) -> Cube {
         coord * self
-    }
-}
-
-/// Cube coordinates can be divided by `i32` scalars, like vectors. Values are
-/// rounded toward zero, truncating the fractional component.
-///
-/// # Panics
-///
-/// Panics when trying to divide by zero.
-///
-/// # Examples
-///
-/// ```
-/// use chickenwire::coordinate::cube::Cube;
-///
-/// let coord = Cube::from_coords(12, 24, -36);
-///
-/// assert_eq!(coord / -1, Cube::from_coords(-12, -24, 36));
-/// assert_eq!(coord / 2, Cube::from_coords(6, 12, -18));
-///
-/// assert_eq!(coord / 5, Cube::from_coords(2, 4, -6));
-/// ```
-impl Div<i32> for Cube {
-    type Output = Self;
-
-    fn div(self, n: i32) -> Self {
-        Self {
-            x: self.x / n,
-            y: self.y / n,
-            z: self.z / n,
-        }
     }
 }
 
@@ -182,7 +151,7 @@ impl From<(i32, i32, i32)> for Cube {
 /// let axial = Axial::from_coords(1, 2);
 ///
 /// assert_eq!(Cube::from(Axial::ORIGIN), Cube::ORIGIN);
-/// assert_eq!(Cube::from(axial), Cube::from_coords(1, -3, 2));
+/// assert_eq!(Cube::from(axial), Cube::force_from_coords(1, -3, 2));
 /// ```
 impl From<Axial> for Cube {
     fn from(coord: Axial) -> Self {
@@ -296,13 +265,13 @@ impl Cube {
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::cube::Cube;
+    /// use chickenwire::coordinate::Cube;
     ///
     /// let cube_1 = Cube::force_from_coords(1, 3, -4);
     ///
-    /// assert_eq!(Cube_1.x(), 1);
-    /// assert_eq!(Cube_1.y(), 3);
-    /// assert_eq!(Cube_1.z(), -4);
+    /// assert_eq!(cube_1.x(), 1);
+    /// assert_eq!(cube_1.y(), 3);
+    /// assert_eq!(cube_1.z(), -4);
     /// ```
     pub fn force_from_coords(x: i32, y: i32, z: i32) -> Self {
         Self::from_coords(x, y, z).unwrap()
@@ -315,16 +284,16 @@ impl Cube {
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::cube::Cube;
+    /// use chickenwire::coordinate::Cube;
     ///
-    /// let cube_1 = Cube::from_coords((1, 3, -4));
-    /// let cube_2 = Cube::from_coords((0, 0, 1));
+    /// let cube_1 = Cube::from_tuple((1, 3, -4));
+    /// let cube_2 = Cube::from_tuple((0, 0, 1));
     ///
     /// assert!(cube_1.is_ok());
     ///
-    /// assert_eq!(Cube_1.unwrap().x(), 1);
-    /// assert_eq!(Cube_1.unwrap().y(), 3);
-    /// assert_eq!(Cube_1.unwrap().z(), -4);
+    /// assert_eq!(cube_1.unwrap().x(), 1);
+    /// assert_eq!(cube_1.unwrap().y(), 3);
+    /// assert_eq!(cube_1.unwrap().z(), -4);
     ///
     /// assert!(cube_2.is_err());
     /// ```
@@ -505,7 +474,7 @@ impl Cube {
     pub fn diagonals(self) -> Vec<Self> {
         let mut coords = Vec::new();
 
-        for index in  0..6 {
+        for index in 0..6 {
             coords.push(self.diagonal(index));
         }
 
@@ -651,10 +620,6 @@ mod tests {
         assert_eq!(
             3 * (unit_cube_x + unit_cube_y) - 5 * unit_cube_z - unit_cube_y,
             Cube { x: 3, y: 2, z: -5 }
-        );
-        assert_eq!(
-            (4 * unit_cube_x - 2 * unit_cube_y + unit_cube_z) / 2,
-            Cube { x: 2, y: -1, z: 0 }
         );
     }
 

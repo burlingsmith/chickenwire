@@ -26,8 +26,7 @@
 //! tuple or `i32` values:
 //!
 //! ```
-//! use chickenwire::coordinate::axial::Axial;
-//! use chickenwire::coordinate::offset::Offset;
+//! use chickenwire::coordinate::{Axial, Cube, Offset};
 //!
 //! // Use _::from() for tuples
 //! let cube_from_tup = Cube::from((1, 2, -3));
@@ -64,17 +63,16 @@
 //!
 //! # Arithmetic
 //! The `Add<Self>`, `Sub<Self>`, and `Mul<i32>` traits are implemented for
-//! `Axial`, `Cube`, and `Double`. `Div<i32>` is implemented for `Axial` and
-//! `Cube`. These operations treat the coordinates as vectors:
+//! `Axial`, `Cube`, and `Double`. These operations treat the coordinates as
+//! vectors:
 //!
 //! ```
-//! use chickenwire::coordinate::axial::Axial;
-//! use chickenwire::coordinate::double::Double;
+//! use chickenwire::coordinate::{Axial, Cube, Double};
 //!
 //! // Vector addition
 //! assert_eq!(
-//!     Axial::from_coords(2, -4, 2) + Axial::from_coords(5, 6, -11),
-//!     Axial::from_coords(7, 2, -9)
+//!     Axial::from_coords(2, 2) + Axial::from_coords(5, -11),
+//!     Axial::from_coords(7, -9)
 //! );
 //!
 //! // Vector subtraction
@@ -87,12 +85,6 @@
 //! assert_eq!(
 //!     Axial { q: 1, r: -3 } * 2i32,
 //!     Axial { q: 2, r: -6 }
-//! );
-//!
-//! // Scalar division
-//! assert_eq!(
-//!     Cube::from_coords(1, 2, -3) / -1i32,
-//!     Cube::from_coords(-1, -2, 3)
 //! );
 //! ```
 //!
@@ -109,10 +101,10 @@ pub mod cube;
 pub mod double;
 pub mod offset;
 
-use axial::*;
-use cube::*;
-use double::*;
-use offset::*;
+pub use axial::Axial;
+pub use cube::Cube;
+pub use double::Double;
+pub use offset::Offset;
 
 //////////////////////////////////////////////////////////////////////////////
 // Convenience Aliases

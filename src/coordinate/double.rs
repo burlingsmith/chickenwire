@@ -190,8 +190,8 @@ impl Double {
     /// ```
     /// use chickenwire::coordinate::double::Double;
     ///
-    /// let double_1 = Double::force_from_coords(1, 3);
-    /// let double_2 = Double::force_from_coords(0, 1);
+    /// let double_1 = Double::from_coords(1, 3);
+    /// let double_2 = Double::from_coords(0, 1);
     ///
     /// assert!(double_1.is_ok());
     ///
@@ -333,7 +333,7 @@ impl Double {
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::double::Double;
+    /// use chickenwire::coordinate::Double;
     ///
     /// let coord_1 = Double::force_from_coords(1, 1);
     /// let coord_2 = Double::force_from_coords(2, 2);
@@ -345,7 +345,8 @@ impl Double {
     /// assert_eq!(coord_1.flat_dist(coord_3), 3);
     ///
     /// // The distance between two identical coordinates is always zero
-    /// assert_eq!(coord_1.dist(coord_1), 0);
+    /// assert_eq!(coord_1.flat_dist(coord_1), 0);
+    /// assert_eq!(coord_1.sharp_dist(coord_1), 0);
     ///
     /// // Ordering doesn't matter
     /// assert_eq!(
@@ -388,7 +389,8 @@ impl Double {
     /// assert_eq!(coord_1.sharp_dist(coord_3), 2);
     ///
     /// // The distance between two identical coordinates is always zero
-    /// assert_eq!(coord_1.dist(coord_1), 0);
+    /// assert_eq!(coord_1.sharp_dist(coord_1), 0);
+    /// assert_eq!(coord_1.flat_dist(coord_1), 0);
     ///
     /// // Ordering doesn't matter
     /// assert_eq!(

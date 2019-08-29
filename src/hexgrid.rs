@@ -101,7 +101,7 @@ impl Tilt {
     /// use chickenwire::hexgrid::Tilt;
     ///
     /// let flat = Tilt::Flat;
-    /// let sharp = Tilt::Odd;
+    /// let sharp = Tilt::Sharp;
     ///
     /// assert_eq!(flat.other(), sharp);
     /// assert_eq!(sharp.other(), flat);
