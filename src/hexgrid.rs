@@ -7,9 +7,8 @@
 
 use std::collections::HashMap;
 
-use petgraph::graph::{node_index, NodeIndex};
+use petgraph::graph::NodeIndex;
 use petgraph::stable_graph::StableGraph;
-use petgraph::visit::Dfs;
 
 use crate::coordinate::*;
 use crate::coordinate::cube::*;
@@ -324,16 +323,6 @@ impl<T> HexGrid<T> {
     /// given coordinate, else `false`.
     pub fn contains_coord(&self, coord: MultiCoord) -> bool {
         self.graph_index(coord).is_some()
-    }
-
-    /// Returns `true` if the calling instance contains one or more hex values
-    /// equal to the given target, else `false`. The target type must have the
-    /// `Eq` trait.
-    pub fn contains_value(&self, target: T) -> bool
-    where
-        T: Eq,
-    {
-        unimplemented!();
     }
 
     //////////////////////////////////

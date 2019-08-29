@@ -39,8 +39,8 @@ pub struct Double {
 /// use chickenwire::coordinate::double::Double;
 ///
 /// assert_eq!(
-///     Double::from_coords(-2, 2) + Double::from_coords(3, 5),
-///     Double::from_coords(1, 7)
+///     Double::force_from_coords(-2, 2) + Double::force_from_coords(3, 5),
+///     Double::force_from_coords(1, 7)
 /// );
 /// ```
 impl Add for Double {
@@ -62,8 +62,8 @@ impl Add for Double {
 /// use chickenwire::coordinate::double::Double;
 ///
 /// assert_eq!(
-///     Double::from_coords(3, 1) - Double::from_coords(6, 2),
-///     Double::from_coords(-3, -1)
+///     Double::force_from_coords(3, 1) - Double::force_from_coords(6, 2),
+///     Double::force_from_coords(-3, -1)
 /// );
 /// ```
 impl Sub for Double {
@@ -85,16 +85,16 @@ impl Sub for Double {
 /// use chickenwire::coordinate::double::Double;
 ///
 /// assert_eq!(
-///     Double::from_coords(1, 3) * 5,
-///     Double::from_coords(5, 15)
+///     Double::force_from_coords(1, 3) * 5,
+///     Double::force_from_coords(5, 15)
 /// );
 /// assert_eq!(
-///     0 * Double::from_coords(100, 2),
+///     0 * Double::force_from_coords(100, 2),
 ///     Double::ORIGIN
 /// );
 /// assert_eq!(
-///     Double::from_coords(1, 3) * (-1),
-///     Double::from_coords(-1, -3)
+///     Double::force_from_coords(1, 3) * (-1),
+///     Double::force_from_coords(-1, -3)
 /// );
 /// ```
 impl Mul<i32> for Double {
@@ -190,8 +190,8 @@ impl Double {
     /// ```
     /// use chickenwire::coordinate::double::Double;
     ///
-    /// let double_1 = Double::from_coords(1, 3);
-    /// let double_2 = Double::from_coords(0, 1);
+    /// let double_1 = Double::force_from_coords(1, 3);
+    /// let double_2 = Double::force_from_coords(0, 1);
     ///
     /// assert!(double_1.is_ok());
     ///
@@ -308,12 +308,6 @@ impl Double {
     /// Calculates the `Double` coordinates of the hexes surrounding the
     /// calling instance, in the context of a `HexGrid` whose hexes have the
     /// `Tilt::Flat` orientation.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// unimplemented!();
-    /// ```
     pub fn flat_neighbors(self) -> Vec<Self> {
         let offsets = [[1, -1], [1, 1], [0, 2], [-1, 1], [-1, -1], [0, -2]];
 
@@ -323,12 +317,6 @@ impl Double {
     /// Calculates the `Double` coordinates of the hexes surrounding the
     /// calling instance, in the context of a `HexGrid` whose hexes have the
     /// `Tilt::Sharp` orientation.
-    ///
-    /// # Examples
-    ///
-    /// ```
-    /// unimplemented!();
-    /// ```
     pub fn sharp_neighbors(self) -> Vec<Self> {
         let offsets = [[1, -1], [2, 0], [1, 1], [-1, 1], [-2, 0], [-1, -1]];
 

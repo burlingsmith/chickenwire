@@ -15,7 +15,8 @@
 //! `Axial` and `Offset` coordinates can be instantiated normally:
 //!
 //! ```
-//! use chickenwire::coordinate::{Axial, Offset};
+//! use chickenwire::coordinate::axial::Axial;
+//! use chickenwire::coordinate::offset::Offset;
 //!
 //! let axial = Axial { q: 0, r: 1 };
 //! let offset = Offset { col: 2, row: 3 };
@@ -25,14 +26,15 @@
 //! tuple or `i32` values:
 //!
 //! ```
-//! use chickenwire::coordinate::{Cube, Offset};
+//! use chickenwire::coordinate::axial::Axial;
+//! use chickenwire::coordinate::offset::Offset;
 //!
 //! // Use _::from() for tuples
 //! let cube_from_tup = Cube::from((1, 2, -3));
 //! let offset_from_tup = Offset::from((-1, 0));
 //!
-//! // Use _::from_coords() for i32s
-//! let cube_from_int = Cube::from_coords(1, 2, -3);
+//! // Use _::from_coords() or _::force_from_coords() for i32s
+//! let cube_from_int = Cube::force_from_coords(1, 2, -3);
 //! let offset_from_int = Offset::from_coords(-1, 0);
 //!
 //! // The result of the two calls is equivalent
@@ -66,18 +68,19 @@
 //! `Cube`. These operations treat the coordinates as vectors:
 //!
 //! ```
-//! use chickenwire::coordinate::{Cube, Axial};
+//! use chickenwire::coordinate::axial::Axial;
+//! use chickenwire::coordinate::double::Double;
 //!
 //! // Vector addition
 //! assert_eq!(
-//!     Cube::from_coords(2, -4, 2) + Cube::from_coords(5, 6, -11),
-//!     Cube::from_coords(7, 2, -9)
+//!     Axial::from_coords(2, -4, 2) + Axial::from_coords(5, 6, -11),
+//!     Axial::from_coords(7, 2, -9)
 //! );
 //!
 //! // Vector subtraction
 //! assert_eq!(
-//!     Double::from_coords(4, -2) - Double::from_coords(-3, 1),
-//!     Double::from_coords(7, -3)
+//!     Double::force_from_coords(4, -2) - Double::force_from_coords(-3, 1),
+//!     Double::force_from_coords(7, -3)
 //! );
 //!
 //! // Scalar multiplication

@@ -35,8 +35,8 @@ before filing issues and/or making contributions.
 
 ## Credits
 **Dependencies**
-- [behiesler's Criterion.rs](https://github.com/bheisler/criterion.rs)
-- [bluss' petgraph](https://github.com/bluss/petgraph)
+- [Bheisler's criterion.rs](https://github.com/bheisler/criterion.rs)
+- [Bluss' petgraph](https://github.com/bluss/petgraph)
 
 **Design**
 - [Red Blob Games' article](https://www.redblobgames.com/grids/hexagons) on

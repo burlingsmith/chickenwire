@@ -5,7 +5,7 @@
 //! ```
 
 #[doc(no_inline)]
-pub use coordinate::{
+pub use crate::coordinate::{
     CoordResult,
     CoordSys,
     MultiCoord,
@@ -16,6 +16,6 @@ pub use coordinate::{
 };
 
 #[doc(no_inline)]
-pub use hexgrid::{
+pub use crate::hexgrid::{
     HexGrid,
 };

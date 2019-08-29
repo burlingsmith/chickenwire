@@ -27,7 +27,7 @@ pub struct Axial {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::Axial;
+/// use chickenwire::coordinate::axial::Axial;
 ///
 /// let coord_1 = Axial::from_coords(1, -3);
 /// let coord_2 = Axial::from_coords(-5, 12);
@@ -51,7 +51,7 @@ impl Add for Axial {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::Axial;
+/// use chickenwire::coordinate::axial::Axial;
 ///
 /// let coord_1 = Axial::from_coords(1, -3);
 /// let coord_2 = Axial::from_coords(5, -12);
@@ -75,7 +75,7 @@ impl Sub for Axial {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::Axial;
+/// use chickenwire::coordinate::axial::Axial;
 ///
 /// let coord = Axial::from_coords(1, -3);
 ///
@@ -112,7 +112,7 @@ impl Mul<Axial> for i32 {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::Axial;
+/// use chickenwire::coordinate::axial::Axial;
 ///
 /// let coord = Axial::from_coords(12, -36);
 ///
@@ -140,7 +140,7 @@ impl Div<i32> for Axial {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::Axial;
+/// use chickenwire::coordinate::axial::Axial;
 ///
 /// assert_eq!(
 ///     Axial::from((1, 2)),
@@ -161,9 +161,10 @@ impl From<(i32, i32)> for Axial {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::{Cube, Axial};
+/// use chickenwire::coordinate::axial::Axial;
+/// use chickenwire::coordinate::cube::Cube;
 ///
-/// let cube = Cube::from_coords(1, 2, -3);
+/// let cube = Cube::force_from_coords(1, 2, -3);
 ///
 /// assert_eq!(
 ///     Axial::from(cube),
@@ -221,7 +222,7 @@ impl Axial {
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::Axial;
+    /// use chickenwire::coordinate::axial::Axial;
     ///
     /// assert_eq!(Axial::from((1, 2)), Axial::from_coords(1, 2));
     /// ```
@@ -256,7 +257,7 @@ impl Axial {
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::Axial;
+    /// use chickenwire::coordinate::axial::Axial;
     ///
     /// let origin = Axial::ORIGIN;
     /// let coord_1 = Axial { q: 1, r: -3 };

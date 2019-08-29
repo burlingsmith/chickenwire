@@ -33,7 +33,7 @@ pub struct Cube {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::Cube;
+/// use chickenwire::coordinate::cube::Cube;
 ///
 /// let coord_1 = Cube::from_coords(1, 2, -3);
 /// let coord_2 = Cube::from_coords(-5, -7, 12);
@@ -58,7 +58,7 @@ impl Add for Cube {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::Cube;
+/// use chickenwire::coordinate::cube::Cube;
 ///
 /// let coord_1 = Cube::from_coords(1, 2, -3);
 /// let coord_2 = Cube::from_coords(5, 7, -12);
@@ -83,7 +83,7 @@ impl Sub for Cube {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::Cube;
+/// use chickenwire::coordinate::cube::Cube;
 ///
 /// let coord = Cube::from_coords(1, 2, -3);
 ///
@@ -121,7 +121,7 @@ impl Mul<Cube> for i32 {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::Cube;
+/// use chickenwire::coordinate::cube::Cube;
 ///
 /// let coord = Cube::from_coords(12, 24, -36);
 ///
@@ -176,7 +176,8 @@ impl From<(i32, i32, i32)> for Cube {
 /// # Examples
 ///
 /// ```
-/// use chickenwire::coordinate::{Cube, Axial};
+/// use chickenwire::coordinate::axial::Axial;
+/// use chickenwire::coordinate::cube::Cube;
 ///
 /// let axial = Axial::from_coords(1, 2);
 ///
@@ -271,9 +272,9 @@ impl Cube {
     ///
     /// assert!(cube_1.is_ok());
     ///
-    /// assert_eq!(Cube_1.unwrap().x(), 1);
-    /// assert_eq!(Cube_1.unwrap().y(), 3);
-    /// assert_eq!(Cube_1.unwrap().z(), -4);
+    /// assert_eq!(cube_1.unwrap().x(), 1);
+    /// assert_eq!(cube_1.unwrap().y(), 3);
+    /// assert_eq!(cube_1.unwrap().z(), -4);
     ///
     /// assert!(cube_2.is_err());
     /// ```
@@ -365,7 +366,7 @@ impl Cube {
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::Cube;
+    /// use chickenwire::coordinate::cube::Cube;
     ///
     /// assert_eq!(
     ///     Cube::force_from_coords(1, 0, -1),
@@ -398,7 +399,7 @@ impl Cube {
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::Cube;
+    /// use chickenwire::coordinate::cube::Cube;
     ///
     /// let origin_neighbors = vec![
     ///     Cube::force_from_coords(1, 0, -1),
@@ -441,7 +442,7 @@ impl Cube {
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::Cube;
+    /// use chickenwire::coordinate::cube::Cube;
     ///
     /// assert_eq!(
     ///     Cube::force_from_coords(1, -2, 1),
@@ -474,7 +475,7 @@ impl Cube {
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::Cube;
+    /// use chickenwire::coordinate::cube::Cube;
     ///
     /// let origin_diagonals = vec![
     ///     Cube::force_from_coords(1, -2, 1),
@@ -520,7 +521,7 @@ impl Cube {
     /// # Examples
     ///
     /// ```
-    /// use chickenwire::coordinate::Cube;
+    /// use chickenwire::coordinate::cube::Cube;
     ///
     /// let origin = Cube::ORIGIN;
     /// let coord_1 = Cube::force_from_coords(1, 2, -3);
