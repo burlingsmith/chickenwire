@@ -6,8 +6,7 @@ authors = [
 ]
 edition = "2018"
 documentation = "https://docs.rs/chickenwire"
-homepage = "https://cmarcbs7.github.io/chickenwire"
-repository = "https://github.com/cmarcbs7/chickenwire"
+repository = "https://github.com/FroshVII/chickenwire"
 description = "A library for representing and manipulating hexagonal grids."
 keywords = [
     "2D",
