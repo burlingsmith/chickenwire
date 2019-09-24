@@ -1,4 +1,7 @@
 # Chickenwire
+
+![Build Status](https://img.shields.io/gitlab/pipeline/cmarcbs7/chickenwire)
+
 A library for representing and manipulating hexagonal grids in Rust.
 
 ## Contents
